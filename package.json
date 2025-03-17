@@ -20,15 +20,22 @@
     "@heroui/switch": "2.2.14",
     "@heroui/system": "2.4.12",
     "@heroui/theme": "2.4.12",
+    "@iconscout/react-unicons": "^2.2.4",
+    "@iconscout/react-unicons-solid": "^1.1.2",
     "@react-aria/ssr": "3.9.7",
     "@react-aria/visually-hidden": "3.8.20",
+    "axios": "^1.8.3",
     "clsx": "2.1.1",
     "framer-motion": "11.13.1",
     "intl-messageformat": "^10.5.0",
     "next": "15.0.4",
+    "next-auth": "^4.24.11",
     "next-themes": "^0.4.4",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "react-hook-form": "^7.54.2",
+    "zod": "^3.24.2",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "15.0.4",
