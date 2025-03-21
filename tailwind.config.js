@@ -9,13 +9,13 @@ const config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ["var(--font-sans)"],
-        mono: ["var(--font-mono)"],
+      colors: {
+        primary: "#ff7200", // naranja personalizado
+        secondary: "#2b1a03", // Morado personalizado
       },
     },
   },
-  darkMode: "class",
+
   plugins: [heroui()],
 }
 
