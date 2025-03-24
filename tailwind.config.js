@@ -10,8 +10,8 @@ const config = {
   theme: {
     extend: {
       colors: {
-        primary: "#ff7200", // naranja personalizado
-        secondary: "#2b1a03", // Morado personalizado
+        primary: "#ff7200", 
+        secondary: "#2b1a03", 
       },
     },
   },
