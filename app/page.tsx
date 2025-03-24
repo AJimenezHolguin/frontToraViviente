@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <Form>
       <ButtonComponent
-        color={Colors.SECONDARY}
+        color={Colors.PRIMARY}
         isLoading={false}
         size={Sizes.MD}
         spinnerPlacement={SpinnerProps.END}
