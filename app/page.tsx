@@ -43,6 +43,7 @@ export default function Home() {
         value={inputValue}
         variant={VariantProps.UNDERLINED}
         onChange={handleInputChange}
+        
       />
     </Form>
   );
