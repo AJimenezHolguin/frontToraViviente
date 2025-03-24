@@ -17,9 +17,9 @@ export const ButtonComponent: React.FC<ButtonProps> = (props) => {
   return (
     <Button
       color={color}
+      fullWidth={fullWidth}
       isLoading={isLoading}
       size={size}
-      fullWidth={fullWidth}
       spinner={
         <svg
           className="animate-spin h-5 w-5 text-current"

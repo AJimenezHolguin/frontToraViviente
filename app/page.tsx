@@ -24,11 +24,11 @@ export default function Home() {
     <Form>
       <ButtonComponent
         color={Colors.PRIMARY}
+        fullWidth={true}
         isLoading={false}
         size={Sizes.LG}
         spinnerPlacement={SpinnerProps.END}
         variant={VariantButtonProps.GHOST}
-        fullWidth={true}
       >
         Enviar datos
       </ButtonComponent>
@@ -44,7 +44,6 @@ export default function Home() {
         value={inputValue}
         variant={VariantProps.UNDERLINED}
         onChange={handleInputChange}
-        
       />
     </Form>
   );
