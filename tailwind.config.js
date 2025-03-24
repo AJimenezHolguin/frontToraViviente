@@ -11,7 +11,7 @@ const config = {
     extend: {
       colors: {
         primary: "#ff7200", // naranja personalizado
-        secondary: "#2b1a03", // Morado personalizado
+        secondary: "#2b1a03", // Marron personalizado
       },
     },
   },
