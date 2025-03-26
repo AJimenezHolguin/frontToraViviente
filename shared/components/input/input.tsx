@@ -4,10 +4,14 @@ import { InputProps } from "./types";
 
 export const InputComponent: React.FC<InputProps> = (props) => {
   const {
+    classNames = {},
+    color,
     label,
+    labelPlacement,
     placeholder,
     type,
     variant,
+    radius,
     size,
     value,
     defaultValue,
@@ -21,23 +25,25 @@ export const InputComponent: React.FC<InputProps> = (props) => {
   } = props;
 
   return (
-    <>
-      <Input
-        defaultValue={defaultValue}
-        errorMessage={errorMessage}
-        fullWidth={fullWidth}
-        isRequired={isRequired}
-        label={label}
-        maxLength={maxLength}
-        minLength={minLength}
-        placeholder={placeholder}
-        size={size}
-        type={type}
-        value={value}
-        variant={variant}
-        onChange={onChange}
-        // validate={handleValidation}
-      />
-    </>
+    <Input
+      classNames={classNames}
+      color={color}
+      defaultValue={defaultValue}
+      errorMessage={errorMessage}
+      fullWidth={fullWidth}
+      isRequired={isRequired}
+      label={label}
+      labelPlacement={labelPlacement}
+      maxLength={maxLength}
+      minLength={minLength}
+      placeholder={placeholder}
+      radius={radius}
+      size={size}
+      type={type}
+      value={value}
+      variant={variant}
+      onChange={onChange}
+      // validate={handleValidation}
+    />
   );
 };
