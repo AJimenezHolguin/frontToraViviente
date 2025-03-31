@@ -1,9 +1,18 @@
+"use client";
 import { Checkbox } from "@heroui/checkbox";
 
 import { CheckboxProps } from "./types";
 
-export const CheckboxComponent: React.FC<CheckboxProps> = (props) => {
-  const { defaultSelected = false, color, classNames, children, size } = props;
+import { UseResponsiveSize } from "@/shared/utils/useResponsiveSize";
+
+export const CheckboxComponent: React.FC<CheckboxProps> = ({
+  defaultSelected = false,
+  color,
+  classNames,
+  children,
+  size: propSize,
+}) => {
+  const size = UseResponsiveSize(propSize);
 
   return (
     <Checkbox

@@ -1,21 +1,22 @@
+"use client";
 import { Button } from "@heroui/button";
 
 import { ButtonProps, SpinnerProps, VariantButtonProps } from "./types";
 
-import { Sizes } from "@/types/sizes.enum";
 import { Colors } from "@/types/color.enum";
+import { UseResponsiveSize } from "@/shared/utils/useResponsiveSize";
 
-export const ButtonComponent: React.FC<ButtonProps> = (props) => {
-  const {
-    spinnerPlacement = SpinnerProps.START,
-    isLoading = false,
-    size = Sizes.SM,
-    variant = VariantButtonProps.SOLID,
-    color = Colors.SECONDARY,
-    children,
-    fullWidth = false,
-    className = "",
-  } = props;
+export const ButtonComponent: React.FC<ButtonProps> = ({
+  spinnerPlacement = SpinnerProps.START,
+  isLoading = false,
+  size: propSize,
+  variant = VariantButtonProps.SOLID,
+  color = Colors.SECONDARY,
+  children,
+  fullWidth = false,
+  className = "",
+}) => {
+  const size = UseResponsiveSize(propSize);
 
   return (
     <Button
