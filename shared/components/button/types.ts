@@ -35,4 +35,5 @@ export interface ButtonProps {
   onPress?: (e: PressEvent) => void;
   children: ReactNode;
   radius?: RadiusProps;
+  type?: "submit";
 }

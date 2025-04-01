@@ -60,4 +60,5 @@ export interface InputProps {
   minLength?: number;
   maxLength?: number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onValueChange?: (value: string) => void;
 }
