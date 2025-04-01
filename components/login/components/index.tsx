@@ -1,8 +1,13 @@
+"use client";
 import Image from "next/image";
+import { useState } from "react";
+import { Form } from "@heroui/form";
+import { useRouter } from "next/navigation";
 
 import { ClassNameKeys } from "../../../types/classNamesKeys";
 import { InputComponent } from "../../../shared/components/input/input";
 import { ButtonComponent } from "../../../shared/components/button/button";
+import { handleLogin } from "../domain/actions/authActions";
 
 import {
   LabelPlacementProps,
@@ -16,6 +21,23 @@ import { CheckboxComponent } from "@/shared/components/Checkbox";
 import { COLORS } from "@/shared/styles/colors";
 
 export const Login = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.log("1");
+    event.preventDefault();
+    try {
+      const response = await handleLogin(email, password);
+
+      router.push("/");
+      console.log("esta es la respuesta del login", response);
+    } catch (error) {
+      console.log("Error al iniciar sesion", error);
+    }
+  };
+
   return (
     <div className="lg:flex">
       <section className="m-[25px] h-full md:flex items-start justify-center lg:w-[1100]">
@@ -29,51 +51,65 @@ export const Login = () => {
           <Text $v="h1" className={"mt-6"}>
             Sign In
           </Text>
-          <InputComponent
-            classNames={{
-              [ClassNameKeys.BASE]: "pt-6",
-            }}
-            color={Colors.PRIMARY}
-            label="E-mail"
-            labelPlacement={LabelPlacementProps.OUTSIDE}
-            placeholder={"example@gmail.com"}
-            type={TypeProps.EMAIL}
-            variant={VariantProps.BORDERED}
-          />
-          <InputComponent
-            classNames={{
-              [ClassNameKeys.BASE]: "pt-6",
-            }}
-            color={Colors.PRIMARY}
-            label="Password"
-            labelPlacement={LabelPlacementProps.OUTSIDE}
-            placeholder={"@#*%"}
-            radius={RadiusProps.SM}
-            type={TypeProps.PASSWORD}
-            variant={VariantProps.BORDERED}
-          />
-          <div className="flex justify-between pt-6">
-            <CheckboxComponent
+          <Form onSubmit={handleSubmit}>
+            <InputComponent
               classNames={{
-                [ClassNameKeys.BASE]: "pt-8",
+                [ClassNameKeys.BASE]: "pt-6",
               }}
               color={Colors.PRIMARY}
-            >
-              Remember me
-            </CheckboxComponent>
-            <Text
-              $color={COLORS.primary}
-              $v="sm"
-              className={
-                "mt-6 font-bold underline decoration-black-500 underline-offset-4"
+              label="E-mail"
+              labelPlacement={LabelPlacementProps.OUTSIDE}
+              placeholder={"example@gmail.com"}
+              type={TypeProps.EMAIL}
+              value={email}
+              variant={VariantProps.BORDERED}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(event?.target.value)
               }
+            />
+            <InputComponent
+              classNames={{
+                [ClassNameKeys.BASE]: "pt-6",
+              }}
+              color={Colors.PRIMARY}
+              label="Password"
+              labelPlacement={LabelPlacementProps.OUTSIDE}
+              placeholder={"***"}
+              radius={RadiusProps.SM}
+              type={TypeProps.PASSWORD}
+              value={password}
+              variant={VariantProps.BORDERED}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setPassword(event.target.value)
+              }
+            />
+            <div className="flex justify-between pt-6">
+              <CheckboxComponent
+                classNames={{
+                  [ClassNameKeys.BASE]: "pt-8",
+                }}
+                color={Colors.PRIMARY}
+              >
+                Remember me
+              </CheckboxComponent>
+              <Text
+                $color={COLORS.primary}
+                $v="sm"
+                className={
+                  "mt-6 font-bold underline decoration-black-500 underline-offset-4"
+                }
+              >
+                Forgot Password?
+              </Text>
+            </div>
+            <ButtonComponent
+              className="mt-[45px]"
+              fullWidth={true}
+              type="submit"
             >
-              Forgot Password?
-            </Text>
-          </div>
-          <ButtonComponent className="mt-[45px] " fullWidth={true}>
-            Sign In
-          </ButtonComponent>
+              Sign In
+            </ButtonComponent>
+          </Form>
           <div className="mt-6 flex justify-center gap-1">
             <Text $color={COLORS.black} $v="sm" className={"font-bold"}>
               Don&#8217;t have an account?

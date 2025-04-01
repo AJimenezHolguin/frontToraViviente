@@ -15,6 +15,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
   children,
   fullWidth = false,
   className = "",
+  type,
 }) => {
   const size = UseResponsiveSize(propSize);
 
@@ -48,6 +49,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
         </svg>
       }
       spinnerPlacement={spinnerPlacement}
+      type={type}
       variant={variant}
     >
       {isLoading ? "Guardando..." : children}
