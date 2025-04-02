@@ -1,15 +1,18 @@
-import { loginUser } from "../services/authService";
 import { useAuthStore } from "../store/authStore";
+import { RequetsLogin, ResponseLogin } from "../models/user";
+import { loginUser } from "../services/auth.service";
 
-export const handleLogin = async (email: string, password: string) => {
-  try {
-    const authData = await loginUser(email, password);
-    
-    useAuthStore.getState().setAuth(authData);
-    console.log("Inicio de sesión exitoso actions", authData);
-    return authData;
-  } catch (error: any) {
-    console.error(" Error en el login:", error.message);
-    throw error;
-  }
+export const handleLogin = {
+  login: async (credentials: RequetsLogin): Promise<ResponseLogin> => {
+    try {
+      const authData = await loginUser.login(credentials);
+
+      useAuthStore.getState().setAuth(authData);
+
+      return authData;
+    } catch (error: any) {
+      error.message;
+      throw error;
+    }
+  },
 };

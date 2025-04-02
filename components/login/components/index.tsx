@@ -26,15 +26,14 @@ export const Login = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("1");
     event.preventDefault();
     try {
-      const response = await handleLogin(email, password);
+      const response = await handleLogin.login({ email, password });
 
       router.push("/");
-      console.log("esta es la respuesta del login", response);
+      response;
     } catch (error) {
-      console.log("Error al iniciar sesion", error);
+      error;
     }
   };
 

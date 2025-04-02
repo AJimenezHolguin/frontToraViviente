@@ -5,9 +5,11 @@ import { AuthData } from "../models/user";
 const getInitialState = (): AuthData => {
   if (typeof window !== "undefined") {
     const storedData = localStorage.getItem("authData");
-    return storedData ? JSON.parse(storedData) : {  token: null };
+
+    return storedData ? JSON.parse(storedData) : { user: null, token: null };
   }
-  return { token: null };
+
+  return { user: null, token: null };
 };
 
 interface AuthState extends AuthData {
@@ -25,6 +27,6 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   logout: () => {
     localStorage.removeItem("authData");
-    set({ token: null });
+    set({ user: null, token: null });
   },
 }));
