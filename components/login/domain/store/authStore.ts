@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
-import { AuthData } from "../models/user";
+import { ResponseLogin } from "../models/user";
 
-const getInitialState = (): AuthData => {
+const getInitialState = (): ResponseLogin => {
   if (typeof window !== "undefined") {
     const storedData = localStorage.getItem("authData");
 
@@ -12,8 +12,8 @@ const getInitialState = (): AuthData => {
   return { user: null, token: null };
 };
 
-interface AuthState extends AuthData {
-  setAuth: (authData: AuthData) => void;
+interface AuthState extends ResponseLogin {
+  setAuth: (authData: ResponseLogin) => void;
   logout: () => void;
 }
 

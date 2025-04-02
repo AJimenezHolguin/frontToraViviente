@@ -1,16 +1,13 @@
+import { RoleProps } from "@/types/roles.enum";
+
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: RoleProps;
   playList: [];
   createdAt: string;
   updatedAt: string;
-}
-
-export interface AuthData {
-  user?: User | null;
-  token: string | null;
 }
 
 export interface RequetsLogin {
@@ -19,6 +16,6 @@ export interface RequetsLogin {
 }
 
 export interface ResponseLogin {
-  token: string;
-  user: User;
+  token: string | null;
+  user: User | null;
 }
