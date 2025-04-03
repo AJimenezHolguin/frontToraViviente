@@ -1,6 +1,15 @@
 import { ReactNode } from "react";
 
 import { Sizes } from "@/types/sizes.enum";
+import { Colors } from "@/types/color.enum";
+import { RadiusProps } from "@/types/radius.enum";
+import { ClassNameKeys } from "@/types/classNamesKeys";
+
+export enum LabelPlacementProps {
+  INSIDE = "inside",
+  OUTSIDE = "outside",
+  OUTSIDE_LEFT = "outside-left",
+}
 
 export enum VariantProps {
   FLAT = "flat",
@@ -30,15 +39,19 @@ export interface ValidationError {
 }
 
 export interface InputProps {
+  classNames?: Partial<Record<ClassNameKeys, string>>;
+  color: Colors;
   label: string;
+  labelPlacement?: LabelPlacementProps;
   placeholder?: string;
   variant: VariantProps;
   size?: Sizes;
-  value: string;
+  value?: string;
   defaultValue?: string;
   type: TypeProps;
   errorMessage?: string;
   validate?: (value: string) => true | ValidationError | null | undefined;
+  radius?: RadiusProps;
   startContent?: ReactNode;
   endContent?: ReactNode;
   fullWidth?: boolean;
@@ -46,5 +59,6 @@ export interface InputProps {
   isInvalid?: boolean;
   minLength?: number;
   maxLength?: number;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onValueChange?: (value: string) => void;
 }

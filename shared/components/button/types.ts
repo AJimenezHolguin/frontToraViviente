@@ -3,6 +3,7 @@ import { PressEvent } from "@heroui/button";
 
 import { Sizes } from "@/types/sizes.enum";
 import { Colors } from "@/types/color.enum";
+import { RadiusProps } from "@/types/radius.enum";
 
 export enum VariantButtonProps {
   SOLID = "solid",
@@ -33,4 +34,6 @@ export interface ButtonProps {
   spinnerPlacement?: SpinnerProps;
   onPress?: (e: PressEvent) => void;
   children: ReactNode;
+  radius?: RadiusProps;
+  type?: "submit";
 }

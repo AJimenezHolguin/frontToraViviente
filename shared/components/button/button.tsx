@@ -1,21 +1,27 @@
+"use client";
 import { Button } from "@heroui/button";
 
-import { ButtonProps } from "./types";
+import { ButtonProps, SpinnerProps, VariantButtonProps } from "./types";
 
-export const ButtonComponent: React.FC<ButtonProps> = (props) => {
-  const {
-    spinnerPlacement,
-    isLoading,
-    size,
-    variant,
+import { Colors } from "@/types/color.enum";
+import { UseResponsiveSize } from "@/shared/utils/useResponsiveSize";
 
-    color,
-    children,
-    fullWidth = false,
-  } = props;
+export const ButtonComponent: React.FC<ButtonProps> = ({
+  spinnerPlacement = SpinnerProps.START,
+  isLoading = false,
+  size: propSize,
+  variant = VariantButtonProps.SOLID,
+  color = Colors.SECONDARY,
+  children,
+  fullWidth = false,
+  className = "",
+  type,
+}) => {
+  const size = UseResponsiveSize(propSize);
 
   return (
     <Button
+      className={`${className}`}
       color={color}
       fullWidth={fullWidth}
       isLoading={isLoading}
@@ -43,6 +49,7 @@ export const ButtonComponent: React.FC<ButtonProps> = (props) => {
         </svg>
       }
       spinnerPlacement={spinnerPlacement}
+      type={type}
       variant={variant}
     >
       {isLoading ? "Guardando..." : children}

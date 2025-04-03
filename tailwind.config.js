@@ -1,4 +1,6 @@
-import {heroui} from "@heroui/theme"
+import {heroui} from "@heroui/theme";
+const {COLORS} =require("./shared/styles/colors")
+
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -10,8 +12,11 @@ const config = {
   theme: {
     extend: {
       colors: {
-        primary: "#ff7200", 
-        secondary: "#2b1a03", 
+        primary: COLORS.primary,
+        secondary: COLORS.secondary, 
+        grey_ligth:COLORS.grey_ligth,
+        grey_dark: COLORS.grey_dark,
+        default: COLORS.default
       },
     },
   },

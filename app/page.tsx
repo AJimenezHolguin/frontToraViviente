@@ -7,10 +7,6 @@ import { TypeProps, VariantProps } from "@/shared/components/input/types";
 import { InputComponent } from "@/shared/components/input/input";
 import { Sizes } from "@/types/sizes.enum";
 import { ButtonComponent } from "@/shared/components/button/button";
-import {
-  SpinnerProps,
-  VariantButtonProps,
-} from "@/shared/components/button/types";
 import { Colors } from "@/types/color.enum";
 
 export default function Home() {
@@ -22,27 +18,19 @@ export default function Home() {
 
   return (
     <Form>
-      <ButtonComponent
-        color={Colors.PRIMARY}
-        fullWidth={true}
-        isLoading={false}
-        size={Sizes.LG}
-        spinnerPlacement={SpinnerProps.END}
-        variant={VariantButtonProps.GHOST}
-      >
-        Enviar datos
-      </ButtonComponent>
+      <ButtonComponent>Enviar datos</ButtonComponent>
 
       <InputComponent
+        color={Colors.PRIMARY}
         fullWidth={false}
         isRequired={true}
         label="Correo Electrónico"
         minLength={5}
         placeholder="Ingresa tu correo"
-        size={Sizes.SM}
+        size={Sizes.LG}
         type={TypeProps.EMAIL}
         value={inputValue}
-        variant={VariantProps.UNDERLINED}
+        variant={VariantProps.FADED}
         onChange={handleInputChange}
       />
     </Form>
