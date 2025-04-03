@@ -1,28 +1,30 @@
+"use client";
 import { Input } from "@heroui/input";
 
 import { InputProps } from "./types";
 
-export const InputComponent: React.FC<InputProps> = (props) => {
-  const {
-    classNames = {},
-    color,
-    label,
-    labelPlacement,
-    placeholder,
-    type,
-    variant,
-    radius,
-    size,
-    value,
-    defaultValue,
-    errorMessage,
-    fullWidth,
-    isRequired,
-    maxLength,
-    minLength,
-    onChange,
-    // validate,
-  } = props;
+import { UseResponsiveSize } from "@/shared/utils/useResponsiveSize";
+
+export const InputComponent: React.FC<InputProps> = ({
+  classNames = {},
+  color,
+  label,
+  labelPlacement,
+  placeholder,
+  type,
+  variant,
+  radius,
+  size: propSize,
+  value,
+  defaultValue,
+  errorMessage,
+  fullWidth,
+  isRequired,
+  maxLength,
+  minLength,
+  onChange,
+}) => {
+  const size = UseResponsiveSize(propSize);
 
   return (
     <Input
@@ -43,7 +45,6 @@ export const InputComponent: React.FC<InputProps> = (props) => {
       value={value}
       variant={variant}
       onChange={onChange}
-      // validate={handleValidation}
     />
   );
 };
