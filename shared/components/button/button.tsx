@@ -2,23 +2,6 @@
 import { Button } from "@heroui/button";
 
 import { ButtonProps, SpinnerProps, VariantButtonProps } from "./types";
-<<<<<<< HEAD
-
-import { Sizes } from "@/types/sizes.enum";
-import { Colors } from "@/types/color.enum";
-
-export const ButtonComponent: React.FC<ButtonProps> = (props) => {
-  const {
-    spinnerPlacement = SpinnerProps.START,
-    isLoading = false,
-    size = Sizes.SM,
-    variant = VariantButtonProps.SOLID,
-    color = Colors.SECONDARY,
-    children,
-    fullWidth = false,
-    className = "",
-  } = props;
-=======
 
 import { Colors } from "@/types/color.enum";
 import { UseResponsiveSize } from "@/shared/utils/useResponsiveSize";
@@ -35,7 +18,6 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
   type,
 }) => {
   const size = UseResponsiveSize(propSize);
->>>>>>> e0d2a0c17be9e946e1aae4c1b20116c39881435f
 
   return (
     <Button
