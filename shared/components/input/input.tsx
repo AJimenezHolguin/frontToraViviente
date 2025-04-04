@@ -22,6 +22,7 @@ export const InputComponent: React.FC<InputProps> = ({
   isRequired,
   maxLength,
   minLength,
+  endContent,
   onChange,
 }) => {
   const size = UseResponsiveSize(propSize);
@@ -45,6 +46,7 @@ export const InputComponent: React.FC<InputProps> = ({
       value={value}
       variant={variant}
       onChange={onChange}
+      endContent={endContent}
     />
   );
 };

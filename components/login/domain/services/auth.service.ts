@@ -9,7 +9,7 @@ export const loginUser = {
         "/auth/login",
         credentials,
       );
-
+      console.log("response service", data);
       return data;
     } catch (error: any) {
       error;

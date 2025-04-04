@@ -1,19 +1,35 @@
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
+import { RoleProps } from "@/types/roles.enum";
 
 declare module "next-auth" {
   interface Session {
     user: {
-      token?: string;
+      id: string;
+      name: string;
+      email: string;
+      role: RoleProps;
+      playList: [];
+      token: string;
     } & DefaultSession["user"];
   }
 
   interface User extends DefaultUser {
-    token: string;
+    id: string;
+    name: string;
+    email: string;
+    role: RoleProps;
+    playList: [];
+    token: string; 
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    accessToken?: string;
+    id: string;
+    name: string;
+    email: string;
+    role: RoleProps;
+    playList: [];
+    token: string;
   }
 }
