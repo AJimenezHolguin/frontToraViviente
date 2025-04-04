@@ -19,7 +19,8 @@ import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
 import { CheckboxComponent } from "@/shared/components/Checkbox";
 import { COLORS } from "@/shared/styles/colors";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
+import { useAuthStore } from "../domain/store/authStore";
 
 export const Login = () => {
   const router = useRouter();
@@ -36,19 +37,26 @@ export const Login = () => {
         email,
         password,
       });
-      console.log("esta es la respuesta res1:", response);
-      if (response?.error) {
-        return alert("Invalid credentials");
-      }
 
-      router.push("/");
-      response;
+      if (response?.ok) {
+        const session = await getSession();
+
+        if (session?.user) {
+          useAuthStore.getState().setAuth({
+            user: session?.user,
+            token: session?.user.token,
+          });
+          router.push("/");
+        } else {
+          alert("No se pudo obtener la sesión del usuario.");
+        }
+      } else if (response?.error) {
+        alert("Invalid credentials");
+      }
     } catch (error) {
       error;
+      alert("Ocurrió un error inesperado. Intenta de nuevo.");
     }
-    // const response = await handleLogin.login({ email, password });
-
-    // if (response?.ok) router.push("/");
   };
 
   interface EyeSlashFilledIconProps extends React.SVGProps<SVGSVGElement> {}
@@ -111,6 +119,7 @@ export const Login = () => {
       </svg>
     );
   };
+
   return (
     <div className="lg:flex">
       <section className="m-[25px] h-full md:flex items-start justify-center lg:w-[1100]">
@@ -145,16 +154,6 @@ export const Login = () => {
                 [ClassNameKeys.BASE]: "pt-6",
               }}
               color={Colors.PRIMARY}
-              label="Password"
-              labelPlacement={LabelPlacementProps.OUTSIDE}
-              placeholder={"***"}
-              radius={RadiusProps.SM}
-              type={isVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
-              value={password}
-              variant={VariantProps.BORDERED}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(event.target.value)
-              }
               endContent={
                 <button
                   aria-label="toggle password visibility"
@@ -168,6 +167,16 @@ export const Login = () => {
                     <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
                   )}
                 </button>
+              }
+              label="Password"
+              labelPlacement={LabelPlacementProps.OUTSIDE}
+              placeholder={"***"}
+              radius={RadiusProps.SM}
+              type={isVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
+              value={password}
+              variant={VariantProps.BORDERED}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setPassword(event.target.value)
               }
             />
 

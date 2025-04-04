@@ -10,6 +10,8 @@ declare module "next-auth" {
       role: RoleProps;
       playList: [];
       token: string;
+      createdAt: string;
+      updatedAt: string;
     } & DefaultSession["user"];
   }
 
@@ -19,7 +21,9 @@ declare module "next-auth" {
     email: string;
     role: RoleProps;
     playList: [];
-    token: string; 
+    token: string;
+    createdAt: string;
+    updatedAt: string;
   }
 }
 
@@ -31,5 +35,7 @@ declare module "next-auth/jwt" {
     role: RoleProps;
     playList: [];
     token: string;
+    createdAt: string;
+    updatedAt: string;
   }
 }

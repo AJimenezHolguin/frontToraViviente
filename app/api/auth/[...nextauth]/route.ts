@@ -13,16 +13,12 @@ const handler = NextAuth({
       },
 
       async authorize(credentials) {
-        // console.log
-
         try {
           const userResponse = await handleLogin.login({
             email: credentials?.email ?? "",
             password: credentials?.password ?? "",
           });
-          console.log("response route next auth", userResponse);
-          // Si la respuesta no es válida, lanzamos un error
-
+         
           if (!userResponse || !userResponse.token || !userResponse.user) {
             throw new Error("Login fallido");
           }
@@ -33,11 +29,14 @@ const handler = NextAuth({
             email: userResponse.user.email,
             role: userResponse.user.role,
             playList: userResponse.user.playList,
-            token: userResponse.token 
+            token: userResponse.token,
+            createdAt: userResponse.user.createdAt,  
+            updatedAt: userResponse.user.updatedAt, 
           };
           
         } catch (error) {
-          console.error("Error en la autenticación:", error);
+          error;
+          
           return null;
         }
       },
@@ -53,7 +52,10 @@ const handler = NextAuth({
         token.role = user.role;
         token.playList = user.playList;
         token.token = user.token;
+        token.createdAt = user.createdAt;
+        token.updatedAt = user.updatedAt;
       }
+      
       return token;
     },
     async session({ session, token }) {
@@ -65,8 +67,11 @@ const handler = NextAuth({
         email: token.email,
         role: token.role,
         playList: token.playList,
-        token: token.token
+        token: token.token,
+        createdAt: token.createdAt,
+        updatedAt: token.updatedAt
       };
+      
       return session;
     },
   },

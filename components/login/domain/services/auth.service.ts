@@ -7,14 +7,14 @@ export const loginUser = {
     try {
       const { data } = await axiosInstance.post<ResponseLogin>(
         "/auth/login",
-        credentials,
+        credentials
       );
-      console.log("response service", data);
+
       return data;
     } catch (error: any) {
       error;
       throw new Error(
-        error.response?.data?.message || "Error en la autenticación",
+        error.response?.data?.message || "Error en la autenticación"
       );
     }
   },
