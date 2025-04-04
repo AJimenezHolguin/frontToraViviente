@@ -120,7 +120,7 @@ export const Login = () => {
     );
   };
 
-  return (
+return (
     <div className="lg:flex">
       <section className="m-[25px] h-full md:flex items-start justify-center lg:w-[1100]">
         <Image

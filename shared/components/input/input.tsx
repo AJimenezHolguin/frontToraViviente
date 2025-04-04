@@ -50,3 +50,4 @@ export const InputComponent: React.FC<InputProps> = ({
     />
   );
 };
+
