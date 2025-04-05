@@ -62,3 +62,11 @@ export interface InputProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onValueChange?: (value: string) => void;
 }
+
+export interface PasswordToggleIconProps {
+  isVisible: boolean;
+  toggleVisibility: () => void;
+}
+
+export interface EyeSlashFilledIconProps
+  extends React.SVGProps<SVGSVGElement> {}
