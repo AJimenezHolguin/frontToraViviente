@@ -139,6 +139,7 @@ export const Login = () => {
             <ButtonComponent
               className="mt-[45px]"
               fullWidth={true}
+              isDisabled={!email || !password }
               isLoading={isLoading}
               type="submit"
             >
