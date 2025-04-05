@@ -52,7 +52,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
       type={type}
       variant={variant}
     >
-      {isLoading ? "Guardando..." : children}
+      {isLoading ? "Loading..." : children}
     </Button>
   );
 };

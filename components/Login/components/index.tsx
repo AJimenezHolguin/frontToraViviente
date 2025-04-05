@@ -5,15 +5,14 @@ import { Form } from "@heroui/form";
 import { useRouter } from "next/navigation";
 
 import { ClassNameKeys } from "../../../types/classNamesKeys";
-import { InputComponent } from "../../../shared/components/input/input";
-import { ButtonComponent } from "../../../shared/components/button/button";
-import { handleLogin } from "../domain/actions/authActions";
+import { InputComponent } from "../../../shared/components/Input";
+import { ButtonComponent } from "../../../shared/components/Button";
 
 import {
   LabelPlacementProps,
   TypeProps,
   VariantProps,
-} from "@/shared/components/input/types";
+} from "@/shared/components/Input/types";
 import { Colors } from "@/types/color.enum";
 import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
@@ -27,16 +26,19 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true)
     try {
       const response = await signIn("credentials", {
         redirect: false,
         email,
         password,
       });
+      
 
       if (response?.ok) {
         const session = await getSession();
@@ -56,6 +58,8 @@ export const Login = () => {
     } catch (error) {
       error;
       alert("Ocurrió un error inesperado. Intenta de nuevo.");
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -202,6 +206,7 @@ export const Login = () => {
             <ButtonComponent
               className="mt-[45px]"
               fullWidth={true}
+              isLoading={isLoading}
               type="submit"
             >
               Sign In

@@ -29,24 +29,24 @@ export const InputComponent: React.FC<InputProps> = ({
 
   return (
     <Input
-      classNames={classNames}
-      color={color}
-      defaultValue={defaultValue}
-      errorMessage={errorMessage}
-      fullWidth={fullWidth}
-      isRequired={isRequired}
-      label={label}
-      labelPlacement={labelPlacement}
-      maxLength={maxLength}
-      minLength={minLength}
-      placeholder={placeholder}
-      radius={radius}
-      size={size}
-      type={type}
-      value={value}
-      variant={variant}
-      onChange={onChange}
-      endContent={endContent}
+    classNames={classNames}
+    color={color}
+    defaultValue={defaultValue}
+    endContent={endContent}
+    errorMessage={errorMessage}
+    fullWidth={fullWidth}
+    isRequired={isRequired}
+    label={label}
+    labelPlacement={labelPlacement}
+    maxLength={maxLength}
+    minLength={minLength}
+    placeholder={placeholder}
+    radius={radius}
+    size={size}
+    type={type}
+    value={value}
+    variant={variant}
+    onChange={onChange}
     />
   );
 };

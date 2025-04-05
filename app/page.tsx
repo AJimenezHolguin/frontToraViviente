@@ -3,10 +3,10 @@
 import { Form } from "@heroui/form";
 import { useState } from "react";
 
-import { TypeProps, VariantProps } from "@/shared/components/input/types";
-import { InputComponent } from "@/shared/components/input/input";
+import { TypeProps, VariantProps } from "@/shared/components/Input/types";
+import { InputComponent } from "@/shared/components/Input";
 import { Sizes } from "@/types/sizes.enum";
-import { ButtonComponent } from "@/shared/components/button/button";
+import { ButtonComponent } from "@/shared/components/Button";
 import { Colors } from "@/types/color.enum";
 
 export default function Home() {

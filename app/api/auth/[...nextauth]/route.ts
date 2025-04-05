@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { handleLogin } from "@/components/login/domain/actions/authActions";
+import { handleLogin } from "@/components/Login/domain/actions/authActions";
 
 const handler = NextAuth({
   providers: [
@@ -44,7 +44,6 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // Primera vez que se inicia sesión (user existe)
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -59,7 +58,6 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      // Pasamos los datos del token a la sesión
       session.user = {
         ...session.user,
         id: token.id,
