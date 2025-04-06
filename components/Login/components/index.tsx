@@ -20,12 +20,15 @@ import { Colors } from "@/types/color.enum";
 import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
 import { CheckboxComponent } from "@/shared/components/Checkbox";
-import { COLORS } from "@/shared/styles/colors";
+import { COLORSTEXT } from "@/shared/styles/colors";
 import { getSession, signIn } from "next-auth/react";
 import { useAuthStore } from "../domain/store/authStore";
+import { useAlert } from "@/shared/context/AlertContext";
+
 
 export const Login = () => {
   const router = useRouter();
+  const { showAlert } = useAlert(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -55,7 +58,14 @@ export const Login = () => {
           alert("No se pudo obtener la sesión del usuario.");
         }
       } else if (response?.error) {
-        alert("Invalid credentials");
+        // alert("Invalid credentials");
+        showAlert({
+          title: "Credenciales incorrectas",
+          description: "Verifica tu correo y contraseña.",
+          color: Colors.DANGER,
+          
+        });
+     
       }
     } catch (error) {
       error;
@@ -107,6 +117,7 @@ export const Login = () => {
               }
               label="Password"
               labelPlacement={LabelPlacementProps.OUTSIDE}
+              minLength={6}
               placeholder={"***"}
               radius={RadiusProps.SM}
               type={isVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
@@ -117,7 +128,7 @@ export const Login = () => {
               }
             />
 
-            <div className="flex justify-between pt-6">
+            <div className="flex justify-between pt-6 w-full">
               <CheckboxComponent
                 classNames={{
                   [ClassNameKeys.BASE]: "pt-8",
@@ -127,7 +138,7 @@ export const Login = () => {
                 Remember me
               </CheckboxComponent>
               <Text
-                $color={COLORS.primary}
+                $color={COLORSTEXT.primary}
                 $v="sm"
                 className={
                   "mt-6 font-bold underline decoration-black-500 underline-offset-4"
@@ -139,19 +150,20 @@ export const Login = () => {
             <ButtonComponent
               className="mt-[45px]"
               fullWidth={true}
-              isDisabled={!email || !password }
+              isDisabled={!email || !password}
               isLoading={isLoading}
               type="submit"
+           
             >
               Sign In
             </ButtonComponent>
           </Form>
           <div className="mt-6 flex justify-center gap-1">
-            <Text $color={COLORS.black} $v="sm" className={"font-bold"}>
+            <Text $color={COLORSTEXT.black} $v="sm" className={"font-bold"}>
               Don&#8217;t have an account?
             </Text>
             <Text
-              $color={COLORS.primary}
+              $color={COLORSTEXT.primary}
               $v="sm"
               className={
                 "font-bold underline decoration-black-500 underline-offset-4"
