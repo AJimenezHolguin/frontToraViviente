@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Form } from "@heroui/form";
 import { useRouter } from "next/navigation";
 
-import { ClassNameKeys } from "../../../types/classNamesKeys";
+import { InputClassNameKeys } from "../../../types/classNamesKeys";
 import {
   InputComponent,
   PasswordToggleIcon,
@@ -23,12 +23,10 @@ import { CheckboxComponent } from "@/shared/components/Checkbox";
 import { COLORSTEXT } from "@/shared/styles/colors";
 import { getSession, signIn } from "next-auth/react";
 import { useAuthStore } from "../domain/store/authStore";
-import { useAlert } from "@/shared/context/AlertContext";
-
 
 export const Login = () => {
   const router = useRouter();
-  const { showAlert } = useAlert(); 
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -58,14 +56,7 @@ export const Login = () => {
           alert("No se pudo obtener la sesión del usuario.");
         }
       } else if (response?.error) {
-        // alert("Invalid credentials");
-        showAlert({
-          title: "Credenciales incorrectas",
-          description: "Verifica tu correo y contraseña.",
-          color: Colors.DANGER,
-          
-        });
-     
+        alert("Invalid credentials");
       }
     } catch (error) {
       error;
@@ -91,7 +82,7 @@ export const Login = () => {
           <Form onSubmit={handleSubmit}>
             <InputComponent
               classNames={{
-                [ClassNameKeys.BASE]: "pt-6",
+                [InputClassNameKeys.BASE]: "pt-6",
               }}
               color={Colors.PRIMARY}
               label="E-mail"
@@ -106,7 +97,7 @@ export const Login = () => {
             />
             <InputComponent
               classNames={{
-                [ClassNameKeys.BASE]: "pt-6",
+                [InputClassNameKeys.BASE]: "pt-6",
               }}
               color={Colors.PRIMARY}
               endContent={
@@ -131,7 +122,7 @@ export const Login = () => {
             <div className="flex justify-between pt-6 w-full">
               <CheckboxComponent
                 classNames={{
-                  [ClassNameKeys.BASE]: "pt-8",
+                  [InputClassNameKeys.BASE]: "pt-8",
                 }}
                 color={Colors.PRIMARY}
               >
@@ -153,7 +144,6 @@ export const Login = () => {
               isDisabled={!email || !password}
               isLoading={isLoading}
               type="submit"
-           
             >
               Sign In
             </ButtonComponent>

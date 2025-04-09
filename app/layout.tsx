@@ -4,7 +4,6 @@ import { Metadata } from "next";
 import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
-import { AlertProvider } from "@/shared/context/AlertContext";
 
 export const metadata: Metadata = {
   title: {
@@ -26,9 +25,7 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <head />
       <body>
-      <AlertProvider>
         <Providers>{children}</Providers>
-        </AlertProvider>
       </body>
     </html>
   );

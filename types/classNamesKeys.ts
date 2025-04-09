@@ -1,4 +1,4 @@
-export enum ClassNameKeys {
+export enum InputClassNameKeys {
   BASE = "base",
   LABEL = "label",
   INPUT_WRAPPER = "inputWrapper",
@@ -12,3 +12,5 @@ export enum ClassNameKeys {
   ICON = "icon",
   WRAPPER = "wrapper",
 }
+
+
