@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Sizes } from "@/types/sizes.enum";
 import { Colors } from "@/types/color.enum";
 import { RadiusProps } from "@/types/radius.enum";
-import { ClassNameKeys } from "@/types/classNamesKeys";
+import { InputClassNameKeys } from "@/types/classNamesKeys";
 
 export enum LabelPlacementProps {
   INSIDE = "inside",
@@ -39,7 +39,7 @@ export interface ValidationError {
 }
 
 export interface InputProps {
-  classNames?: Partial<Record<ClassNameKeys, string>>;
+  classNames?: Partial<Record<InputClassNameKeys, string>>;
   color: Colors;
   label: string;
   labelPlacement?: LabelPlacementProps;
@@ -62,3 +62,11 @@ export interface InputProps {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onValueChange?: (value: string) => void;
 }
+
+export interface PasswordToggleIconProps {
+  isVisible: boolean;
+  toggleVisibility: () => void;
+}
+
+export interface EyeSlashFilledIconProps
+  extends React.SVGProps<SVGSVGElement> {}

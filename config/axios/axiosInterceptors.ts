@@ -2,7 +2,7 @@ import { AxiosInstance } from "axios";
 
 import { HTTP_STATUS } from "./constanst";
 
-import { useAuthStore } from "@/components/login/domain/store/authStore";
+import { useAuthStore } from "@/components/Login/domain/store/authStore";
 
 const excludedRoutes = ["/auth/login", "/auth/register"];
 

@@ -1,6 +1,8 @@
 import { RoleProps } from "@/types/roles.enum";
 
 export interface User {
+  _id?: string;
+  __v?: number;
   id: string;
   name: string;
   email: string;

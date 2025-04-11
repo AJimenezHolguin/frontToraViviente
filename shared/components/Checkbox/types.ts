@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { Sizes } from "../../../types/sizes.enum";
 
 import { Colors } from "@/types/color.enum";
-import { ClassNameKeys } from "@/types/classNamesKeys";
+import { InputClassNameKeys } from "@/types/classNamesKeys";
 
 export enum OrientacionCheckbox {
   VERTICAL = "vertical",
@@ -21,5 +21,5 @@ export interface CheckboxProps {
   isSelected?: boolean;
   onChange?: React.ChangeEvent<HTMLInputElement>;
   onValueChange?: (isSelected: boolean) => void;
-  classNames?: Partial<Record<ClassNameKeys, string>>;
+  classNames?: Partial<Record<InputClassNameKeys, string>>;
 }

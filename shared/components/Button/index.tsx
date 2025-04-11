@@ -8,6 +8,7 @@ import { UseResponsiveSize } from "@/shared/utils/useResponsiveSize";
 
 export const ButtonComponent: React.FC<ButtonProps> = ({
   spinnerPlacement = SpinnerProps.START,
+  isDisabled,
   isLoading = false,
   size: propSize,
   variant = VariantButtonProps.SOLID,
@@ -24,6 +25,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
       className={`${className}`}
       color={color}
       fullWidth={fullWidth}
+      isDisabled={isDisabled}
       isLoading={isLoading}
       size={size}
       spinner={
@@ -52,7 +54,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
       type={type}
       variant={variant}
     >
-      {isLoading ? "Guardando..." : children}
+      {isLoading ? "Loading..." : children}
     </Button>
   );
 };
