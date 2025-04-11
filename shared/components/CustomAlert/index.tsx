@@ -1,35 +1,22 @@
 "use client";
 
-import { Button } from "@heroui/button";
 import React from "react";
 import { Alert } from "@heroui/alert";
-import { Colors } from "@/types/color.enum";
-
-type AlertType = "info" | "action";
-
-interface CustomAlertProps {
-  color: Colors;
-  type: AlertType;
-  title: string;
-  isVisible: boolean;
-  description: string;
-  actionText?: string;
-  onActionClick?: () => void;
-  onClose?: () => void;
-}
+import { CustomAlertProps } from "@/types/alert.interface";
+import { AlertType } from "../../../types/alert.interface";
 
 const CustomAlert: React.FC<CustomAlertProps> = ({
   color,
+  endContent,
   type,
   title,
   description,
-  actionText = "Confirm",
-  onActionClick,
   onClose,
   isVisible,
+  variant,
 }) => {
   switch (type) {
-    case "info":
+    case AlertType.ERROR:
       return (
         <>
           {isVisible && (
@@ -40,7 +27,7 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
                   description={description}
                   isVisible={isVisible}
                   title={title}
-                  variant="solid"
+                  variant={variant}
                   onClose={onClose}
                 />
               </div>
@@ -48,35 +35,16 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
           )}
         </>
       );
-    case "action":
+    case AlertType.ACTION:
       return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm pointer-events-auto">
           <div className="w-full max-w-4xl px-6">
             <Alert
               color={color}
               description={description}
-              endContent={
-                <>
-                  <Button
-                    color={Colors.PRIMARY}
-                    size="sm"
-                    variant="solid"
-                    onPress={onActionClick}
-                  >
-                    {actionText}
-                  </Button>
-                  <Button
-                    color={Colors.SECONDARY}
-                    size="sm"
-                    variant="solid"
-                    onPress={onActionClick}
-                  >
-                    {actionText}
-                  </Button>
-                </>
-              }
+              endContent={endContent}
               title={title}
-              variant="solid"
+              variant={variant}
             />
           </div>
         </div>

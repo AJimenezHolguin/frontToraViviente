@@ -24,6 +24,10 @@ import { COLORSTEXT } from "@/shared/styles/colors";
 import { getSession, signIn } from "next-auth/react";
 import { useAuthStore } from "../domain/store/authStore";
 import CustomAlert from "@/shared/components/CustomAlert";
+import { AlertType, AlertVariant } from "@/types/alert.interface";
+import { VariantButtonProps } from "@/shared/components/Button/types";
+import { Button } from "@heroui/button";
+import { Sizes } from "@/types/sizes.enum";
 
 export const Login = () => {
   const router = useRouter();
@@ -54,7 +58,7 @@ export const Login = () => {
         router.push("/");
       } else {
         setAlert({
-          title: "Invalid Credentials",
+          title: "Credenciales incorrectas",
           description: "El email o la contraseña no son correctos.",
           visible: true,
         });
@@ -187,9 +191,20 @@ export const Login = () => {
         <CustomAlert
           color={Colors.DANGER}
           description={alert.description}
+          endContent={
+            <Button
+            color={Colors.PRIMARY}
+            size={Sizes.SM}
+            variant={VariantButtonProps.SOLID}
+            onPress={() => setAlert((prev) => ({ ...prev, visible: false }))}
+            >
+              Cerrar
+            </Button>
+          }
           isVisible={true}
           title={alert.title}
-          type="info"
+          type= {AlertType.ERROR}
+          variant={AlertVariant.SOLID}
           onClose={() => setAlert((prev) => ({ ...prev, visible: false }))}
         />
       )}
