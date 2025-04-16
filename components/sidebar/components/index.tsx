@@ -5,24 +5,26 @@ import { menuItems } from "@/shared/constants/menuItems";
 import Image from "next/image";
 import Link from "next/link";
 import { IoBookOutline } from "react-icons/io5";
-import { useState } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-export const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+interface SidebarProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
 
+export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <>
       <button
-        className="top-4 left-4 z-20 p-2 bg-primary text-white rounded-full shadow-lg md:right-[410px] transition-all duration-300"
-        onClick={() => setIsOpen(!isOpen)}
+        className="top-4 left-4 z-30 p-2 bg-primary text-white rounded-full md:right-[410px] transition-all duration-300"
+        onClick={onToggle}
       >
         {isOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
       </button>
       <div
         className={`
-          fixed top-0 left-0 z-10 h-screen w-[300px] bg-primary text-slate-300
-          overflow-y-scroll transition-transform duration-300 ease-in-out
+          fixed top-0 left-0 z-20 h-screen w-[300px] bg-primary text-slate-300
+          transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           `}
         id="menu"
@@ -40,15 +42,6 @@ export const Sidebar = () => {
         <div className="px-6 pb-7" id="profile">
           <p className="text-slate-500">Bienvenido,</p>
           <Link className="inline-flex space-x-2 items-center" href="#">
-            <span>
-              <Image
-                alt="User Avatar"
-                className="rounded-full w-8 h-8"
-                height={52}
-                src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=128&q=80"
-                width={52}
-              />
-            </span>
             <span className="text-sm md:text-base font-bold">
               Anderson Jiménez
             </span>
