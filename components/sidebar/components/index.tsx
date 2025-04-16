@@ -2,10 +2,11 @@
 
 import { SidebarMenuItem } from "@/shared/components/SidebarMenuItem";
 import { menuItems } from "@/shared/constants/menuItems";
-import Image from "next/image";
+
 import Link from "next/link";
 import { IoBookOutline } from "react-icons/io5";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { signOut } from "next-auth/react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -13,6 +14,11 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    signOut({ callbackUrl: "/login" });
+  };
+
   return (
     <>
       <button
@@ -26,6 +32,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           fixed top-0 left-0 z-20 h-screen w-[300px] bg-primary text-slate-300
           transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          flex flex-col
           `}
         id="menu"
       >
@@ -52,6 +59,15 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.path} {...item} />
           ))}
+        </div>
+        <div className="px-6 mt-auto mb-6">
+          <Link
+            className="text-red-500 cursor-pointer"
+            href={"/login"}
+            onClick={handleLogout}
+          >
+            Logout
+          </Link>
         </div>
       </div>
     </>
