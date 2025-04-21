@@ -21,7 +21,7 @@ export default function DashboardLayout({
         <Image
           alt="Tora-Viviente"
           height={25}
-          src={"/logo-tora-viviente-sin-fondo.png"}
+          src={"/logo-torah-viviente-2.png"}
           width={25}
         />
       </div>
