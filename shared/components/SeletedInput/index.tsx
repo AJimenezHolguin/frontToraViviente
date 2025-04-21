@@ -1,9 +1,8 @@
-import type {Selection} from "@heroui/react";
+import type { Selection } from "@heroui/react";
 
 import React from "react";
-import {Select, SelectItem} from "@heroui/react";
-import { dataSongs, CategoryProps } from '../table/data/dataSong';
-
+import { Select, SelectItem } from "@heroui/react";
+import { CategoryProps } from "../table/data/dataSong";
 
 export const SelectedInput = () => {
   const [value, setValue] = React.useState<Selection>(new Set([]));
@@ -11,20 +10,18 @@ export const SelectedInput = () => {
   return (
     <div className="flex w-full flex-col gap-2">
       <Select
-        
         label="Categoría"
         placeholder="Selecciona una categoría"
         selectedKeys={value}
         variant="bordered"
         onSelectionChange={setValue}
       >
-       {Object.values(CategoryProps).map((category) => (    
+        {Object.values(CategoryProps).map((category) => (
           <SelectItem key={category} textValue={category}>
-            {category}  
-            </SelectItem>
+            {category}
+          </SelectItem>
         ))}
       </Select>
-      
     </div>
   );
-}
+};
