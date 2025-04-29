@@ -4,12 +4,23 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
     size?: number;
   };
 
-  export interface TableProps {
-    id: number;
+  export interface Song {
+    _id: string;
     name: string;
-    url: JSX.Element;
+    user?: {
+      _id: string;
+      email: string;
+    };
+    linkSong: string;
     category: string;
-    status: string;
-    letter: JSX.Element;
-    chord: JSX.Element;
+    status?: string;
+    fileSong: string;
+    fileScore: string;
+    __v?: number
+  }
+
+  export interface SongsResponse {
+    success: boolean;
+    count: number;
+    data: Song[];
   }

@@ -1,5 +1,5 @@
 "use client";
-import React, { SVGProps } from "react";
+import React, { SVGProps, useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -9,104 +9,107 @@ import {
   TableCell,
   Input,
   Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Chip,
   Pagination,
   Selection,
-  ChipProps,
   SortDescriptor,
   Tooltip,
 } from "@heroui/react";
 
 import {
-  ChevronDownIcon,
   DeleteIcon,
   EditIcon,
   PlusIcon,
   SearchIcon,
 } from "@/shared/components/table/TableIcons";
-import {
-  columns,
-  statusOptions,
-} from "@/shared/components/table/columnsAndStatusOptions";
-import { dataSongs } from "@/shared/components/table/data/dataSong";
-import { Colors } from "@/types/color.enum";
+import { columns } from "@/shared/components/table/columnsAndStatusOptions"; 
+
 import { ModalSong } from "@/shared/components/Modal";
+
+import { Song } from "@/shared/components/table/types";
+import { getAllSongs } from "@/services/songsAllService";
+import { IoLogoYoutube } from "react-icons/io5";
+import { FaFilePdf } from "react-icons/fa6";
+import { FaRegFilePdf } from "react-icons/fa6";
+import { SpinnerComponent } from "@/shared/components/Spinner";
+import { Sizes } from "@/types/sizes.enum";
+import { Colors } from "@/types/color.enum";
+import { SpinnerVariant } from "@/shared/components/Spinner/types";
+import { COLORSTEXT } from "@/shared/styles/colors";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 
-export function capitalize(s: string) {
-  return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
-}
-
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  activa: "success",
-  inactiva: "danger",
-};
-
 const INITIAL_VISIBLE_COLUMNS = [
+
   "name",
-  "url",
+  "user",
+  "linkSong",
   "category",
-  "letter",
-  "chord",
+  "fileSong",
+  "fileScore",
   "actions",
 ];
 
-type Data = (typeof dataSongs)[0];
-
 export const CreateSong = () => {
-  const [filterValue, setFilterValue] = React.useState("");
-  const [selectedKeys, setSelectedKeys] = React.useState<Selection>(
-    new Set([])
-  );
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
-  const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "age",
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [filterValue, setFilterValue] = useState("");
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+    column: "name",
     direction: "ascending",
   });
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [page, setPage] = React.useState(1);
+  useEffect(() => {
+    const fetchSongs = async () => {
+      setIsLoading(true);
+     
+      try {
+        const songsData = await getAllSongs();
+    
+       
+        setSongs(songsData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+   
+    fetchSongs();
+  }, []);
 
+  
+ 
+  
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) =>
-      Array.from(visibleColumns).includes(column.uid)
-    );
+
+    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filtereddatas = [...dataSongs];
+    let filtered = [...songs];
 
     if (hasSearchFilter) {
-      filtereddatas = filtereddatas.filter((data) =>
+      filtered = filtered.filter((data) =>
         data.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
-      filtereddatas = filtereddatas.filter((data) =>
-        Array.from(statusFilter).includes(data.status)
-      );
-    }
+    
+    
+    return filtered;
+  }, [songs, filterValue]);
 
-    return filtereddatas;
-  }, [dataSongs, filterValue, statusFilter]);
+  
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -118,41 +121,59 @@ export const CreateSong = () => {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: Data, b: Data) => {
-      const first = a[sortDescriptor.column as keyof Data] as number;
-      const second = b[sortDescriptor.column as keyof Data] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
+    return [...items].sort((a, b) => {
+      const first = a[sortDescriptor.column as keyof Song] as string;
+      const second = b[sortDescriptor.column as keyof Song] as string;
+     
+      return sortDescriptor.direction === "ascending"
+        ? String(first).localeCompare(String(second))
+        : String(second).localeCompare(String(first));
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((data: Data, columnKey: React.Key) => {
-    const cellValue = data[columnKey as keyof Data];
+  const renderCell = React.useCallback((data: Song, columnKey: React.Key) => {
+    const cellValue = data[columnKey as keyof Song];
+
+   
 
     switch (columnKey) {
-      case "name":
-        return <span>{cellValue}</span>;
-      case "category":
+      case "user":
+        return <span>{data.user?.email || "N/A"}</span>;
+        case "linkSong":
+      return (
+        <a
+          href={data.linkSong}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <IoLogoYoutube color="red" size={20}/>
+        </a>
+      );
+      case "fileSong":
+      return (
+        <a
+        className="flex justify-center items-center"
+          href={data.fileSong}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <FaFilePdf color={COLORSTEXT.secondary} size={20}/>
+        </a>
+      )
+      case "fileScore":
         return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip
-            className="capitalize"
-            color={statusColorMap[data.status]}
-            size="sm"
-            variant="flat"
+          <a 
+            className="flex justify-center items-center"
+            href={data.fileScore}
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            {cellValue}
-          </Chip>
-        );
+          <FaRegFilePdf color={COLORSTEXT.secondary} size={20}/>    
+          </a>
+        )
       case "actions":
         return (
-          <div className="relative flex items-center gap-2">
+          <div className="relative flex justify-center items-center gap-2">
             <Tooltip content="Editar">
               <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                 <EditIcon />
@@ -166,180 +187,31 @@ export const CreateSong = () => {
           </div>
         );
       default:
-        return cellValue;
+        return <span>{String(cellValue)}</span>;
     }
   }, []);
 
-  const onNextPage = React.useCallback(() => {
-    if (page < pages) {
-      setPage(page + 1);
-    }
-  }, [page, pages]);
+  const onSearchChange = (value?: string) => {
+    setFilterValue(value || "");
+    setPage(1);
+  };
 
-  const onPreviousPage = React.useCallback(() => {
-    if (page > 1) {
-      setPage(page - 1);
-    }
-  }, [page]);
-
-  const onRowsPerPageChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRowsPerPage(Number(e.target.value));
-      setPage(1);
-    },
-    []
-  );
-
-  const onSearchChange = React.useCallback((value?: string) => {
-    if (value) {
-      setFilterValue(value);
-      setPage(1);
-    } else {
-      setFilterValue("");
-    }
-  }, []);
-
-  const onClear = React.useCallback(() => {
+  const onClear = () => {
     setFilterValue("");
     setPage(1);
-  }, []);
+  };
 
-  const topContent = React.useMemo(() => {
+  if (isLoading) {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Buscar por nombre..."
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
+      <div className="flex justify-center items-center h-[300px]">
+        <SpinnerComponent 
+          color={Colors.PRIMARY}
+          size ={ Sizes.MD}
+          variant={SpinnerVariant.WAVE}
           />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  color={Colors.PRIMARY}
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="solid"
-                >
-                  Estado
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  color={Colors.PRIMARY}
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="solid"
-                >
-                  Columnas
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-            <Button
-              color="primary"
-              endContent={<PlusIcon />}
-              onPress={() => setIsModalOpen(true)}
-            >
-              Crear
-            </Button>
-          </div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Total {dataSongs.length} canciones
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Filas por página:
-            <select
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
-        </div>
       </div>
     );
-  }, [
-    filterValue,
-    statusFilter,
-    visibleColumns,
-    onSearchChange,
-    onRowsPerPageChange,
-    dataSongs.length,
-    hasSearchFilter,
-  ]);
-
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="py-2 px-2 flex z-0 justify-between items-center">
-        <Pagination
-          isCompact
-          showControls
-          showShadow
-          color="primary"
-          page={page}
-          total={pages}
-          onChange={setPage}
-        />
-        <div className="hidden sm:flex w-[30%] justify-end gap-2">
-          <Button
-            color={Colors.PRIMARY}
-            isDisabled={page === 1}
-            size="sm"
-            variant="solid"
-            onPress={onPreviousPage}
-          >
-            Atrás
-          </Button>
-          <Button
-            color={Colors.PRIMARY}
-            isDisabled={page === pages || pages === 0}
-            size="sm"
-            variant="solid"
-            onPress={onNextPage}
-          >
-            Siguiente
-          </Button>
-        </div>
-      </div>
-    );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }
 
   return (
     <>
@@ -348,19 +220,66 @@ export const CreateSong = () => {
         setIsOpen={setIsModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between gap-3 items-end">
+          <Input
+            isClearable
+            className="w-full sm:max-w-[44%]"
+            placeholder="Buscar por nombre..."
+            startContent={<SearchIcon />}
+            value={filterValue}
+            onClear={onClear}
+            onValueChange={onSearchChange}
+          />
+          <Button color="primary" endContent={<PlusIcon />} onPress={() => setIsModalOpen(true)}>
+            Crear
+          </Button>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-default-400 text-small">
+            Total {songs.length} canciones
+          </span>
+          <label className="flex items-center text-default-400 text-small">
+            Filas por página:
+            <select
+              className="bg-transparent outline-none text-default-400 text-small"
+              onChange={(e) => {
+                setRowsPerPage(Number(e.target.value));
+                setPage(1);
+              }}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
       <Table
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
         isHeaderSticky
-        aria-label="Example table with custom cells, pagination and sorting"
-        bottomContent={bottomContent}
+        aria-label="Tabla de canciones"
+        sortDescriptor={sortDescriptor}
+        topContentPlacement="outside"
         bottomContentPlacement="outside"
         classNames={{
           wrapper: "max-h-[382px]",
         }}
-        sortDescriptor={sortDescriptor}
-        topContent={topContent}
-        topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
+        bottomContent={
+          <div className="py-2 px-2 flex z-0 justify-between items-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="primary"
+              page={page}
+              total={pages}
+              onChange={setPage}
+            />
+          </div>
+        }
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -373,12 +292,15 @@ export const CreateSong = () => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody
-          emptyContent={"No se encontraron canciones"}
-          items={sortedItems}
-        >
+        <TableBody 
+        
+          emptyContent="No se encontraron canciones" 
+          itemID="_id"
+          items={sortedItems} 
+          >
+            
           {(item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item._id}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}

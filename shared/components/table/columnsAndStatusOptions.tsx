@@ -1,11 +1,11 @@
 export const columns = [
     {name: "ID", uid: "id", sortable: true},
     {name: "NOMBRE DE ALABANZA", uid: "name", sortable: true},
-    {name: "URL", uid: "url"},
+    {name: "USUARIO", uid: "user"},
+    {name: "URL", uid: "linkSong"},
     {name: "CATEGORIA", uid: "category", sortable: true},
-    {name: "LETRA", uid: "letter"},
-    {name: "ACORDE", uid: "chord"},
-    {name: "ESTADO", uid: "status", sortable: true},
+    {name: "LETRA", uid: "fileSong"},
+    {name: "ACORDE", uid: "fileScore"},
     {name: "ACCION", uid: "actions"},
   ];
   

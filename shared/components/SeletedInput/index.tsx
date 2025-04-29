@@ -1,12 +1,12 @@
-import type { Selection } from "@heroui/react";
-
 import React from "react";
 import { Select, SelectItem } from "@heroui/react";
-import { CategoryProps } from "../table/data/dataSong";
+import { CategoryProps } from "@/types/category.enum";
+import { SelectedInputProps } from "./types";
 
-export const SelectedInput = () => {
-  const [value, setValue] = React.useState<Selection>(new Set([]));
 
+
+
+export const SelectedInput = ({ value, onChange }: SelectedInputProps) => {
   return (
     <div className="flex w-full flex-col gap-2">
       <Select
@@ -14,7 +14,9 @@ export const SelectedInput = () => {
         placeholder="Selecciona una categoría"
         selectedKeys={value}
         variant="bordered"
-        onSelectionChange={setValue}
+        onSelectionChange={onChange}
+     
+       
       >
         {Object.values(CategoryProps).map((category) => (
           <SelectItem key={category} textValue={category}>
