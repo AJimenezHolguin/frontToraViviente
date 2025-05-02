@@ -22,6 +22,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
 
   return (
     <Button
+    
       className={`${className}`}
       color={color}
       fullWidth={fullWidth}

@@ -12,9 +12,13 @@ export const SelectedInput = ({ value, onChange }: SelectedInputProps) => {
       <Select
         label="Categoría"
         placeholder="Selecciona una categoría"
-        selectedKeys={value}
+        selectedKeys={new Set([value])}
         variant="bordered"
-        onSelectionChange={onChange}
+        onSelectionChange={(keys) => {
+          const selected = Array.from(keys)[0] as string;
+          
+          onChange(selected);
+        }}
      
        
       >

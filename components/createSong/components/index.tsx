@@ -21,7 +21,7 @@ import {
   PlusIcon,
   SearchIcon,
 } from "@/shared/components/table/TableIcons";
-import { columns } from "@/shared/components/table/columnsAndStatusOptions"; 
+import { columns } from "@/shared/components/table/columnsAndStatusOptions";
 
 import { ModalSong } from "@/shared/components/Modal";
 
@@ -41,7 +41,6 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
 };
 
 const INITIAL_VISIBLE_COLUMNS = [
-
   "name",
   "user",
   "linkSong",
@@ -55,7 +54,9 @@ export const CreateSong = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = useState<Selection>(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: "name",
@@ -68,11 +69,10 @@ export const CreateSong = () => {
   useEffect(() => {
     const fetchSongs = async () => {
       setIsLoading(true);
-     
+
       try {
         const songsData = await getAllSongs();
-    
-       
+
         setSongs(songsData);
       } catch (error) {
         console.error(error);
@@ -80,20 +80,18 @@ export const CreateSong = () => {
         setIsLoading(false);
       }
     };
-   
+
     fetchSongs();
   }, []);
 
-  
- 
-  
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -104,12 +102,9 @@ export const CreateSong = () => {
         data.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    
-    
+
     return filtered;
   }, [songs, filterValue]);
-
-  
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -124,7 +119,7 @@ export const CreateSong = () => {
     return [...items].sort((a, b) => {
       const first = a[sortDescriptor.column as keyof Song] as string;
       const second = b[sortDescriptor.column as keyof Song] as string;
-     
+
       return sortDescriptor.direction === "ascending"
         ? String(first).localeCompare(String(second))
         : String(second).localeCompare(String(first));
@@ -134,43 +129,37 @@ export const CreateSong = () => {
   const renderCell = React.useCallback((data: Song, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof Song];
 
-   
-
     switch (columnKey) {
       case "user":
         return <span>{data.user?.email || "N/A"}</span>;
-        case "linkSong":
-      return (
-        <a
-          href={data.linkSong}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <IoLogoYoutube color="red" size={20}/>
-        </a>
-      );
+      case "linkSong":
+        return (
+          <a href={data.linkSong} rel="noopener noreferrer" target="_blank">
+            <IoLogoYoutube color="red" size={20} />
+          </a>
+        );
       case "fileSong":
-      return (
-        <a
-        className="flex justify-center items-center"
-          href={data.fileSong}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <FaFilePdf color={COLORSTEXT.secondary} size={20}/>
-        </a>
-      )
+        return (
+          <a
+            className="flex justify-center items-center"
+            href={data.fileSong}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FaFilePdf color={COLORSTEXT.secondary} size={20} />
+          </a>
+        );
       case "fileScore":
         return (
-          <a 
+          <a
             className="flex justify-center items-center"
             href={data.fileScore}
             rel="noopener noreferrer"
             target="_blank"
           >
-          <FaRegFilePdf color={COLORSTEXT.secondary} size={20}/>    
+            <FaRegFilePdf color={COLORSTEXT.secondary} size={20} />
           </a>
-        )
+        );
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -204,11 +193,11 @@ export const CreateSong = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[300px]">
-        <SpinnerComponent 
+        <SpinnerComponent
           color={Colors.PRIMARY}
-          size ={ Sizes.MD}
+          size={Sizes.MD}
           variant={SpinnerVariant.WAVE}
-          />
+        />
       </div>
     );
   }
@@ -231,7 +220,11 @@ export const CreateSong = () => {
             onClear={onClear}
             onValueChange={onSearchChange}
           />
-          <Button color="primary" endContent={<PlusIcon />} onPress={() => setIsModalOpen(true)}>
+          <Button
+            color="primary"
+            endContent={<PlusIcon />}
+            onPress={() => setIsModalOpen(true)}
+          >
             Crear
           </Button>
         </div>
@@ -292,13 +285,11 @@ export const CreateSong = () => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody 
-        
-          emptyContent="No se encontraron canciones" 
+        <TableBody
+          emptyContent="No se encontraron canciones"
           itemID="_id"
-          items={sortedItems} 
-          >
-            
+          items={sortedItems}
+        >
           {(item) => (
             <TableRow key={item._id}>
               {(columnKey) => (
@@ -308,6 +299,7 @@ export const CreateSong = () => {
           )}
         </TableBody>
       </Table>
+     
     </>
   );
 };
