@@ -98,11 +98,7 @@ export const ModalSong = ({
         fileSong: urlFileSong,
         fileScore: urlFileScore,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${session.user.token}`,
-        },
-      }
+    
     );
       setIsOpen(false);
       onClose();
