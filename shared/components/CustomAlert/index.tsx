@@ -35,6 +35,25 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
           )}
         </>
       );
+      case AlertType.SUCCESS:
+        return (
+          <>
+            {isVisible && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm pointer-events-auto">
+                <div className="w-full max-w-4xl px-6">
+                  <Alert
+                    color={color}
+                    description={description}
+                    isVisible={isVisible}
+                    title={title}
+                    variant={variant}
+                    onClose={onClose}
+                  />
+                </div>
+              </div>
+            )}
+          </>
+        );
     case AlertType.ACTION:
       return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm pointer-events-auto">
