@@ -75,7 +75,8 @@ export const ModalSong = ({
     if (!name || !linkSong || !category || !fileSong || !fileScore) {
       alert("Por favor completa todos los campos");
      console.log("este es el id del usuario:",session)
-      return;
+      
+     return;
     }
 
     if (!session?.user) {
