@@ -128,10 +128,11 @@ export const CreateSong = () => {
 
   const renderCell = React.useCallback((data: Song, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof Song];
+  
 
     switch (columnKey) {
       case "user":
-        return <span>{data.user?.email || "N/A"}</span>;
+        return <span>{data.user?.name || "N/A"}</span>;
       case "linkSong":
         return (
           <a href={data.linkSong} rel="noopener noreferrer" target="_blank">

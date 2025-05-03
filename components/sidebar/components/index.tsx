@@ -6,7 +6,7 @@ import { menuItems } from "@/shared/constants/menuItems";
 import Link from "next/link";
 import { IoBookOutline } from "react-icons/io5";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -14,6 +14,8 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
+  const {data: session} = useSession();
+
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
     signOut({ callbackUrl: "/login" });
@@ -50,7 +52,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           <p className="text-slate-500">Bienvenido,</p>
           <Link className="inline-flex space-x-2 items-center" href="#">
             <span className="text-sm md:text-base font-bold">
-              Anderson Jiménez
+              {session?.user?.name}
             </span>
           </Link>
         </div>

@@ -9,7 +9,7 @@ import {
   Input,
 } from "@heroui/react";
 import { SelectedInput } from "../SeletedInput";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Colors } from "@/types/color.enum";
 import { Sizes } from "@/types/sizes.enum";
 import { RadiusProps } from "@/types/radius.enum";
@@ -18,6 +18,38 @@ import axiosCloudinary from "@/config/axios/axiosCloudinary";
 import { useSession } from "next-auth/react";
 
 
+
+// Modal de confirmación
+const ConfirmModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  message,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  message: string;
+}) => {
+  return (
+    <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <ModalContent>
+        <ModalHeader>Confirmación</ModalHeader>
+        <ModalBody>
+          <p>{message}</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onPress={onClose}>
+            Cancelar
+          </Button>
+          <Button color="primary" onPress={onConfirm}>
+            Confirmar
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
 
 export const ModalSong = ({
   isOpen,
@@ -37,6 +69,19 @@ export const ModalSong = ({
   const [fileScore, setFileScore] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+   // Estado para manejar el tipo de alerta
+   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
+   const [alertMessage, setAlertMessage] = useState("");
+
+  useEffect(() => {
+  if(name && linkSong && category && fileSong && fileScore) {
+      setIsFormValid(true);
+    } else 
+    setIsFormValid(false);
+  },[name, linkSong, category, fileSong, fileScore]);
 
   const handleFileClick = (ref: React.RefObject<HTMLInputElement>) => {
     ref.current?.click();
@@ -73,15 +118,19 @@ export const ModalSong = ({
 
   const handleSave = async () => {
     if (!name || !linkSong || !category || !fileSong || !fileScore) {
-      alert("Por favor completa todos los campos");
-     console.log("este es el id del usuario:",session)
-      
-     return;
+    //   alert("Por favor completa todos los campos");
+    //  console.log("este es el id del usuario:",session)
+    setAlertType("error");
+    setAlertMessage("Por favor completa todos los campos");
+     
+    return;
     }
 
     if (!session?.user) {
-      alert("No tienes permisos para crear una canción");
-    
+      // alert("No tienes permisos para crear una canción");
+      setAlertType("error");
+      setAlertMessage("No tienes permisos para crear una canción");
+     
       return;
     }
 
@@ -101,17 +150,22 @@ export const ModalSong = ({
       },
     
     );
+      setAlertType("success");
+      setAlertMessage("¡La canción se ha creado exitosamente!");
       setIsOpen(false);
       onClose();
     } catch (error) {
-      console.error("Error al guardar la canción:", error);
-      alert("Error al guardar la canción");
+      // console.error("Error al guardar la canción:", error);
+      // alert("Error al guardar la canción");
+      setAlertType("error");
+      setAlertMessage("Hubo un error al crear la canción, por favor intenta nuevamente.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
+    <>
     <Modal
       isDismissable={false}
       isOpen={isOpen}
@@ -128,6 +182,7 @@ export const ModalSong = ({
             </ModalHeader>
             <ModalBody>
               <Input
+                isRequired
                 label="Nombre"
                 placeholder="Nombre de la canción"
                 value={name}
@@ -135,6 +190,7 @@ export const ModalSong = ({
                 onChange={(e) => setName(e.target.value)}
               />
               <Input
+                isRequired
                 label="URL"
                 placeholder="www.youtube.com"
                 value={linkSong}
@@ -142,7 +198,7 @@ export const ModalSong = ({
                 onChange={(e) => setLinkSong(e.target.value)}
               />
 
-              <SelectedInput value={category} onChange={setCategory} />
+              <SelectedInput isRequired value={category} onChange={setCategory} />
 
               <div className="w-1/2 flex flex-col gap-4 justify-center mt-[10px]">
                 <div className="flex flex-col gap-1 w-1/2">
@@ -201,7 +257,7 @@ export const ModalSong = ({
               >
                 Cancelar
               </Button>
-              <Button color="primary" isLoading={loading} onPress={handleSave}>
+              <Button isDisabled={!isFormValid} color="primary" isLoading={loading} onPress={() => setIsConfirmOpen(true)}>
                 Guardar
               </Button>
             </ModalFooter>
@@ -209,5 +265,36 @@ export const ModalSong = ({
         )}
       </ModalContent>
     </Modal>
+
+        {/* Modal para mostrar alertas de éxito o error */}
+      {alertType && (
+        <Modal isOpen={true} onOpenChange={(open) => !open && setAlertType(null)}>
+          <ModalContent>
+            <ModalHeader>
+              {alertType === "success" ? "¡Éxito!" : "Error"}
+            </ModalHeader>
+            <ModalBody>
+              <p>{alertMessage}</p>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onPress={() => setAlertType(null)}>
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
+
+    <ConfirmModal
+    isOpen={isConfirmOpen}
+    onClose={() => setIsConfirmOpen(false)}
+    onConfirm={() => {
+      handleSave(); // Ejecuta el handleSave si se confirma
+      setIsConfirmOpen(false);
+    }}
+    message="¿Estás seguro de que deseas crear la canción?"
+  />
+  
+    </>
   );
 };

@@ -7,6 +7,7 @@ export const SelectedInput = ({ value, onChange }: SelectedInputProps) => {
   return (
     <div className="flex w-full flex-col gap-2">
       <Select
+        isRequired
         label="Categoría"
         placeholder="Selecciona una categoría"
         selectedKeys={new Set([value])}
