@@ -16,47 +16,15 @@ import axiosInstance from "@/config/axios/axiosInstance";
 import axiosCloudinary from "@/config/axios/axiosCloudinary";
 import { useSession } from "next-auth/react";
 import { deleteImage } from "@/services/deleteFileCloudinary.service";
+import { ConfirmModal } from "./ConfirmModal";
+import { AlertModal } from "./ModalAlert";
+import { ModalSongProps } from "./types";
 
-// Modal de confirmación
-const ConfirmModal = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  message,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  message: string;
-}) => {
-  return (
-    <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <ModalContent>
-        <ModalHeader>Confirmación</ModalHeader>
-        <ModalBody>
-          <p>{message}</p>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="danger" onPress={onClose}>
-            Cancelar
-          </Button>
-          <Button color="primary" onPress={onConfirm}>
-            Confirmar
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
-};
-
-export const ModalSong = ({
+export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
   setIsOpen,
   onClose,
-}: {
-  isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
-  onClose: () => void;
+  onSongCreated,
 }) => {
   const letraRef = useRef<HTMLInputElement>(null);
   const acordeRef = useRef<HTMLInputElement>(null);
@@ -139,11 +107,7 @@ export const ModalSong = ({
     let uploadedFileScore: { public_id: string; secure_url: string } | null =
       null;
 
-    console.log(
-      "estos son los datos uploadedFileSong y uploadedFileScore",
-      uploadedFileSong,
-      uploadedFileScore
-    );
+
 
     try {
       setLoading(true);
@@ -173,7 +137,12 @@ export const ModalSong = ({
       setAlertType("success");
       setAlertMessage("¡La canción se ha creado exitosamente!");
       setIsOpen(false);
-      onClose();
+
+      setTimeout(() => {
+        onClose();
+        onSongCreated();
+      }, 5000);
+ 
     } catch (error) {
       console.error("Error al guardar canción:", error);
 
@@ -291,8 +260,8 @@ export const ModalSong = ({
                   Cancelar
                 </Button>
                 <Button
-                  isDisabled={!isFormValid}
                   color="primary"
+                  isDisabled={!isFormValid}
                   isLoading={loading}
                   onPress={() => setIsConfirmOpen(true)}
                 >
@@ -304,36 +273,24 @@ export const ModalSong = ({
         </ModalContent>
       </Modal>
 
-      {/* Modal para mostrar alertas de éxito o error */}
       {alertType && (
-        <Modal
-          isOpen={true}
-          onOpenChange={(open) => !open && setAlertType(null)}
-        >
-          <ModalContent>
-            <ModalHeader>
-              {alertType === "success" ? "¡Éxito!" : "Error"}
-            </ModalHeader>
-            <ModalBody>
-              <p>{alertMessage}</p>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onPress={() => setAlertType(null)}>
-                Cerrar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <AlertModal
+          isOpen={!!alertType}
+          message={alertMessage}
+          type={alertType}
+          onClose={() => setAlertType(null)}
+
+        />
       )}
 
       <ConfirmModal
         isOpen={isConfirmOpen}
+        message="¿Estás seguro de que deseas crear la canción?"
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={() => {
-          handleSave(); // Ejecuta el handleSave si se confirma
+          handleSave();
           setIsConfirmOpen(false);
         }}
-        message="¿Estás seguro de que deseas crear la canción?"
       />
     </>
   );

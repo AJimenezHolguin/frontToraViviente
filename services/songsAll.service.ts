@@ -1,5 +1,5 @@
 import { API_URL } from "@/config/axios/constanst";
-import { Song } from "@/shared/components/table/types";
+import { Song } from "@/types/SongsTypesProps";
 import axios from "axios";
 
 

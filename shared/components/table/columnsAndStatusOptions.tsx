@@ -1,7 +1,7 @@
 export const columns = [
-    {name: "ID", uid: "id", sortable: true},
-    {name: "NOMBRE DE ALABANZA", uid: "name", sortable: true},
-    {name: "USUARIO", uid: "user"},
+    {name: "ID", uid: "id"},
+    {name: "NOMBRE DE ALABANZA", uid: "name"},
+    {name: "USUARIO", uid: "user", sortable: true},
     {name: "URL", uid: "linkSong"},
     {name: "CATEGORIA", uid: "category", sortable: true},
     {name: "LETRA", uid: "fileSong"},

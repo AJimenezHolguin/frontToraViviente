@@ -8,25 +8,22 @@ import {
   TableRow,
   TableCell,
   Input,
-  Button,
+
   Pagination,
   Selection,
   SortDescriptor,
-  Tooltip,
+ 
 } from "@heroui/react";
 
 import {
-  DeleteIcon,
-  EditIcon,
-  PlusIcon,
   SearchIcon,
 } from "@/shared/components/table/TableIcons";
 import { columns } from "@/shared/components/table/columnsAndStatusOptions";
 
-import { ModalSong } from "@/shared/components/Modal";
+
 
 import { Song } from "@/types/SongsTypesProps";
-
+import { getAllSongs } from "@/services/songsAll.service";
 import { IoLogoYoutube } from "react-icons/io5";
 import { FaFilePdf } from "react-icons/fa6";
 import { FaRegFilePdf } from "react-icons/fa6";
@@ -35,7 +32,6 @@ import { Sizes } from "@/types/sizes.enum";
 import { Colors } from "@/types/color.enum";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { COLORSTEXT } from "@/shared/styles/colors";
-import { getMySongs } from "@/services/song.service";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -48,10 +44,10 @@ const INITIAL_VISIBLE_COLUMNS = [
   "category",
   "fileSong",
   "fileScore",
-  "actions",
+ 
 ];
 
-export const CreateSong = () => {
+export const AllSong = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
@@ -63,25 +59,26 @@ export const CreateSong = () => {
     column: "name",
     direction: "ascending",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchSongs = async () => {
-    setIsLoading(true);
+  
+    const fetchSongs = async () => {
+      setIsLoading(true);
 
-    try {
-      const songsData = await getMySongs();
+      try {
+        const songsData = await getAllSongs();
 
-      setSongs(songsData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
+        setSongs(songsData);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    useEffect(() => {
     fetchSongs();
   }, []);
 
@@ -129,6 +126,7 @@ export const CreateSong = () => {
 
   const renderCell = React.useCallback((data: Song, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof Song];
+  
 
     switch (columnKey) {
       case "user":
@@ -161,21 +159,6 @@ export const CreateSong = () => {
             <FaRegFilePdf color={COLORSTEXT.secondary} size={20} />
           </a>
         );
-      case "actions":
-        return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Tooltip content="Editar">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-            </Tooltip>
-            <Tooltip color="danger" content="Eliminar">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
-              </span>
-            </Tooltip>
-          </div>
-        );
       default:
         return <span>{String(cellValue)}</span>;
     }
@@ -205,12 +188,6 @@ export const CreateSong = () => {
 
   return (
     <>
-      <ModalSong
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSongCreated={fetchSongs}
-      />
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <Input
@@ -222,13 +199,7 @@ export const CreateSong = () => {
             onClear={onClear}
             onValueChange={onSearchChange}
           />
-          <Button
-            color="primary"
-            endContent={<PlusIcon />}
-            onPress={() => setIsModalOpen(true)}
-          >
-            Crear
-          </Button>
+        
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
@@ -301,6 +272,7 @@ export const CreateSong = () => {
           )}
         </TableBody>
       </Table>
+     
     </>
   );
 };

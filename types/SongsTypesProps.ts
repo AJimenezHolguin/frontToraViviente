@@ -15,8 +15,14 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
     linkSong: string;
     category: string;
     status?: string;
-    fileSong: string;
-    fileScore: string;
+    fileSong: {
+      public_id: string;
+      secure_url: string;
+    };
+    fileScore: {
+      public_id: string;
+      secure_url: string;
+    };
     __v?: number
   }
 
