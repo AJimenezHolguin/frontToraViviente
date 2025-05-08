@@ -36,6 +36,9 @@ import { Colors } from "@/types/color.enum";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { COLORSTEXT } from "@/shared/styles/colors";
 import { getMySongs } from "@/services/song.service";
+import { deleteSong } from "@/services/deleteSong.service";
+import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
+import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -66,6 +69,13 @@ export const CreateSong = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [selectedSongToDelete, setSelectedSongToDelete] = useState<Song | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [isAlertVisible, setAlertVisible] = useState(false);
+
 
   const fetchSongs = async () => {
     setIsLoading(true);
@@ -127,6 +137,32 @@ export const CreateSong = () => {
     });
   }, [sortDescriptor, items]);
 
+
+  const handleDelete = async (song: Song) => {
+   
+  
+    try {
+      setLoading(true)
+      await deleteSong({
+        _id: song._id,
+        fileSongPublicId: song.fileSong.public_id,
+        fileScorePublicId: song.fileScore.public_id,
+      });
+
+       setAlertType("success");
+       setAlertMessage("¡La canción se ha eliminada correctamente!");
+       setAlertVisible(true);
+          
+    } catch (err) {
+        console.error(err);
+        setAlertType("error");
+        setAlertMessage("¡Error al eliminar la canción!");
+        setAlertVisible(true);
+      } finally {
+        setLoading(false);
+    }
+  };
+
   const renderCell = React.useCallback((data: Song, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof Song];
 
@@ -169,10 +205,17 @@ export const CreateSong = () => {
                 <EditIcon />
               </span>
             </Tooltip>
-            <Tooltip color="danger" content="Eliminar">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
+            <Tooltip color="danger" content="Eliminar" >
+              <button className="text-lg text-danger cursor-pointer active:opacity-50" 
+                      // onClick={() => handleDelete(data)}
+                      
+                     onClick={ ()=> {
+                      setSelectedSongToDelete(data);
+                      setIsConfirmOpen(true)
+                    }} 
+              >
                 <DeleteIcon />
-              </span>
+              </button>
             </Tooltip>
           </div>
         );
@@ -211,6 +254,37 @@ export const CreateSong = () => {
         onClose={() => setIsModalOpen(false)}
         onSongCreated={fetchSongs}
       />
+      {isConfirmOpen && (
+        <ConfirmModal
+          isOpen={isConfirmOpen}
+          message={`¿Estás seguro de eliminar "${selectedSongToDelete?.name}"?`}
+          onClose={() => {
+            setIsConfirmOpen(false);
+            setSelectedSongToDelete(null);
+          }}
+          isLoading={loading}
+          onConfirm={async () => {
+            await handleDelete(selectedSongToDelete as Song);
+            setIsConfirmOpen(false);
+            setSelectedSongToDelete(null);
+          }}   
+        />
+      )}
+
+      {isAlertVisible && alertType && (
+        <AlertModal
+          isOpen={!!alertType}
+          message={alertMessage}
+          type={alertType}
+          onClose={() => {
+            setAlertType(null)
+            setAlertVisible(false);
+            fetchSongs();
+          }
+          }
+        />
+      )}
+
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <Input

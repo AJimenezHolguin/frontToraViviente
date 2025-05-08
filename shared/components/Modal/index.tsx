@@ -287,6 +287,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
         isOpen={isConfirmOpen}
         message="¿Estás seguro de que deseas crear la canción?"
         onClose={() => setIsConfirmOpen(false)}
+      
         onConfirm={() => {
           handleSave();
           setIsConfirmOpen(false);

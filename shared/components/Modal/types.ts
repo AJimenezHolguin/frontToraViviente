@@ -24,4 +24,5 @@ export interface AlertModalProps {
     onClose: () => void;
     onConfirm: () => void;
     message: string;
+    isLoading?: boolean;
   }

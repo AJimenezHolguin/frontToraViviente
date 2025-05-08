@@ -13,6 +13,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onClose,
   onConfirm,
   message,
+  isLoading = false,
 }) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -25,7 +26,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Button color="danger" onPress={onClose}>
             Cancelar
           </Button>
-          <Button color="primary" onPress={onConfirm}>
+          <Button color="primary" onPress={onConfirm} isLoading={isLoading} >
             Confirmar
           </Button>
         </ModalFooter>
