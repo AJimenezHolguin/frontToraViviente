@@ -19,12 +19,14 @@ import { deleteImage } from "@/services/deleteFileCloudinary.service";
 import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
 import { ModalSongProps } from "./types";
+import { updateSong } from "@/services/updateSong.service";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
   setIsOpen,
   onClose,
   onSongCreated,
+  songToEdit,
 }) => {
   const letraRef = useRef<HTMLInputElement>(null);
   const acordeRef = useRef<HTMLInputElement>(null);
@@ -41,6 +43,22 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   // Estado para manejar el tipo de alerta
   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
   const [alertMessage, setAlertMessage] = useState("");
+
+  useEffect(() => {
+    if (songToEdit) {
+      setName(songToEdit.name);
+      setLinkSong(songToEdit.linkSong);
+      setCategory(songToEdit.category);
+      setFileSong(null); // El archivo actual se mantiene en Cloudinary
+      setFileScore(null);
+    } else {
+      setName("");
+      setLinkSong("");
+      setCategory("");
+      setFileSong(null);
+      setFileScore(null);
+    }
+  }, [songToEdit]);
 
   useEffect(() => {
     if (name && linkSong && category && fileSong && fileScore) {
@@ -88,7 +106,13 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   };
 
   const handleSave = async () => {
-    if (!name || !linkSong || !category || !fileSong || !fileScore) {
+    if (
+      !name ||
+      !linkSong ||
+      !category ||
+      (!fileSong && !songToEdit) ||
+      (!fileScore && !songToEdit)
+    ) {
       setAlertType("error");
       setAlertMessage("Por favor completa todos los campos");
 
@@ -102,61 +126,82 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       return;
     }
 
-    let uploadedFileSong: { public_id: string; secure_url: string } | null =
-      null;
-    let uploadedFileScore: { public_id: string; secure_url: string } | null =
-      null;
-
-
+    let uploadedFileSong = songToEdit?.fileSong || null;
+    let uploadedFileScore = songToEdit?.fileScore || null;
 
     try {
       setLoading(true);
 
-      const [song, score] = await Promise.all([
-        uploadFileToCloudinary(fileSong, "letra_upload"),
-        uploadFileToCloudinary(fileScore, "acorde_upload"),
-      ]);
+      // Subir letra si hay nueva
+      if (fileSong) {
+        const newFile = await uploadFileToCloudinary(fileSong, "letra_upload");
 
-      uploadedFileSong = song;
-      uploadedFileScore = score;
+        if (!newFile) throw new Error("Error al subir letra");
+
+        // Eliminar antiguo si es edición
+        if (songToEdit?.fileSong?.public_id) {
+          await deleteImage(songToEdit.fileSong.public_id);
+        }
+
+        uploadedFileSong = newFile;
+      }
+
+      // Subir acordes si hay nuevo
+      if (fileScore) {
+        const newFile = await uploadFileToCloudinary(
+          fileScore,
+          "acorde_upload"
+        );
+
+        if (!newFile) throw new Error("Error al subir acordes");
+
+        // Eliminar antiguo si es edición
+        if (songToEdit?.fileScore?.public_id) {
+          await deleteImage(songToEdit.fileScore.public_id);
+        }
+
+        uploadedFileScore = newFile;
+      }
 
       if (!uploadedFileSong || !uploadedFileScore) {
-        setAlertType("error");
-        setAlertMessage("Error al subir los archivos a Cloudinary");
-
-        return;
+        throw new Error("Faltan archivos necesarios para guardar la canción");
       }
-      await axiosInstance.post(`/songs/create/${session.user.id}`, {
+
+      const payload = {
         name,
         linkSong,
         category,
         fileSong: uploadedFileSong,
         fileScore: uploadedFileScore,
-      });
+      };
+
+      if (songToEdit) {
+        // Edición
+        await updateSong(songToEdit._id, payload);
+        setAlertMessage("¡Canción actualizada correctamente!");
+      } else {
+        // Creación
+        await axiosInstance.post(`/songs/create/${session.user.id}`, payload);
+        setAlertMessage("¡La canción se ha creado exitosamente!");
+      }
 
       setAlertType("success");
-      setAlertMessage("¡La canción se ha creado exitosamente!");
       setIsOpen(false);
-
       setTimeout(() => {
         onClose();
         onSongCreated();
-      }, 5000);
- 
-    } catch (error) {
-      console.error("Error al guardar canción:", error);
-
-      if (uploadedFileSong?.public_id) {
-        await deleteImage(uploadedFileSong.public_id);
-      }
-      if (uploadedFileScore?.public_id) {
-        await deleteImage(uploadedFileScore.public_id);
+      }, 2000);
+    } catch (error: any) {
+      // Si falló y es una creación, eliminar archivos recién subidos
+      if (!songToEdit) {
+        if (uploadedFileSong?.public_id)
+          await deleteImage(uploadedFileSong.public_id);
+        if (uploadedFileScore?.public_id)
+          await deleteImage(uploadedFileScore.public_id);
       }
 
       setAlertType("error");
-      setAlertMessage(
-        "Hubo un error al crear la canción, por favor intenta nuevamente."
-      );
+      setAlertMessage(error.message || "Error al guardar la canción");
     } finally {
       setLoading(false);
     }
@@ -279,7 +324,6 @@ export const ModalSong: React.FC<ModalSongProps> = ({
           message={alertMessage}
           type={alertType}
           onClose={() => setAlertType(null)}
-
         />
       )}
 
@@ -287,7 +331,6 @@ export const ModalSong: React.FC<ModalSongProps> = ({
         isOpen={isConfirmOpen}
         message="¿Estás seguro de que deseas crear la canción?"
         onClose={() => setIsConfirmOpen(false)}
-      
         onConfirm={() => {
           handleSave();
           setIsConfirmOpen(false);

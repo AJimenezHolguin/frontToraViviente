@@ -72,10 +72,14 @@ export const CreateSong = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
   const [alertMessage, setAlertMessage] = useState("");
-  const [selectedSongToDelete, setSelectedSongToDelete] = useState<Song | null>(null);
+  const [selectedSongToDelete, setSelectedSongToDelete] = useState<Song | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
   const [isAlertVisible, setAlertVisible] = useState(false);
-
+  const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(
+    null
+  );
 
   const fetchSongs = async () => {
     setIsLoading(true);
@@ -137,29 +141,25 @@ export const CreateSong = () => {
     });
   }, [sortDescriptor, items]);
 
-
   const handleDelete = async (song: Song) => {
-   
-  
     try {
-      setLoading(true)
+      setLoading(true);
       await deleteSong({
         _id: song._id,
         fileSongPublicId: song.fileSong.public_id,
         fileScorePublicId: song.fileScore.public_id,
       });
 
-       setAlertType("success");
-       setAlertMessage("¡La canción se ha eliminada correctamente!");
-       setAlertVisible(true);
-          
+      setAlertType("success");
+      setAlertMessage("¡La canción se ha eliminada correctamente!");
+      setAlertVisible(true);
     } catch (err) {
-        console.error(err);
-        setAlertType("error");
-        setAlertMessage("¡Error al eliminar la canción!");
-        setAlertVisible(true);
-      } finally {
-        setLoading(false);
+      console.error(err);
+      setAlertType("error");
+      setAlertMessage("¡Error al eliminar la canción!");
+      setAlertVisible(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -201,18 +201,25 @@ export const CreateSong = () => {
         return (
           <div className="relative flex justify-center items-center gap-2">
             <Tooltip content="Editar">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+              <button
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                onClick={() => {
+                  setSelectedSongToEdit(data);
+                  setIsModalOpen(true);
+                }}
+              >
                 <EditIcon />
-              </span>
+              </button>
             </Tooltip>
-            <Tooltip color="danger" content="Eliminar" >
-              <button className="text-lg text-danger cursor-pointer active:opacity-50" 
-                      // onClick={() => handleDelete(data)}
-                      
-                     onClick={ ()=> {
-                      setSelectedSongToDelete(data);
-                      setIsConfirmOpen(true)
-                    }} 
+            <Tooltip color="danger" content="Eliminar">
+              <button
+                className="text-lg text-danger cursor-pointer active:opacity-50"
+                // onClick={() => handleDelete(data)}
+
+                onClick={() => {
+                  setSelectedSongToDelete(data);
+                  setIsConfirmOpen(true);
+                }}
               >
                 <DeleteIcon />
               </button>
@@ -251,7 +258,11 @@ export const CreateSong = () => {
       <ModalSong
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedSongToEdit(null);
+        }}
+        songToEdit={selectedSongToEdit}
         onSongCreated={fetchSongs}
       />
       {isConfirmOpen && (
@@ -267,7 +278,7 @@ export const CreateSong = () => {
             await handleDelete(selectedSongToDelete as Song);
             setIsConfirmOpen(false);
             setSelectedSongToDelete(null);
-          }}   
+          }}
         />
       )}
 
@@ -277,11 +288,10 @@ export const CreateSong = () => {
           message={alertMessage}
           type={alertType}
           onClose={() => {
-            setAlertType(null)
+            setAlertType(null);
             setAlertVisible(false);
             fetchSongs();
-          }
-          }
+          }}
         />
       )}
 
@@ -299,7 +309,10 @@ export const CreateSong = () => {
           <Button
             color="primary"
             endContent={<PlusIcon />}
-            onPress={() => setIsModalOpen(true)}
+            onPress={() => {
+              setSelectedSongToEdit(null);
+              setIsModalOpen(true);
+            }}
           >
             Crear
           </Button>
