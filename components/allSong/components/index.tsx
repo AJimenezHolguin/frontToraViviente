@@ -23,7 +23,7 @@ import { columns } from "@/shared/components/table/columnsAndStatusOptions";
 
 
 import { Song } from "@/types/SongsTypesProps";
-import { getAllSongs } from "@/services/songsAll.service";
+import { getAllSongs } from "@/services/songs/songsAll.service";
 import { IoLogoYoutube } from "react-icons/io5";
 import { FaFilePdf } from "react-icons/fa6";
 import { FaRegFilePdf } from "react-icons/fa6";

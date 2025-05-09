@@ -15,12 +15,12 @@ import { RadiusProps } from "@/types/radius.enum";
 import axiosInstance from "@/config/axios/axiosInstance";
 import axiosCloudinary from "@/config/axios/axiosCloudinary";
 import { useSession } from "next-auth/react";
-import { deleteImage } from "@/services/deleteFileCloudinary.service";
+import { deleteImage } from "@/services/cloudinary/deleteFileCloudinary.service";
 import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
 import { ModalSongProps } from "./types";
-import { updateSong } from "@/services/updateSong.service";
-import { createSong } from "@/services/createSong.service";
+import { updateSong } from "@/services/songs/updateSong.service";
+import { createSong } from "@/services/songs/createSong.service";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,

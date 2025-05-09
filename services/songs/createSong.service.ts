@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import { UpdateSongDto } from "./typesServices";
+import { UpdateSongDto } from "../typesServices";
 import axiosInstance from "@/config/axios/axiosInstance";
 
 export const createSong = async (idUser: string, data: UpdateSongDto) => {

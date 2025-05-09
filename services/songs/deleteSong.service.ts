@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
-import { SOngInfo } from "./typesServices";
-import { deleteImage } from "./deleteFileCloudinary.service";
+import { SOngInfo } from "../typesServices";
+import { deleteImage } from "../cloudinary/deleteFileCloudinary.service";
 import axiosInstance from "@/config/axios/axiosInstance";
 
 export const deleteSong = async (idSong: SOngInfo) => {

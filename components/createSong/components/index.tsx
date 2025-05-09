@@ -35,8 +35,8 @@ import { Sizes } from "@/types/sizes.enum";
 import { Colors } from "@/types/color.enum";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { COLORSTEXT } from "@/shared/styles/colors";
-import { getMySongs } from "@/services/song.service";
-import { deleteSong } from "@/services/deleteSong.service";
+import { getMySongs } from "@/services/songs/song.service";
+import { deleteSong } from "@/services/songs/deleteSong.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 
