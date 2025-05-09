@@ -26,7 +26,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Button color="danger" onPress={onClose}>
             Cancelar
           </Button>
-          <Button color="primary" onPress={onConfirm} isLoading={isLoading} >
+          <Button color="primary" onPress={onConfirm} isLoading={isLoading}>
             Confirmar
           </Button>
         </ModalFooter>
