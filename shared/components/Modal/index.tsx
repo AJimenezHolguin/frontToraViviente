@@ -20,6 +20,7 @@ import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
 import { ModalSongProps } from "./types";
 import { updateSong } from "@/services/updateSong.service";
+import { createSong } from "@/services/createSong.service";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
@@ -40,7 +41,6 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
-  // Estado para manejar el tipo de alerta
   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
   const [alertMessage, setAlertMessage] = useState("");
 
@@ -49,7 +49,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       setName(songToEdit.name);
       setLinkSong(songToEdit.linkSong);
       setCategory(songToEdit.category);
-      setFileSong(null); // El archivo actual se mantiene en Cloudinary
+      setFileSong(null);
       setFileScore(null);
     } else {
       setName("");
@@ -181,7 +181,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
         setAlertMessage("¡Canción actualizada correctamente!");
       } else {
         // Creación
-        await axiosInstance.post(`/songs/create/${session.user.id}`, payload);
+        await createSong(session.user.id, payload);
         setAlertMessage("¡La canción se ha creado exitosamente!");
       }
 
@@ -190,7 +190,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       setTimeout(() => {
         onClose();
         onSongCreated();
-      }, 2000);
+      }, 7000);
     } catch (error: any) {
       // Si falló y es una creación, eliminar archivos recién subidos
       if (!songToEdit) {
@@ -221,7 +221,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
           {() => (
             <>
               <ModalHeader className="flex flex-col gap-2">
-                Nueva Canción
+                {songToEdit ? "Editar Canción" : "Nueva Canción"}
               </ModalHeader>
               <ModalBody>
                 <Input
@@ -329,7 +329,11 @@ export const ModalSong: React.FC<ModalSongProps> = ({
 
       <ConfirmModal
         isOpen={isConfirmOpen}
-        message="¿Estás seguro de que deseas crear la canción?"
+        message={
+          songToEdit
+            ? "¿Estás seguro de que deseas editar la canción?"
+            : "¿Estás seguro de que deseas crear la canción?"
+        }
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={() => {
           handleSave();

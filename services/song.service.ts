@@ -1,12 +1,8 @@
-// services/song.service.ts
-import { API_URL } from "@/config/axios/constanst";
-import { Song } from "@/types/SongsTypesProps";
-import axios from "axios";
-import { getSession } from "next-auth/react";
+import axiosInstance from "@/config/axios/axiosInstance";
 
-const api = axios.create({
-  baseURL: API_URL,
-});
+import { Song } from "@/types/SongsTypesProps";
+
+import { getSession } from "next-auth/react";
 
 export const getMySongs = async (): Promise<Song[]> => {
   try {
@@ -19,13 +15,13 @@ export const getMySongs = async (): Promise<Song[]> => {
     const userId = session.user.id;
     const token = session.user.token;
 
-    const response = await api.get(`/songs/mysongs/${userId}`, {
+    const response = await axiosInstance.get(`/songs/mysongs/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    return response.data.data.map((song:Song) => ({
+    return response.data.data.map((song: Song) => ({
       _id: song._id,
       name: song.name,
       user: song.user,
@@ -35,7 +31,10 @@ export const getMySongs = async (): Promise<Song[]> => {
       fileScore: song.fileScore,
     }));
   } catch (error: any) {
-    console.error("Error fetching songs:", error?.response?.data || error.message);
+    console.error(
+      "Error fetching songs:",
+      error?.response?.data || error.message
+    );
     throw Error("No se pudieron obtener las canciones");
   }
 };

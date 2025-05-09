@@ -1,12 +1,7 @@
-import { API_URL } from "@/config/axios/constanst";
-import axios from "axios";
 import { getSession } from "next-auth/react";
 import { SOngInfo } from "./typesServices";
 import { deleteImage } from "./deleteFileCloudinary.service";
-
-const api = axios.create({
-  baseURL: API_URL,
-});
+import axiosInstance from "@/config/axios/axiosInstance";
 
 export const deleteSong = async (idSong: SOngInfo) => {
   try {
@@ -21,7 +16,7 @@ export const deleteSong = async (idSong: SOngInfo) => {
     await deleteImage(idSong.fileScorePublicId);
     await deleteImage(idSong.fileSongPublicId);
 
-    await api.delete(`/songs/${idSong._id}`, {
+    await axiosInstance.delete(`/songs/${idSong._id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
