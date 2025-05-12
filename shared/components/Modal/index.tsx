@@ -251,7 +251,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                   <div className="flex flex-col gap-1 w-1/2">
                     <Button
                       color={Colors.PRIMARY}
-                      radius={RadiusProps.NONE}
+                      radius={RadiusProps.MD}
                       size={Sizes.SM}
                       onPress={() => handleFileClick(letraRef)}
                     >
@@ -274,7 +274,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                   <div className="flex flex-col gap-1 w-1/2">
                     <Button
                       color={Colors.PRIMARY}
-                      radius={RadiusProps.NONE}
+                      radius={RadiusProps.MD}
                       size={Sizes.SM}
                       onPress={() => handleFileClick(acordeRef)}
                     >
