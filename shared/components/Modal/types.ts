@@ -24,3 +24,11 @@ export interface ConfirmModalProps {
   message: string;
   isLoading?: boolean;
 }
+
+export type SongFormState = {
+  name: string;
+  linkSong: string;
+  category: string;
+  fileSong: File | null;
+  fileScore: File | null;
+};

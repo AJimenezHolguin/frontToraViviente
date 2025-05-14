@@ -175,28 +175,33 @@ export const CreateSong = () => {
             <IoLogoYoutube color="red" size={20} />
           </a>
         );
-      case "fileSong":
-        return (
-          <a
-            className="flex justify-center items-center"
-            href={data.fileSong.secure_url}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <FaFilePdf color={COLORSTEXT.secondary} size={20} />
-          </a>
-        );
-      case "fileScore":
-        return (
-          <a
-            className="flex justify-center items-center"
-            href={data.fileScore.secure_url}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <FaRegFilePdf color={COLORSTEXT.secondary} size={20} />
-          </a>
-        );
+        case "fileSong":
+  return data.fileSong?.secure_url ? (
+    <a
+      className="flex justify-center items-center"
+      href={data.fileSong.secure_url}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <FaFilePdf color={COLORSTEXT.secondary} size={20} />
+    </a>
+  ) : (
+    <span className="text-default-400">N/A</span>
+  );
+  case "fileScore":
+  return data.fileScore?.secure_url ? (
+    <a
+      className="flex justify-center items-center"
+      href={data.fileScore.secure_url}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <FaRegFilePdf color={COLORSTEXT.secondary} size={20} />
+    </a>
+  ) : (
+    <span className="text-default-400">N/A</span>
+  );
+    
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">

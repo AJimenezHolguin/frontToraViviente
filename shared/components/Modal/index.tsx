@@ -12,15 +12,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Colors } from "@/types/color.enum";
 import { Sizes } from "@/types/sizes.enum";
 import { RadiusProps } from "@/types/radius.enum";
-import axiosInstance from "@/config/axios/axiosInstance";
-import axiosCloudinary from "@/config/axios/axiosCloudinary";
 import { useSession } from "next-auth/react";
 import { deleteImage } from "@/services/cloudinary/deleteFileCloudinary.service";
 import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
-import { ModalSongProps } from "./types";
+import { ModalSongProps, SongFormState } from "./types";
 import { updateSong } from "@/services/songs/updateSong.service";
 import { createSong } from "@/services/songs/createSong.service";
+import { uploadFileToCloudinary } from "@/services/cloudinary/uploadFileCloudinary.service";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
@@ -31,11 +30,16 @@ export const ModalSong: React.FC<ModalSongProps> = ({
 }) => {
   const letraRef = useRef<HTMLInputElement>(null);
   const acordeRef = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState("");
-  const [linkSong, setLinkSong] = useState("");
-  const [category, setCategory] = useState("");
-  const [fileSong, setFileSong] = useState<File | null>(null);
-  const [fileScore, setFileScore] = useState<File | null>(null);
+
+  const [form,setForm] = useState<SongFormState>({
+      name: "",
+      linkSong: "",
+      category: "",
+      fileSong: null,
+      fileScore: null,
+  });
+    
+ 
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -44,74 +48,58 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
   const [alertMessage, setAlertMessage] = useState("");
 
-  useEffect(() => {
-    if (songToEdit) {
-      setName(songToEdit.name);
-      setLinkSong(songToEdit.linkSong);
-      setCategory(songToEdit.category);
-      setFileSong(null);
-      setFileScore(null);
-    } else {
-      setName("");
-      setLinkSong("");
-      setCategory("");
-      setFileSong(null);
-      setFileScore(null);
-    }
-  }, [songToEdit]);
 
   useEffect(() => {
-    if (name && linkSong && category && fileSong && fileScore) {
-      setIsFormValid(true);
-    } else setIsFormValid(false);
-  }, [name, linkSong, category, fileSong, fileScore]);
+    if (songToEdit) {
+      setForm({
+        name: songToEdit.name,
+        linkSong: songToEdit.linkSong,
+        category: songToEdit.category,
+        fileSong: null,
+        fileScore: null,
+      });
+    } else {
+      setForm({
+        name: "",
+        linkSong: "",
+        category: "",
+        fileSong: null,
+        fileScore: null,
+      });
+    }
+  }, [songToEdit]);
+  
+
+
+  useEffect(() => {
+    const { name, linkSong, category, fileSong, fileScore } = form;
+    
+    setIsFormValid(!!name && !!linkSong && !!category && !!fileSong && !!fileScore);
+  }, [form]);
+  
 
   const handleFileClick = (ref: React.RefObject<HTMLInputElement>) => {
     ref.current?.click();
   };
 
-  const handleFileSongChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "fileSong" | "fileScore"
+  ) => {
     const file = e.target.files?.[0];
-
-    if (file) setFileSong(file);
-  };
-
-  const handleFileScoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (file) setFileScore(file);
-  };
-
-  const uploadFileToCloudinary = async (
-    file: File,
-    preset: string
-  ): Promise<{ public_id: string; secure_url: string } | null> => {
-    const formData = new FormData();
-
-    formData.append("file", file);
-    formData.append("upload_preset", preset);
-
-    console.log("este es el preset", preset);
-
-    try {
-      const response = await axiosCloudinary.post("/upload", formData);
-      const { public_id, secure_url } = response.data;
-
-      return { public_id, secure_url };
-    } catch (error) {
-      console.error(`Error al subir archivo a Cloudinary [${preset}]:`, error);
-
-      return null;
+    
+    if (file) {
+      setForm((prev) => ({ ...prev, [type]: file }));
     }
   };
 
   const handleSave = async () => {
     if (
-      !name ||
-      !linkSong ||
-      !category ||
-      (!fileSong && !songToEdit) ||
-      (!fileScore && !songToEdit)
+      !form.name ||
+      !form.linkSong ||
+      !form.category ||
+      (!form.fileSong && !songToEdit) ||
+      (!form.fileScore && !songToEdit)
     ) {
       setAlertType("error");
       setAlertMessage("Por favor completa todos los campos");
@@ -133,8 +121,8 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       setLoading(true);
 
       // Subir letra si hay nueva
-      if (fileSong) {
-        const newFile = await uploadFileToCloudinary(fileSong, "letra_upload");
+      if (form.fileSong) {
+        const newFile = await uploadFileToCloudinary(form.fileSong, "letra_upload");
 
         if (!newFile) throw new Error("Error al subir letra");
 
@@ -147,9 +135,9 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       }
 
       // Subir acordes si hay nuevo
-      if (fileScore) {
+      if (form.fileScore) {
         const newFile = await uploadFileToCloudinary(
-          fileScore,
+          form.fileScore,
           "acorde_upload"
         );
 
@@ -168,9 +156,9 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       }
 
       const payload = {
-        name,
-        linkSong,
-        category,
+        name: form.name,
+        linkSong: form.linkSong,
+        category: form.category,
         fileSong: uploadedFileSong,
         fileScore: uploadedFileScore,
       };
@@ -228,23 +216,23 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                   isRequired
                   label="Nombre"
                   placeholder="Nombre de la canción"
-                  value={name}
+                  value={form.name}
                   variant="bordered"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
                 />
                 <Input
                   isRequired
                   label="URL"
                   placeholder="www.youtube.com"
-                  value={linkSong}
+                  value={form.linkSong}
                   variant="bordered"
-                  onChange={(e) => setLinkSong(e.target.value)}
+                  onChange={(e) => setForm({...form, linkSong: e.target.value})}
                 />
 
                 <SelectedInput
                   isRequired
-                  value={category}
-                  onChange={setCategory}
+                  value={form.category}
+                  onChange={(value)=> setForm({...form, category: value})}
                 />
 
                 <div className="w-1/2 flex flex-col gap-4 justify-center mt-[10px]">
@@ -262,11 +250,11 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                       accept="application/pdf"
                       className="hidden"
                       type="file"
-                      onChange={handleFileSongChange}
+                      onChange={(e) => handleFileChange(e, "fileSong")}
                     />
-                    {fileSong && (
+                    {form.fileSong && (
                       <span className="text-xs text-gray-500 italic">
-                        {fileSong.name}
+                        {form.fileSong.name}
                       </span>
                     )}
                   </div>
@@ -285,11 +273,11 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                       accept="application/pdf"
                       className="hidden"
                       type="file"
-                      onChange={handleFileScoreChange}
+                      onChange={(e) => handleFileChange(e, "fileScore")}
                     />
-                    {fileScore && (
+                    {form.fileScore && (
                       <span className="text-xs text-gray-500 italic">
-                        {fileScore.name}
+                        {form.fileScore.name}
                       </span>
                     )}
                   </div>
