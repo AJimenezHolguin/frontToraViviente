@@ -81,6 +81,19 @@ export const ModalSong: React.FC<ModalSongProps> = ({
     }
   }, [isOpen, songToEdit]);
 
+  useEffect(() => {
+    if (isOpen && !songToEdit) {
+      setForm({
+        name: "",
+        linkSong: "",
+        category: "",
+        fileSong: null,
+        fileScore: null,
+      });
+      setInitialForm(null);
+    }
+  }, [isOpen, songToEdit]);
+
   const isFormModified = () => {
     if (!initialForm) return false;
 
@@ -147,7 +160,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
           ? result.message
           : "¡Canción guardada correctamente!"
       );
-      setIsOpen(false);
+      onClose();
       setTimeout(() => {
         onClose();
         onSongCreated();
@@ -255,7 +268,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                 <Button
                   color="danger"
                   variant="solid"
-                  onPress={() => setIsOpen(false)}
+                  onPress={() => onClose()}
                 >
                   Cancelar
                 </Button>

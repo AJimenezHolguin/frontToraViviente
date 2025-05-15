@@ -219,7 +219,6 @@ export const CreateSong = () => {
             <Tooltip color="danger" content="Eliminar">
               <button
                 className="text-lg text-danger cursor-pointer active:opacity-50"
-
                 onClick={() => {
                   setSelectedSongToDelete(data);
                   setIsConfirmOpen(true);

@@ -1,11 +1,11 @@
-import { FileData, SOngInfo } from "@/services/typesServices";
+import { FileData, SongInfo } from "@/services/typesServices";
 import { SongFormState } from "@/shared/components/Modal/types";
 import { buildSongPayload, uploadSongFiles } from "./utils/uploadSongFiles";
 import { updateSong } from "@/services/songs/updateSong.service";
 
 export const editSongHandler = async (
   form: SongFormState,
-  songEdit: SOngInfo & {
+  songEdit: SongInfo & {
     fileSong?: FileData | null;
     fileScore?: FileData | null;
   }

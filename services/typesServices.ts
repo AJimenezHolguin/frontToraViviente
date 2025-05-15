@@ -1,5 +1,5 @@
 
-export interface SOngInfo {
+export interface SongInfo {
    _id: string;
    fileSongPublicId: string;
    fileScorePublicId: string;
