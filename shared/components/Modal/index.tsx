@@ -20,6 +20,7 @@ import { ModalSongProps, SongFormState } from "./types";
 
 import { editSongHandler } from "@/shared/feature/songs/editSongHandler";
 import { createSongHandler } from "@/shared/feature/songs/createSongHandler";
+import { getSongById } from "@/services/songs/getSongById.service";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
@@ -47,24 +48,33 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
-    if (songToEdit) {
-      setForm({
-        name: songToEdit.name,
-        linkSong: songToEdit.linkSong,
-        category: songToEdit.category,
-        fileSong: null,
-        fileScore: null,
-      });
-    } else {
-      setForm({
-        name: "",
-        linkSong: "",
-        category: "",
-        fileSong: null,
-        fileScore: null,
-      });
+    const fetchSongDetails = async () => {
+      if (!songToEdit?._id) return;
+
+      try {
+        const songData = await getSongById(songToEdit._id);
+        
+        
+       
+        console.log("esta es la cancion", songData);
+
+        setForm({
+          name: songData.name,
+          linkSong: songData.linkSong,
+          category: songData.category,
+          fileSong: null,
+          fileScore: null,
+        });
+      } catch (err) {
+        console.error("Error fetching song by ID", err);
+      }
+    };
+
+    if (isOpen && songToEdit?._id) {
+      fetchSongDetails();
     }
-  }, [songToEdit]);
+  }, [isOpen, songToEdit]);
+
 
   useEffect(() => {
     const { name, linkSong, category, fileSong, fileScore } = form;
@@ -118,7 +128,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       setTimeout(() => {
         onClose();
         onSongCreated();
-      }, 7000);
+      }, 3000);
     } catch (error: any) {
       setAlertType("error");
       setAlertMessage(error.message || "Error al guardar la canción");

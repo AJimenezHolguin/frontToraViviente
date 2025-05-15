@@ -35,7 +35,7 @@ import { Sizes } from "@/types/sizes.enum";
 import { Colors } from "@/types/color.enum";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { COLORSTEXT } from "@/shared/styles/colors";
-import { getMySongs } from "@/services/songs/song.service";
+import { getMySongs } from "@/services/songs/getMySongs.service";
 import { deleteSong } from "@/services/songs/deleteSong.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
@@ -219,7 +219,6 @@ export const CreateSong = () => {
             <Tooltip color="danger" content="Eliminar">
               <button
                 className="text-lg text-danger cursor-pointer active:opacity-50"
-                // onClick={() => handleDelete(data)}
 
                 onClick={() => {
                   setSelectedSongToDelete(data);

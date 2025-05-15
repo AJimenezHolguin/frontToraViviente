@@ -22,6 +22,9 @@ export const uploadSongFiles = async (
 
   try {
     if (form.fileSong) {
+      if (uploadedFileSong?.public_id)
+        await deleteImage(uploadedFileSong.public_id);
+
       const newFile = await uploadFileToCloudinary(
         form.fileSong,
         "letra_upload"
@@ -29,12 +32,13 @@ export const uploadSongFiles = async (
 
       if (!newFile) throw new Error("Error al subir la letra");
 
-      if (uploadedFileSong?.public_id)
-        await deleteImage(uploadedFileSong.public_id);
       uploadedFileSong = newFile;
     }
 
     if (form.fileScore) {
+      if (uploadedFileScore?.public_id)
+        await deleteImage(uploadedFileScore.public_id);
+
       const newFile = await uploadFileToCloudinary(
         form.fileScore,
         "acorde_upload"
@@ -42,8 +46,6 @@ export const uploadSongFiles = async (
 
       if (!newFile) throw new Error("Error al subir acordes");
 
-      if (uploadedFileScore?.public_id)
-        await deleteImage(uploadedFileScore.public_id);
       uploadedFileScore = newFile;
     }
 
