@@ -26,7 +26,7 @@ export default function DashboardLayout({
         />
       </div>
       {isSidebarOpen && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
       )}
       <div className={`mt-[10px] P-2 w-full text-slate-900 px-2 ${isSidebarOpen ? "pointer-events-none" : ""}`}>
         {children}

@@ -175,33 +175,33 @@ export const CreateSong = () => {
             <IoLogoYoutube color="red" size={20} />
           </a>
         );
-        case "fileSong":
-  return data.fileSong?.secure_url ? (
-    <a
-      className="flex justify-center items-center"
-      href={data.fileSong.secure_url}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <FaFilePdf color={COLORSTEXT.secondary} size={20} />
-    </a>
-  ) : (
-    <span className="text-default-400">N/A</span>
-  );
-  case "fileScore":
-  return data.fileScore?.secure_url ? (
-    <a
-      className="flex justify-center items-center"
-      href={data.fileScore.secure_url}
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <FaRegFilePdf color={COLORSTEXT.secondary} size={20} />
-    </a>
-  ) : (
-    <span className="text-default-400">N/A</span>
-  );
-    
+      case "fileSong":
+        return data.fileSong?.secure_url ? (
+          <a
+            className="flex justify-center items-center"
+            href={data.fileSong.secure_url}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FaFilePdf color={COLORSTEXT.secondary} size={20} />
+          </a>
+        ) : (
+          <span className="text-default-400">N/A</span>
+        );
+      case "fileScore":
+        return data.fileScore?.secure_url ? (
+          <a
+            className="flex justify-center items-center"
+            href={data.fileScore.secure_url}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FaRegFilePdf color={COLORSTEXT.secondary} size={20} />
+          </a>
+        ) : (
+          <span className="text-default-400">N/A</span>
+        );
+
       case "actions":
         return (
           <div className="relative flex justify-center items-center gap-2">
@@ -263,22 +263,22 @@ export const CreateSong = () => {
       <ModalSong
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
+        songToEdit={selectedSongToEdit}
         onClose={() => {
           setIsModalOpen(false);
           setSelectedSongToEdit(null);
         }}
-        songToEdit={selectedSongToEdit}
         onSongCreated={fetchSongs}
       />
       {isConfirmOpen && (
         <ConfirmModal
+          isLoading={loading}
           isOpen={isConfirmOpen}
           message={`¿Estás seguro de eliminar "${selectedSongToDelete?.name}"?`}
           onClose={() => {
             setIsConfirmOpen(false);
             setSelectedSongToDelete(null);
           }}
-          isLoading={loading}
           onConfirm={async () => {
             await handleDelete(selectedSongToDelete as Song);
             setIsConfirmOpen(false);
@@ -344,16 +344,8 @@ export const CreateSong = () => {
       </div>
 
       <Table
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
         isHeaderSticky
         aria-label="Tabla de canciones"
-        sortDescriptor={sortDescriptor}
-        topContentPlacement="outside"
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: "max-h-[382px]",
-        }}
         bottomContent={
           <div className="py-2 px-2 flex z-0 justify-between items-center">
             <Pagination
@@ -367,6 +359,14 @@ export const CreateSong = () => {
             />
           </div>
         }
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "max-h-[382px]",
+        }}
+        sortDescriptor={sortDescriptor}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
       >
         <TableHeader columns={headerColumns}>
           {(column) => (

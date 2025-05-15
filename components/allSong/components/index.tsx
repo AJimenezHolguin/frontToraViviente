@@ -8,19 +8,13 @@ import {
   TableRow,
   TableCell,
   Input,
-
   Pagination,
   Selection,
   SortDescriptor,
- 
 } from "@heroui/react";
 
-import {
-  SearchIcon,
-} from "@/shared/components/table/TableIcons";
+import { SearchIcon } from "@/shared/components/table/TableIcons";
 import { columns } from "@/shared/components/table/columnsAndStatusOptions";
-
-
 
 import { Song } from "@/types/SongsTypesProps";
 import { getAllSongs } from "@/services/songs/songsAll.service";
@@ -44,7 +38,6 @@ const INITIAL_VISIBLE_COLUMNS = [
   "category",
   "fileSong",
   "fileScore",
- 
 ];
 
 export const AllSong = () => {
@@ -63,22 +56,21 @@ export const AllSong = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
-  
-    const fetchSongs = async () => {
-      setIsLoading(true);
+  const fetchSongs = async () => {
+    setIsLoading(true);
 
-      try {
-        const songsData = await getAllSongs();
+    try {
+      const songsData = await getAllSongs();
 
-        setSongs(songsData);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    useEffect(() => {
+      setSongs(songsData);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchSongs();
   }, []);
 
@@ -126,7 +118,6 @@ export const AllSong = () => {
 
   const renderCell = React.useCallback((data: Song, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof Song];
-  
 
     switch (columnKey) {
       case "user":
@@ -199,7 +190,6 @@ export const AllSong = () => {
             onClear={onClear}
             onValueChange={onSearchChange}
           />
-        
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
@@ -223,16 +213,8 @@ export const AllSong = () => {
       </div>
 
       <Table
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
         isHeaderSticky
         aria-label="Tabla de canciones"
-        sortDescriptor={sortDescriptor}
-        topContentPlacement="outside"
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: "max-h-[382px]",
-        }}
         bottomContent={
           <div className="py-2 px-2 flex z-0 justify-between items-center">
             <Pagination
@@ -246,6 +228,14 @@ export const AllSong = () => {
             />
           </div>
         }
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "max-h-[382px]",
+        }}
+        sortDescriptor={sortDescriptor}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -272,7 +262,6 @@ export const AllSong = () => {
           )}
         </TableBody>
       </Table>
-     
     </>
   );
 };
