@@ -2,23 +2,15 @@ import { uploadFileToCloudinary } from "@/services/cloudinary/uploadFileCloudina
 import { deleteImage } from "@/services/cloudinary/deleteFileCloudinary.service";
 import { FileData, UpdateSong } from "@/services/typesServices";
 import { SongFormState } from "@/shared/components/Modal/types";
-
-type FileUploadResult = {
-  fileSong: FileData | null;
-  fileScore: FileData | null;
-};
+import { FileUploadResult } from "./types";
 
 export const uploadSongFiles = async (
   form: SongFormState,
-  previousFiles?: { song?: string; score?: string }
+  previousFiles?: { song?: FileData | null; score?: FileData | null }
 ): Promise<FileUploadResult> => {
-  let uploadedFileSong: FileData | null = previousFiles?.song
-    ? { public_id: previousFiles.song, secure_url: "" }
-    : null;
+  let uploadedFileSong: FileData | null = previousFiles?.song ?? null;
 
-  let uploadedFileScore: FileData | null = previousFiles?.score
-    ? { public_id: previousFiles.score, secure_url: "" }
-    : null;
+  let uploadedFileScore: FileData | null = previousFiles?.score ?? null;
 
   try {
     if (form.fileSong) {
@@ -74,13 +66,14 @@ export const uploadSongFiles = async (
 
 export const buildSongPayload = (
   form: SongFormState,
-  files: FileUploadResult
+  files: FileUploadResult,
+  previousFiles: { fileSong?: FileData | null; fileScore?: FileData | null }
 ): UpdateSong => {
   return {
     name: form.name,
     linkSong: form.linkSong,
     category: form.category,
-    fileSong: files.fileSong,
-    fileScore: files.fileScore,
+    fileSong: files.fileSong ?? previousFiles.fileSong ?? null,
+    fileScore: files.fileScore ?? previousFiles.fileScore ?? null,
   };
 };

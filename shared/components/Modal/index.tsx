@@ -46,6 +46,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   const [isFormValid, setIsFormValid] = useState(false);
   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
   const [alertMessage, setAlertMessage] = useState("");
+  const [initialForm, setInitialForm] = useState<SongFormState | null>(null);
 
   useEffect(() => {
     const fetchSongDetails = async () => {
@@ -53,12 +54,17 @@ export const ModalSong: React.FC<ModalSongProps> = ({
 
       try {
         const songData = await getSongById(songToEdit._id);
-        
-        
-       
+
         console.log("esta es la cancion", songData);
 
         setForm({
+          name: songData.name,
+          linkSong: songData.linkSong,
+          category: songData.category,
+          fileSong: null,
+          fileScore: null,
+        });
+        setInitialForm({
           name: songData.name,
           linkSong: songData.linkSong,
           category: songData.category,
@@ -75,14 +81,29 @@ export const ModalSong: React.FC<ModalSongProps> = ({
     }
   }, [isOpen, songToEdit]);
 
+  const isFormModified = () => {
+    if (!initialForm) return false;
+
+    return (
+      form.name !== initialForm.name ||
+      form.linkSong !== initialForm.linkSong ||
+      form.category !== initialForm.category ||
+      form.fileSong !== null ||
+      form.fileScore !== null
+    );
+  };
 
   useEffect(() => {
-    const { name, linkSong, category, fileSong, fileScore } = form;
+    if (songToEdit) {
+      setIsFormValid(isFormModified());
+    } else {
+      const { name, linkSong, category, fileSong, fileScore } = form;
 
-    setIsFormValid(
-      !!name && !!linkSong && !!category && !!fileSong && !!fileScore
-    );
-  }, [form]);
+      setIsFormValid(
+        !!name && !!linkSong && !!category && !!fileSong && !!fileScore
+      );
+    }
+  }, [form, initialForm, songToEdit]);
 
   const handleFileClick = (ref: React.RefObject<HTMLInputElement>) => {
     ref.current?.click();
@@ -113,8 +134,10 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       const result = songToEdit
         ? await editSongHandler(form, {
             ...songToEdit,
-            fileSongPublicId: songToEdit.fileSong?.public_id || "",
-            fileScorePublicId: songToEdit.fileScore?.public_id || "",
+            fileSong: songToEdit.fileSong,
+            fileScore: songToEdit.fileScore,
+            fileSongPublicId: songToEdit.fileSong?.public_id,
+            fileScorePublicId: songToEdit.fileScore?.public_id,
           })
         : await createSongHandler(form, session.user.id);
 
