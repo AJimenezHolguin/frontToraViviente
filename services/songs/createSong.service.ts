@@ -1,8 +1,8 @@
 import { getSession } from "next-auth/react";
-import { UpdateSongDto } from "../typesServices";
+import { UpdateSong } from "../typesServices";
 import axiosInstance from "@/config/axios/axiosInstance";
 
-export const createSong = async (idUser: string, data: UpdateSongDto) => {
+export const createSong = async (idUser: string, data: UpdateSong) => {
   try {
     const session = await getSession();
 

@@ -10,11 +10,11 @@ export interface FileData {
    secure_url: string;
  }
  
-export interface UpdateSongDto {
+export interface UpdateSong {
    name: string;
    linkSong: string;
    category: string;
-   fileSong: FileData;
-   fileScore: FileData;
+   fileSong: FileData | null;
+   fileScore: FileData | null;
  }
  

@@ -13,13 +13,13 @@ import { Colors } from "@/types/color.enum";
 import { Sizes } from "@/types/sizes.enum";
 import { RadiusProps } from "@/types/radius.enum";
 import { useSession } from "next-auth/react";
-import { deleteImage } from "@/services/cloudinary/deleteFileCloudinary.service";
+
 import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
 import { ModalSongProps, SongFormState } from "./types";
-import { updateSong } from "@/services/songs/updateSong.service";
-import { createSong } from "@/services/songs/createSong.service";
-import { uploadFileToCloudinary } from "@/services/cloudinary/uploadFileCloudinary.service";
+
+import { editSongHandler } from "@/shared/feature/songs/editSongHandler";
+import { createSongHandler } from "@/shared/feature/songs/createSongHandler";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
@@ -31,23 +31,20 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   const letraRef = useRef<HTMLInputElement>(null);
   const acordeRef = useRef<HTMLInputElement>(null);
 
-  const [form,setForm] = useState<SongFormState>({
-      name: "",
-      linkSong: "",
-      category: "",
-      fileSong: null,
-      fileScore: null,
+  const [form, setForm] = useState<SongFormState>({
+    name: "",
+    linkSong: "",
+    category: "",
+    fileSong: null,
+    fileScore: null,
   });
-    
- 
+
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-
   const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
   const [alertMessage, setAlertMessage] = useState("");
-
 
   useEffect(() => {
     if (songToEdit) {
@@ -68,15 +65,14 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       });
     }
   }, [songToEdit]);
-  
-
 
   useEffect(() => {
     const { name, linkSong, category, fileSong, fileScore } = form;
-    
-    setIsFormValid(!!name && !!linkSong && !!category && !!fileSong && !!fileScore);
+
+    setIsFormValid(
+      !!name && !!linkSong && !!category && !!fileSong && !!fileScore
+    );
   }, [form]);
-  
 
   const handleFileClick = (ref: React.RefObject<HTMLInputElement>) => {
     ref.current?.click();
@@ -87,26 +83,13 @@ export const ModalSong: React.FC<ModalSongProps> = ({
     type: "fileSong" | "fileScore"
   ) => {
     const file = e.target.files?.[0];
-    
+
     if (file) {
       setForm((prev) => ({ ...prev, [type]: file }));
     }
   };
 
   const handleSave = async () => {
-    if (
-      !form.name ||
-      !form.linkSong ||
-      !form.category ||
-      (!form.fileSong && !songToEdit) ||
-      (!form.fileScore && !songToEdit)
-    ) {
-      setAlertType("error");
-      setAlertMessage("Por favor completa todos los campos");
-
-      return;
-    }
-
     if (!session?.user) {
       setAlertType("error");
       setAlertMessage("No tienes permisos para crear una canción");
@@ -114,80 +97,29 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       return;
     }
 
-    let uploadedFileSong = songToEdit?.fileSong || null;
-    let uploadedFileScore = songToEdit?.fileScore || null;
-
     try {
       setLoading(true);
 
-      // Subir letra si hay nueva
-      if (form.fileSong) {
-        const newFile = await uploadFileToCloudinary(form.fileSong, "letra_upload");
-
-        if (!newFile) throw new Error("Error al subir letra");
-
-        // Eliminar antiguo si es edición
-        if (songToEdit?.fileSong?.public_id) {
-          await deleteImage(songToEdit.fileSong.public_id);
-        }
-
-        uploadedFileSong = newFile;
-      }
-
-      // Subir acordes si hay nuevo
-      if (form.fileScore) {
-        const newFile = await uploadFileToCloudinary(
-          form.fileScore,
-          "acorde_upload"
-        );
-
-        if (!newFile) throw new Error("Error al subir acordes");
-
-        // Eliminar antiguo si es edición
-        if (songToEdit?.fileScore?.public_id) {
-          await deleteImage(songToEdit.fileScore.public_id);
-        }
-
-        uploadedFileScore = newFile;
-      }
-
-      if (!uploadedFileSong || !uploadedFileScore) {
-        throw new Error("Faltan archivos necesarios para guardar la canción");
-      }
-
-      const payload = {
-        name: form.name,
-        linkSong: form.linkSong,
-        category: form.category,
-        fileSong: uploadedFileSong,
-        fileScore: uploadedFileScore,
-      };
-
-      if (songToEdit) {
-        // Edición
-        await updateSong(songToEdit._id, payload);
-        setAlertMessage("¡Canción actualizada correctamente!");
-      } else {
-        // Creación
-        await createSong(session.user.id, payload);
-        setAlertMessage("¡La canción se ha creado exitosamente!");
-      }
+      const result = songToEdit
+        ? await editSongHandler(form, {
+            ...songToEdit,
+            fileSongPublicId: songToEdit.fileSong?.public_id || "",
+            fileScorePublicId: songToEdit.fileScore?.public_id || "",
+          })
+        : await createSongHandler(form, session.user.id);
 
       setAlertType("success");
+      setAlertMessage(
+        result && "message" in result
+          ? result.message
+          : "¡Canción guardada correctamente!"
+      );
       setIsOpen(false);
       setTimeout(() => {
         onClose();
         onSongCreated();
       }, 7000);
     } catch (error: any) {
-      // Si falló y es una creación, eliminar archivos recién subidos
-      if (!songToEdit) {
-        if (uploadedFileSong?.public_id)
-          await deleteImage(uploadedFileSong.public_id);
-        if (uploadedFileScore?.public_id)
-          await deleteImage(uploadedFileScore.public_id);
-      }
-
       setAlertType("error");
       setAlertMessage(error.message || "Error al guardar la canción");
     } finally {
@@ -226,13 +158,15 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                   placeholder="www.youtube.com"
                   value={form.linkSong}
                   variant="bordered"
-                  onChange={(e) => setForm({...form, linkSong: e.target.value})}
+                  onChange={(e) =>
+                    setForm({ ...form, linkSong: e.target.value })
+                  }
                 />
 
                 <SelectedInput
                   isRequired
                   value={form.category}
-                  onChange={(value)=> setForm({...form, category: value})}
+                  onChange={(value) => setForm({ ...form, category: value })}
                 />
 
                 <div className="w-1/2 flex flex-col gap-4 justify-center mt-[10px]">
