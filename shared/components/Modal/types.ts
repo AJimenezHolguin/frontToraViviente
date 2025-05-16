@@ -8,7 +8,7 @@ export interface ModalSongProps {
   songToEdit?: Song | null;
 }
 
-type AlertType = "success" | "error";
+export type AlertType = "success" | "error" | null;
 
 export interface AlertModalProps {
   isOpen: boolean;
