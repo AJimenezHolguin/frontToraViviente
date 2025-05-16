@@ -16,7 +16,7 @@ import { SongForm } from "../SongForm";
 import { useSongFormData } from "./hooks/useSongFormData";
 import { useFormValidation } from "./hooks/useFormValidation";
 import { saveSongHandler } from "@/shared/feature/songs/saveSongHandler";
-import {useModalAlert } from "./hooks/useModalAlert";
+import { useModalAlert } from "./hooks/useModalAlert";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
@@ -28,13 +28,10 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   const acordeRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
-  const {showAlert, showConfirm, AlertModalProps, ConfirmModalProps} = useModalAlert();
-  const { form, setForm, initialForm } = useSongFormData(
-    isOpen,
-    songToEdit
-  );
+  const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
+    useModalAlert();
+  const { form, setForm, initialForm } = useSongFormData(isOpen, songToEdit);
   const { isFormValid } = useFormValidation(form, initialForm, songToEdit);
-
 
   const handleFileClick = (ref: React.RefObject<HTMLInputElement>) => {
     ref.current?.click();
@@ -61,23 +58,20 @@ export const ModalSong: React.FC<ModalSongProps> = ({
     try {
       setLoading(true);
 
-       await saveSongHandler({
+      await saveSongHandler({
         form,
         songToEdit,
         userId: session.user.id,
-      })
+      });
 
-
-      showAlert("success", "Canción guardada correctamente"
-  
-      );
+      showAlert("success", "Canción guardada correctamente");
       onClose();
       setTimeout(() => {
         onClose();
         onSongCreated();
       }, 3000);
     } catch (error: any) {
-      showAlert("error", "Error al guardar la canción")
+      showAlert("error", "Error al guardar la canción");
     } finally {
       setLoading(false);
     }
@@ -131,7 +125,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                     )
                   }
                 >
-                   Guardar
+                  Guardar
                 </Button>
               </ModalFooter>
             </>

@@ -39,6 +39,7 @@ import { getMySongs } from "@/services/songs/getMySongs.service";
 import { deleteSong } from "@/services/songs/deleteSong.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
+import { useModalAlert } from "@/shared/components/Modal/hooks/useModalAlert";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
@@ -69,17 +70,16 @@ export const CreateSong = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [alertType, setAlertType] = useState<"success" | "error" | null>(null);
-  const [alertMessage, setAlertMessage] = useState("");
+
   const [selectedSongToDelete, setSelectedSongToDelete] = useState<Song | null>(
     null
   );
   const [loading, setLoading] = useState(false);
-  const [isAlertVisible, setAlertVisible] = useState(false);
   const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(
     null
   );
+  const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
+    useModalAlert();
 
   const fetchSongs = async () => {
     setIsLoading(true);
@@ -150,14 +150,10 @@ export const CreateSong = () => {
         fileScorePublicId: song.fileScore.public_id,
       });
 
-      setAlertType("success");
-      setAlertMessage("¡La canción se ha eliminada correctamente!");
-      setAlertVisible(true);
+      showAlert("success", "Canción eliminada correctamente!");
     } catch (err) {
       console.error(err);
-      setAlertType("error");
-      setAlertMessage("¡Error al eliminar la canción!");
-      setAlertVisible(true);
+      showAlert("error", "Error al eliminar la canción!");
     } finally {
       setLoading(false);
     }
@@ -221,7 +217,12 @@ export const CreateSong = () => {
                 className="text-lg text-danger cursor-pointer active:opacity-50"
                 onClick={() => {
                   setSelectedSongToDelete(data);
-                  setIsConfirmOpen(true);
+                  showConfirm(
+                    `¿Estás seguro de eliminar "${data.name}"?`,
+                    async () => {
+                      await handleDelete(data);
+                    }
+                  );
                 }}
               >
                 <DeleteIcon />
@@ -268,35 +269,9 @@ export const CreateSong = () => {
         }}
         onSongCreated={fetchSongs}
       />
-      {isConfirmOpen && (
-        <ConfirmModal
-          isLoading={loading}
-          isOpen={isConfirmOpen}
-          message={`¿Estás seguro de eliminar "${selectedSongToDelete?.name}"?`}
-          onClose={() => {
-            setIsConfirmOpen(false);
-            setSelectedSongToDelete(null);
-          }}
-          onConfirm={async () => {
-            await handleDelete(selectedSongToDelete as Song);
-            setIsConfirmOpen(false);
-            setSelectedSongToDelete(null);
-          }}
-        />
-      )}
 
-      {isAlertVisible && alertType && (
-        <AlertModal
-          isOpen={!!alertType}
-          message={alertMessage}
-          type={alertType}
-          onClose={() => {
-            setAlertType(null);
-            setAlertVisible(false);
-            fetchSongs();
-          }}
-        />
-      )}
+      <ConfirmModal {...ConfirmModalProps} />
+      <AlertModal {...AlertModalProps} />
 
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
