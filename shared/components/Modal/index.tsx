@@ -13,10 +13,10 @@ import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
 import { ModalSongProps } from "./types";
 import { SongForm } from "../SongForm";
-import { useSongFormData } from "./hooks/useSongFormData";
-import { useFormValidation } from "./hooks/useFormValidation";
+import { useSongFormData } from "../../hooks/songs/useSongFormData";
+import { useFormValidation } from "../../hooks/songs/useFormValidation";
 import { saveSongHandler } from "@/shared/feature/songs/saveSongHandler";
-import { useModalAlert } from "./hooks/useModalAlert";
+import { useModalAlert } from "../../hooks/songs/useModalAlert";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,

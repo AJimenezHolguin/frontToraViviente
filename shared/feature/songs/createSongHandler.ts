@@ -13,7 +13,10 @@ export const createSongHandler = async (
       throw new Error("Faltan archivos necesarios para guardar la canción");
     }
 
-    const payload = buildSongPayload(form, files);
+    const payload = buildSongPayload(form, files, {
+      fileSong: files.fileSong,
+      fileScore: files.fileScore,
+    });
 
     await createSong(userId, payload);
 

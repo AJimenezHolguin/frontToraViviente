@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { AlertType } from "../types";
+import { AlertType } from "../../components/Modal/types";
 
 export const useModalAlert = () => {
   const [alertType, setAlertType] = useState<AlertType>(null);

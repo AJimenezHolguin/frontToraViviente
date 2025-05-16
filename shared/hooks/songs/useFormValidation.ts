@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SongFormState } from "../types";
+import { SongFormState } from "../../components/Modal/types";
 import { Song } from "@/types/SongsTypesProps";
 
 export const useFormValidation = (

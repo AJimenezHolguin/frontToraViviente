@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { getSongById } from "@/services/songs/getSongById.service";
 import { Song } from "@/types/SongsTypesProps";
-import { SongFormState } from "../types";
+import { SongFormState } from "../../components/Modal/types";
 
 
 export const useSongFormData = (
