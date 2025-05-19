@@ -1,43 +1,21 @@
 "use client";
-import React, { SVGProps, useEffect, useState } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-  Pagination,
-} from "@heroui/react";
-
-import {
-  DeleteIcon,
-  EditIcon,
-  PlusIcon,
-  SearchIcon,
-} from "@/shared/components/table/TableIcons";
-
-
+import React, { useEffect, useState } from "react";
+import { Input, Button } from "@heroui/react";
+import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
 import { ModalSong } from "@/shared/components/Modal";
-
 import { Song } from "@/types/SongsTypesProps";
-
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { Sizes } from "@/types/sizes.enum";
 import { Colors } from "@/types/color.enum";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
-
 import { getMySongs } from "@/services/songs/getMySongs.service";
-
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { useSongTable } from "../../../shared/hooks/songs/useSongTable";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
-
+import { ReusableTable } from "@/shared/components/table";
 
 export const CreateSong = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -48,7 +26,7 @@ export const CreateSong = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
-  useModalAlert();
+    useModalAlert();
   const { handleDelete, loading } = useDeleteSong(showAlert);
 
   const renderCell = useRenderSongCell({
@@ -76,8 +54,6 @@ export const CreateSong = () => {
     onClear,
     selectedKeys,
     setSelectedKeys,
-    visibleColumns,
-    setVisibleColumns,
     headerColumns,
     sortedItems,
     totalSongs,
@@ -88,7 +64,7 @@ export const CreateSong = () => {
     setIsLoading(true);
     try {
       const songsData = await getMySongs();
-     
+
       setSongs(songsData);
     } catch (error) {
       console.error(error);
@@ -105,13 +81,13 @@ export const CreateSong = () => {
 
   const filteredItems = React.useMemo(() => {
     let filtered = [...songs];
-    
+
     if (hasSearchFilter) {
       filtered = filtered.filter((data) =>
         data.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-  
+
     return filtered;
   }, [songs, filterValue]);
 
@@ -120,7 +96,7 @@ export const CreateSong = () => {
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
-   
+
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
@@ -149,7 +125,7 @@ export const CreateSong = () => {
         onSongCreated={fetchSongs}
       />
 
-      <ConfirmModal {...ConfirmModalProps} />
+      <ConfirmModal {...ConfirmModalProps} isLoading={loading}/>
       <AlertModal {...AlertModalProps} />
 
       <div className="flex flex-col gap-4">
@@ -195,56 +171,20 @@ export const CreateSong = () => {
         </div>
       </div>
 
-      <Table
-        isHeaderSticky
-        aria-label="Tabla de canciones"
-        bottomContent={
-          <div className="py-2 px-2 flex z-0 justify-between items-center">
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color="primary"
-              page={page}
-              total={totalPages}
-              onChange={setPage}
-            />
-          </div>
-        }
-        bottomContentPlacement="outside"
-        classNames={{
-          wrapper: "max-h-[382px]",
-        }}
+      <ReusableTable
+        ariaLabel="Tabla de canciones"
+        headerColumns={headerColumns}
+        itemKey="_id"
+        page={page}
+        renderCell={renderCell}
+        selectedKeys={selectedKeys}
         sortDescriptor={sortDescriptor}
-        topContentPlacement="outside"
-        onSelectionChange={setSelectedKeys}
+        sortedItems={sortedItems}
+        totalPages={totalPages}
+        onPageChange={setPage}
+        onSelectionChange={(keys) => setSelectedKeys(keys)}
         onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody
-          emptyContent="No se encontraron canciones"
-          itemID="_id"
-          items={sortedItems}
-        >
-          {(item) => (
-            <TableRow key={item._id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      />
     </>
   );
 };
