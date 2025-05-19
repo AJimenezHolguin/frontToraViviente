@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Input, Button } from "@heroui/react";
 import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
 import { ModalSong } from "@/shared/components/Modal";
 import { Song } from "@/types/SongsTypesProps";
@@ -16,6 +15,10 @@ import { useSongTable } from "../../../shared/hooks/songs/useSongTable";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
+import { PositionModal } from "@/shared/components/Modal/types";
+import { InputComponent } from "@/shared/components/Input";
+import { TypeProps } from "@/shared/components/Input/types";
+import { ButtonComponent } from "@/shared/components/Button";
 
 export const CreateSong = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -45,7 +48,6 @@ export const CreateSong = () => {
   const {
     page,
     setPage,
-    rowsPerPage,
     setRowsPerPage,
     sortDescriptor,
     setSortDescriptor,
@@ -77,29 +79,6 @@ export const CreateSong = () => {
     fetchSongs();
   }, []);
 
-  const hasSearchFilter = Boolean(filterValue);
-
-  const filteredItems = React.useMemo(() => {
-    let filtered = [...songs];
-
-    if (hasSearchFilter) {
-      filtered = filtered.filter((data) =>
-        data.name.toLowerCase().includes(filterValue.toLowerCase())
-      );
-    }
-
-    return filtered;
-  }, [songs, filterValue]);
-
-  const pages = Math.ceil(filteredItems.length / rowsPerPage);
-
-  const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return filteredItems.slice(start, end);
-  }, [page, filteredItems, rowsPerPage]);
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[300px]">
@@ -125,22 +104,30 @@ export const CreateSong = () => {
         onSongCreated={fetchSongs}
       />
 
-      <ConfirmModal {...ConfirmModalProps} isLoading={loading}/>
-      <AlertModal {...AlertModalProps} />
+      <ConfirmModal
+        {...ConfirmModalProps}
+        isLoading={loading}
+        placement={PositionModal.CENTER}
+        title={loading ? "Eliminando..." : "Confirmar"}
+      />
+      <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
 
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
+          <InputComponent
+            classNames={{
+              base: "w-full sm:max-w-[44%]",
+            }}
+            isClearable={true}
             placeholder="Buscar por nombre..."
             startContent={<SearchIcon />}
+            type={TypeProps.SEARCH}
             value={filterValue}
             onClear={onClear}
             onValueChange={onSearchChange}
           />
-          <Button
-            color="primary"
+          <ButtonComponent
+            color={Colors.PRIMARY}
             endContent={<PlusIcon />}
             onPress={() => {
               setSelectedSongToEdit(null);
@@ -148,7 +135,7 @@ export const CreateSong = () => {
             }}
           >
             Crear
-          </Button>
+          </ButtonComponent>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">

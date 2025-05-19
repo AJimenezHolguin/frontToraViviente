@@ -14,9 +14,14 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onConfirm,
   message,
   isLoading = false,
+  title = "Confirmación",
+  placement,
 }) => {
   return (
-    <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Modal isOpen={isOpen} 
+    placement={placement}
+    onOpenChange={(open) => !open && onClose()} 
+    >
       <ModalContent>
         <ModalHeader>Confirmación</ModalHeader>
         <ModalBody>
@@ -26,8 +31,11 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Button color="danger" onPress={onClose}>
             Cancelar
           </Button>
-          <Button color="primary" onPress={onConfirm} isLoading={isLoading}>
-            Confirmar
+          <Button color="primary" 
+          isLoading={isLoading}
+          onPress={onConfirm} 
+          >
+            { title }
           </Button>
         </ModalFooter>
       </ModalContent>

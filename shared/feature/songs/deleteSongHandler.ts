@@ -1,14 +1,12 @@
-
 import { deleteSong } from "@/services/songs/deleteSong.service";
 import { Song } from "@/types/SongsTypesProps";
-import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { useState } from "react";
 import { AlertType } from "@/shared/components/Modal/types";
 
-
-export const useDeleteSong = (showAlert:(type: AlertType, message: string) => void ) => {
+export const useDeleteSong = (
+  showAlert: (type: AlertType, message: string) => void
+) => {
   const [loading, setLoading] = useState(false);
-  
 
   const handleDelete = async (song: Song) => {
     try {

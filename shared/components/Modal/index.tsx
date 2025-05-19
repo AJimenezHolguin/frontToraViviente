@@ -11,7 +11,7 @@ import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
-import { ModalSongProps } from "./types";
+import { ModalSongProps, PositionModal } from './types';
 import { SongForm } from "../SongForm";
 import { useSongFormData } from "../../hooks/songs/useSongFormData";
 import { useFormValidation } from "../../hooks/songs/useFormValidation";
@@ -69,7 +69,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       setTimeout(() => {
         onClose();
         onSongCreated();
-      }, 3000);
+      }, 4000);
     } catch (error: any) {
       showAlert("error", "Error al guardar la canción");
     } finally {
@@ -82,7 +82,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
       <Modal
         isDismissable={false}
         isOpen={isOpen}
-        placement="center"
+        placement={PositionModal.CENTER}
         onOpenChange={(open) => {
           if (!open) onClose();
         }}
@@ -114,8 +114,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                 </Button>
                 <Button
                   color="primary"
-                  isDisabled={!isFormValid}
-                  isLoading={loading}
+                  isDisabled={!isFormValid || loading }
                   onPress={() =>
                     showConfirm(
                       songToEdit
@@ -132,8 +131,13 @@ export const ModalSong: React.FC<ModalSongProps> = ({
           )}
         </ModalContent>
       </Modal>
-      <AlertModal {...AlertModalProps} />
-      <ConfirmModal {...ConfirmModalProps} />
+      <AlertModal {...AlertModalProps} placement={PositionModal.CENTER}/>
+      <ConfirmModal {...ConfirmModalProps} 
+                    isLoading={loading} 
+                    placement = {PositionModal.CENTER}
+                    title={loading ? songToEdit ? "Actualizando..." : "Guardando..." 
+                      : songToEdit ? "Actualizar": "Guardar"}
+                    />
     </>
   );
 };

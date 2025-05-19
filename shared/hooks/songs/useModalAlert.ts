@@ -32,8 +32,8 @@ export const useModalAlert = () => {
     isOpen: isConfirmOpen,
     message: confirmMessage,
     onClose: () => setIsConfirmOpen(false),
-    onConfirm: () => {
-      onConfirmAction();
+    onConfirm: async () => {
+      await onConfirmAction();
       setIsConfirmOpen(false);
     },
   };
