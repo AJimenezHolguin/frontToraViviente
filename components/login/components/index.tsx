@@ -75,9 +75,9 @@ export const Login = () => {
         <section className="m-[25px] h-full md:flex items-start justify-center lg:w-[1100]">
           <Image
             alt="Tora-Viviente"
-            height={60}
-            src={"/logo-tora-viviente-sin-fondo.png"}
-            width={60}
+            height={70}
+            src={"/logo-torah-viviente-2.png"}
+            width={70}
           />
           <div className="sm:mt-3 md:mt-20  md:w-3/4 flex flex-col gap-3 lg:gap-0">
             <Text $v="h1" className={"mt-6"}>

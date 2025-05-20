@@ -1,19 +1,19 @@
 import { AxiosInstance } from "axios";
 
 import { HTTP_STATUS } from "./constanst";
-
-import { useAuthStore } from "@/components/login/domain/store/authStore";
+import { getSession } from "next-auth/react";
 
 const excludedRoutes = ["/auth/login", "/auth/register"];
 
 const applyInterceptors = (api: AxiosInstance) => {
   // Interceptor para incluir el token en las solicitudes
   api.interceptors.request.use(
-    (config) => {
-      const { token } = useAuthStore.getState();
+    async (config) => {
+      const session = await getSession();
+      const token = session?.user?.token;
 
       const isExcluded = excludedRoutes.some((route) =>
-        config.url?.includes(route),
+        config.url?.includes(route)
       );
 
       if (!isExcluded && token) {
@@ -22,21 +22,23 @@ const applyInterceptors = (api: AxiosInstance) => {
 
       return config;
     },
-    (error) => Promise.reject(error),
+    (error) => Promise.reject(error)
   );
 
   // Interceptor para manejar respuestas
   api.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
       error.response;
 
       if (error.response?.status === HTTP_STATUS.UNAUTHORIZED) {
-        useAuthStore.getState().logout();
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
       }
 
       return Promise.reject(error);
-    },
+    }
   );
 };
 

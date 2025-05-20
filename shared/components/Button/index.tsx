@@ -17,13 +17,17 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
   fullWidth = false,
   className = "",
   type,
+  onPress,
+  endContent,
 }) => {
   const size = UseResponsiveSize(propSize);
 
   return (
     <Button
+    
       className={`${className}`}
       color={color}
+      endContent={endContent}
       fullWidth={fullWidth}
       isDisabled={isDisabled}
       isLoading={isLoading}
@@ -53,6 +57,7 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
       spinnerPlacement={spinnerPlacement}
       type={type}
       variant={variant}
+      onPress={onPress}
     >
       {isLoading ? "Loading..." : children}
     </Button>

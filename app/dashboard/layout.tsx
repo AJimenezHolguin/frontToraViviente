@@ -21,12 +21,12 @@ export default function DashboardLayout({
         <Image
           alt="Tora-Viviente"
           height={25}
-          src={"/logo-tora-viviente-sin-fondo.png"}
+          src={"/logo-torah-viviente-2.png"}
           width={25}
         />
       </div>
       {isSidebarOpen && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
       )}
       <div className={`mt-[10px] P-2 w-full text-slate-900 px-2 ${isSidebarOpen ? "pointer-events-none" : ""}`}>
         {children}

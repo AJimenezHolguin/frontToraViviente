@@ -18,5 +18,5 @@ export const HTTP_STATUS = {
 export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
   Accept: "application/json",
-  "Access-Control-Allow-Origin": "*", // Ajusta esto según tus necesidades
+  "Access-Control-Allow-Origin": "*",
 };

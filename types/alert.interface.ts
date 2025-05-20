@@ -3,7 +3,8 @@ import { Sizes } from "./sizes.enum";
 
 export enum AlertType {
     ERROR = "error",
-    ACTION= "action", 
+    ACTION= "action",
+    SUCCESS = "success",
 };
 
 export enum AlertVariant {

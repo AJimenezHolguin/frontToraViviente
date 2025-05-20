@@ -44,6 +44,9 @@ export const InputComponent: React.FC<InputProps> = ({
   minLength,
   endContent = undefined,
   onChange,
+  isClearable = false,
+  onValueChange,
+  startContent,
 }) => {
   const size = UseResponsiveSize(propSize);
 
@@ -55,6 +58,7 @@ export const InputComponent: React.FC<InputProps> = ({
       endContent={endContent}
       errorMessage={errorMessage}
       fullWidth={fullWidth}
+      isClearable={isClearable}
       isRequired={isRequired}
       label={label}
       labelPlacement={labelPlacement}
@@ -63,10 +67,12 @@ export const InputComponent: React.FC<InputProps> = ({
       placeholder={placeholder}
       radius={radius}
       size={size}
+      startContent={startContent}
       type={type}
       value={value}
       variant={variant}
       onChange={onChange}
+      onValueChange={onValueChange}
     />
   );
 };

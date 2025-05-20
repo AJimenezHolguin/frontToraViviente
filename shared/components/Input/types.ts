@@ -40,26 +40,28 @@ export interface ValidationError {
 
 export interface InputProps {
   classNames?: Partial<Record<InputClassNameKeys, string>>;
-  color: Colors;
-  label: string;
+  color?: Colors;
+  label?: string;
   labelPlacement?: LabelPlacementProps;
   placeholder?: string;
-  variant: VariantProps;
+  variant?: VariantProps;
   size?: Sizes;
   value?: string;
   defaultValue?: string;
-  type: TypeProps;
+  type?: TypeProps;
   errorMessage?: string;
   validate?: (value: string) => true | ValidationError | null | undefined;
   radius?: RadiusProps;
   startContent?: ReactNode;
   endContent?: ReactNode;
   fullWidth?: boolean;
+  isClearable?: boolean;
   isRequired?: boolean;
   isInvalid?: boolean;
   minLength?: number;
   maxLength?: number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClear?: () => void;
   onValueChange?: (value: string) => void;
 }
 

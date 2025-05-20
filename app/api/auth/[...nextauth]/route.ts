@@ -1,12 +1,13 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { handleLogin } from "@/components/login/domain/actions/authActions";
+
+import { loginUser } from "@/components/login/domain/services/auth.service";
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
-      
+
       credentials: {
         email: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
@@ -14,11 +15,11 @@ const handler = NextAuth({
 
       async authorize(credentials) {
         try {
-          const userResponse = await handleLogin.login({
+          const userResponse = await loginUser.login({
             email: credentials?.email ?? "",
             password: credentials?.password ?? "",
           });
-         
+
           if (!userResponse || !userResponse.token || !userResponse.user) {
             throw new Error("Login fallido");
           }
@@ -30,13 +31,12 @@ const handler = NextAuth({
             role: userResponse.user.role,
             playList: userResponse.user.playList,
             token: userResponse.token,
-            createdAt: userResponse.user.createdAt,  
-            updatedAt: userResponse.user.updatedAt, 
+            createdAt: userResponse.user.createdAt,
+            updatedAt: userResponse.user.updatedAt,
           };
-          
         } catch (error) {
           error;
-          
+
           return null;
         }
       },
@@ -54,7 +54,7 @@ const handler = NextAuth({
         token.createdAt = user.createdAt;
         token.updatedAt = user.updatedAt;
       }
-      
+
       return token;
     },
     async session({ session, token }) {
@@ -67,9 +67,9 @@ const handler = NextAuth({
         playList: token.playList,
         token: token.token,
         createdAt: token.createdAt,
-        updatedAt: token.updatedAt
+        updatedAt: token.updatedAt,
       };
-      
+
       return session;
     },
   },
