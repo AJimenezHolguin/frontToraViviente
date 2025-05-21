@@ -9,9 +9,9 @@ export const menuItems:SidebarMenuItemProps[] = [
         icon: <IoPersonOutline size={25} />,
     },
     {
-        title: "Crear Playlist",
+        title: "Mis Playlists",
         subTitle: "Mis Listas",
-        path: "/dashboard/create-playlist",
+        path: "/dashboard/my-playlists",
         icon: <IoListCircleOutline size={25} />,
     },
     {
@@ -21,9 +21,9 @@ export const menuItems:SidebarMenuItemProps[] = [
         icon: <IoListOutline size={25} />,
     },
     {
-        title: "Crear Alabanza",
-        subTitle: "Nueva Alabanza",
-        path: "/dashboard/create-songs",
+        title: "Mis Alabanzas",
+        subTitle: "Mis Alabanzas",
+        path: "/dashboard/my-songs",
         icon: <IoMusicalNoteOutline size={25} />,
     },
     {

@@ -34,7 +34,7 @@ export const ReusableTable = <T extends { [key: string]:any }>({
       isHeaderSticky
       aria-label={ariaLabel}
       bottomContent={
-        <div className="py-2 px-2 flex z-0 justify-between items-center">
+        <div className="py-2 px-2 flex z-0 justify-center items-center">
           <Pagination
             isCompact
             showControls
