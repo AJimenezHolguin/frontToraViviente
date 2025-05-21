@@ -20,7 +20,8 @@ import { InputComponent } from "@/shared/components/Input";
 import { TypeProps } from "@/shared/components/Input/types";
 import { ButtonComponent } from "@/shared/components/Button";
 
-export const CreateSong = () => {
+
+export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(

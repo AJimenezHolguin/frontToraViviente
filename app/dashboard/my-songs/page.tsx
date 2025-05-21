@@ -1,9 +1,9 @@
-import { CreateSong } from "@/components/createSong/components";
+import { MySongs } from "@/components/mySongs/components";
 
 export default function MySongsPage() {
   return (
     <div className="w-full px-4">
-      <CreateSong />
+      <MySongs />
     </div>
   )
 }
