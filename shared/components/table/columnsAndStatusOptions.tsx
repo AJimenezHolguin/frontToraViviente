@@ -6,6 +6,7 @@ export const columns = [
     {name: "CATEGORIA", uid: "category", sortable: true},
     {name: "LETRA", uid: "fileSong"},
     {name: "ACORDE", uid: "fileScore"},
+    {name: "ESTADO", uid: "state"},
     {name: "ACCION", uid: "actions"},
   ];
   

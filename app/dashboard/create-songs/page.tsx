@@ -1,6 +1,6 @@
 import { CreateSong } from "@/components/createSong/components";
 
-export default function CreateSongsPage() {
+export default function MySongsPage() {
   return (
     <div className="w-full px-4">
       <CreateSong />

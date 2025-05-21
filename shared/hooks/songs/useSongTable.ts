@@ -1,23 +1,25 @@
 import { useMemo, useState } from "react";
 import { Song } from "@/types/SongsTypesProps";
 import { Selection, SortDescriptor } from "@heroui/react";
-import { columns } from "@/shared/components/table/columnsAndStatusOptions";
+import { columns as allColumns } from "@/shared/components/table/columnsAndStatusOptions";
 
-const INITIAL_VISIBLE_COLUMNS = [
-  "name",
-  "user",
-  "linkSong",
-  "category",
-  "fileSong",
-  "fileScore",
-  "actions",
-];
-
-export const useSongTable = (songs: Song[]) => {
+// 👇 Ahora acepta includedColumnIds como parámetro opcional
+export const useSongTable = (
+  songs: Song[],
+  includedColumnIds: string[] = [
+    "name",
+    "user",
+    "linkSong",
+    "category",
+    "fileSong",
+    "fileScore",
+    "actions",
+  ]
+) => {
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
-    new Set(INITIAL_VISIBLE_COLUMNS)
+    new Set(includedColumnIds)
   );
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(1);
@@ -28,13 +30,18 @@ export const useSongTable = (songs: Song[]) => {
 
   const hasSearchFilter = Boolean(filterValue);
 
+  // 👇 Filtra columnas disponibles según las que se incluyeron
   const headerColumns = useMemo(() => {
-    if (visibleColumns === "all") return columns;
+    const baseColumns = allColumns.filter((col) =>
+      includedColumnIds.includes(col.uid)
+    );
 
-    return columns.filter((column) =>
+    if (visibleColumns === "all") return baseColumns;
+
+    return baseColumns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid)
     );
-  }, [visibleColumns]);
+  }, [visibleColumns, includedColumnIds]);
 
   const filteredItems = useMemo(() => {
     let filtered = [...songs];
