@@ -19,6 +19,7 @@ import { PositionModal } from "@/shared/components/Modal/types";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps } from "@/shared/components/Input/types";
 import { ButtonComponent } from "@/shared/components/Button";
+import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 
 
 export const MySongs = () => {
@@ -61,7 +62,15 @@ export const MySongs = () => {
     sortedItems,
     totalSongs,
     totalPages,
-  } = useSongTable(songs);
+  } = useSongTable(songs,[
+    "name",
+    "user",
+    "linkSong",
+    "category",
+    "fileSong",
+    "fileScore",
+    "actions",
+  ],columnTitlesPresets["mySongsTitle"]);
 
   const fetchSongs = async () => {
     setIsLoading(true);
@@ -135,7 +144,7 @@ export const MySongs = () => {
               setIsModalOpen(true);
             }}
           >
-            Crear
+            Crear canción
           </ButtonComponent>
         </div>
         <div className="flex justify-between items-center">
