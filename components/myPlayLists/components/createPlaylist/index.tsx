@@ -15,10 +15,17 @@ import {
   ScrollShadow,
 } from "@heroui/react";
 import { useState } from "react";
+import { songs } from "./constant";
 
 export const CreatePlayList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSongs, setSelectedSongs] = useState<string[]>([]);
+  const [filterValue,setFilterValue] = useState("");
+
+
+  const filterSongs = songs.filter((song) => 
+    song.label.toLowerCase().includes(filterValue.toLowerCase())
+)
 
   return (
     <>
@@ -47,13 +54,24 @@ export const CreatePlayList = () => {
               <InputComponent
                 isRequired
                 classNames={{
-                  base: "pl-5 pb-5 sm: pr-5 md:max-w-[80%]",
+                  base: "pl-5 pb-6 sm: pr-5 md:max-w-[80%]",
                 }}
                 isClearable={true}
                 label="Nombre de la playlist"
                 placeholder="Nueva playlist..."
-                startContent={<SearchIcon />}
                 type={TypeProps.TEXT}
+              />
+                <InputComponent
+                classNames={{
+                  base: "pl-5 sm: pr-5 md:max-w-[80%]",
+                }}
+                isClearable={true}
+                label="Buscar canción"
+                placeholder="Buscar canción..."
+                startContent={<SearchIcon />}
+                type={TypeProps.SEARCH}
+                value={filterValue}
+                onValueChange={setFilterValue}
               />
              
 
@@ -62,23 +80,20 @@ export const CreatePlayList = () => {
                   label="Canciones disponibles:"
                   value={selectedSongs}
                   onChange={setSelectedSongs}
+
                 >
                   <ScrollShadow
                     className="flex flex-col w-[400px] h-[200px]"
                     orientation="vertical"
                   >
-                    <Checkbox value="buenos-aires">Buenos Aires</Checkbox>
-                    <Checkbox value="sydney">Sydney</Checkbox>
-                    <Checkbox value="tokyo">Tokyo</Checkbox>
-                    <Checkbox value="londres">Londres</Checkbox>
-                    <Checkbox value="paris">Paris</Checkbox>
-                    <Checkbox value="berlin">Berlin</Checkbox>
-                    <Checkbox value="madrid">Madrid</Checkbox>
-                    <Checkbox value="roma">Roma</Checkbox>
-                    <Checkbox value="nueva-york">Nueva York</Checkbox>
-                    <Checkbox value="los-angeles">Los Angeles</Checkbox>
-                    <Checkbox value="barcelona">Barcelona</Checkbox>
-                    <Checkbox value="brasilia">Brasilia</Checkbox>
+                
+                     {filterSongs.map((song) => (
+                        <Checkbox key={song.value} value={song.value}>
+                            {song.label}
+                        </Checkbox>
+                     )
+                     )}   
+
                   </ScrollShadow>
                 </CheckboxGroup>
                 <p className="text-default-700 text-small">Seleccionado: {selectedSongs.join(", ")}</p>
