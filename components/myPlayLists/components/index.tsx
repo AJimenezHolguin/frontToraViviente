@@ -7,6 +7,7 @@ import { ModalSong } from "@/shared/components/Modal";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { PositionModal } from "@/shared/components/Modal/types";
+import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { ReusableTable } from "@/shared/components/table";
@@ -23,7 +24,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export const MyPlayLists = () => {
-    const [songs, setSongs] = useState<Song[]>([]);
+  const [songs, setSongs] = useState<Song[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(
     null
@@ -62,13 +63,11 @@ export const MyPlayLists = () => {
     sortedItems,
     totalSongs,
     totalPages,
-  } = useSongTable(songs,[
-    "name",
-    "user",
-    "fileSong",
-    "fileScore",
-    "actions",
-  ],columnTitlesPresets["myPlayListsTitle"]);
+  } = useSongTable(
+    songs,
+    ["name", "user", "fileSong", "fileScore", "actions"],
+    columnTitlesPresets["myPlayListsTitle"]
+  );
 
   const fetchSongs = async () => {
     setIsLoading(true);
@@ -101,17 +100,6 @@ export const MyPlayLists = () => {
 
   return (
     <>
-      <ModalSong
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        songToEdit={selectedSongToEdit}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedSongToEdit(null);
-        }}
-        onSongCreated={fetchSongs}
-      />
-
       <ConfirmModal
         {...ConfirmModalProps}
         isLoading={loading}
@@ -134,17 +122,16 @@ export const MyPlayLists = () => {
             onClear={onClear}
             onValueChange={onSearchChange}
           />
-          <Link
-          href={"/dashboard/my-playlists/create-playlist"}
-          >
+
           <ButtonComponent
             color={Colors.PRIMARY}
             endContent={<PlusIcon />}
-          
+            onPress={() => {
+              setIsModalOpen(true);
+            }}
           >
             Crear playlist
           </ButtonComponent>
-          </Link>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
@@ -167,6 +154,13 @@ export const MyPlayLists = () => {
         </div>
       </div>
 
+      <ModalPlaylist
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+      />
+
       <ReusableTable
         ariaLabel="Tabla de canciones"
         headerColumns={headerColumns}
@@ -183,4 +177,4 @@ export const MyPlayLists = () => {
       />
     </>
   );
-}
+};

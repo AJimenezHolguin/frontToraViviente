@@ -76,6 +76,7 @@ export const MySongs = () => {
     setIsLoading(true);
     try {
       const songsData = await getMySongs();
+      console.log("estas son mis canciones", songsData)
 
       setSongs(songsData);
     } catch (error) {
