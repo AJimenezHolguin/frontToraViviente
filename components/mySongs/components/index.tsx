@@ -90,18 +90,8 @@ export const MySongs = () => {
     fetchSongs();
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-[300px]">
-        <SpinnerComponent
-          color={Colors.PRIMARY}
-          size={Sizes.MD}
-          variant={SpinnerVariant.WAVE}
-        />
-      </div>
-    );
-  }
-
+  if (isLoading) return <SpinnerComponent />
+       
   return (
     <>
       <ModalSong
