@@ -72,14 +72,16 @@ export const Login = () => {
   return (
     <>
       <div className="relative lg:flex">
-        <section className="m-[25px] h-full md:flex items-start justify-center lg:w-[1100]">
+        <section className="m-[25px] h-full md:flex gap-10 items-start justify-center md:w-[800px] lg:w-[1100px]">
+          <div className="bg-red-500 h-screen">
           <Image
             alt="Tora-Viviente"
             height={70}
             src={"/logo-torah-viviente-2.png"}
             width={70}
           />
-          <div className="sm:mt-3 md:mt-20  md:w-3/4 flex flex-col gap-3 lg:gap-0">
+          </div>
+          <div className="bg-blue-500 sm:mt-3 md:mt-20  md:w-3/4 flex flex-col gap-3 lg:gap-0">
             <Text $v="h1" className={"mt-6"}>
               Sign In
             </Text>
