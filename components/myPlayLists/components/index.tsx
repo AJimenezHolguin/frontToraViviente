@@ -1,28 +1,29 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
-import { ModalSong } from "@/shared/components/Modal";
-import { Song } from "@/types/SongsTypesProps";
-import { SpinnerComponent } from "@/shared/components/Spinner";
-import { Sizes } from "@/types/sizes.enum";
-import { Colors } from "@/types/color.enum";
-import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { getMySongs } from "@/services/songs/getMySongs.service";
-import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
-import { AlertModal } from "@/shared/components/Modal/ModalAlert";
-import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-import { useSongTable } from "../../../shared/hooks/songs/useSongTable";
-import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
-import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
-import { ReusableTable } from "@/shared/components/table";
-import { PositionModal } from "@/shared/components/Modal/types";
+import { ButtonComponent } from "@/shared/components/Button";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps } from "@/shared/components/Input/types";
-import { ButtonComponent } from "@/shared/components/Button";
+import { ModalSong } from "@/shared/components/Modal";
+import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
+import { AlertModal } from "@/shared/components/Modal/ModalAlert";
+import { PositionModal } from "@/shared/components/Modal/types";
+import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
+import { SpinnerComponent } from "@/shared/components/Spinner";
+import { SpinnerVariant } from "@/shared/components/Spinner/types";
+import { ReusableTable } from "@/shared/components/table";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
+import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
+import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
+import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
+import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
+import { useSongTable } from "@/shared/hooks/songs/useSongTable";
+import { Colors } from "@/types/color.enum";
+import { Sizes } from "@/types/sizes.enum";
+import { Song } from "@/types/SongsTypesProps";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-
-export const MySongs = () => {
+export const MyPlayLists = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(
@@ -62,21 +63,16 @@ export const MySongs = () => {
     sortedItems,
     totalSongs,
     totalPages,
-  } = useSongTable(songs,[
-    "name",
-    "user",
-    "linkSong",
-    "category",
-    "fileSong",
-    "fileScore",
-    "actions",
-  ],columnTitlesPresets["mySongsTitle"]);
+  } = useSongTable(
+    songs,
+    ["name", "user", "fileSong", "fileScore", "actions"],
+    columnTitlesPresets["myPlayListsTitle"]
+  );
 
   const fetchSongs = async () => {
     setIsLoading(true);
     try {
       const songsData = await getMySongs();
-      console.log("estas son mis canciones", songsData)
 
       setSongs(songsData);
     } catch (error) {
@@ -91,20 +87,9 @@ export const MySongs = () => {
   }, []);
 
   if (isLoading) return <SpinnerComponent />
-       
+      
   return (
     <>
-      <ModalSong
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        songToEdit={selectedSongToEdit}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedSongToEdit(null);
-        }}
-        onSongCreated={fetchSongs}
-      />
-
       <ConfirmModal
         {...ConfirmModalProps}
         isLoading={loading}
@@ -127,20 +112,20 @@ export const MySongs = () => {
             onClear={onClear}
             onValueChange={onSearchChange}
           />
+
           <ButtonComponent
             color={Colors.PRIMARY}
             endContent={<PlusIcon />}
             onPress={() => {
-              setSelectedSongToEdit(null);
               setIsModalOpen(true);
             }}
           >
-            Crear canción
+            Crear playlist
           </ButtonComponent>
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {totalSongs} canciones
+            Total {totalSongs} playlist
           </span>
           <label className="flex items-center text-default-400 text-small">
             Filas por página:
@@ -158,6 +143,13 @@ export const MySongs = () => {
           </label>
         </div>
       </div>
+
+      <ModalPlaylist
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+      />
 
       <ReusableTable
         ariaLabel="Tabla de canciones"

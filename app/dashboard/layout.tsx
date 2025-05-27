@@ -16,7 +16,7 @@ export default function DashboardLayout({
 
   return (
     <div className="bg-slate-100 overflow-y-scroll w-screen h-screen antialiased text-slate-300 selection:bg-blue-600 selection:text-white relative">
-      <div className={`w-full  flex justify-between items-center  p-2 ${!isSidebarOpen ? "bg-primary" : ""}`}>
+      <div className={`w-full h-[60px] flex justify-between items-center  p-2 ${!isSidebarOpen ? "bg-primary" : ""}`}>
         <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
         <Image
           alt="Tora-Viviente"
