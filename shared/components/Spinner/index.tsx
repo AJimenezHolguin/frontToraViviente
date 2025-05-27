@@ -1,10 +1,19 @@
 import { Spinner } from "@heroui/react";
-import { SpinnerProps } from "./types";
+import { SpinnerVariant } from "./types";
+import { Colors } from "@/types/color.enum";
+import { Sizes } from "@/types/sizes.enum";
 
-export const SpinnerComponent = ({
-  size,
-  color,
-  variant,
-}: SpinnerProps) => {
-  return <Spinner color={color} size={size} variant={variant} />;
+export const SpinnerComponent = () => {
+  return (
+    <div
+      className="flex justify-center items-center "
+      style={{ height: "calc(100vh - 100px)"}}
+    >
+      <Spinner
+        color={Colors.PRIMARY}
+        size={Sizes.MD}
+        variant={SpinnerVariant.WAVE}
+      />
+    </div>
+  );
 };

@@ -10,12 +10,10 @@ import {
   Pagination,
 } from "@heroui/react";
 
-
 import React from "react";
 import { ReusableTableProps } from "./types";
 
-
-export const ReusableTable = <T extends { [key: string]:any }>({
+export const ReusableTable = <T extends { [key: string]: any }>({
   ariaLabel,
   headerColumns,
   sortedItems,

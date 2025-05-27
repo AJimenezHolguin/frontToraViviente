@@ -6,6 +6,7 @@ import { TypeProps } from "@/shared/components/Input/types";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { ReusableTable } from "@/shared/components/table";
+import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { SearchIcon } from "@/shared/components/table/TableIcons";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useSongTable } from "@/shared/hooks/songs/useSongTable";
@@ -41,7 +42,7 @@ export const AllSongs = () => {
     "category",
     "fileSong",
     "fileScore",
-  ]);
+  ],columnTitlesPresets["allSongsTitle"]);
 
   const renderCell = useRenderSongCell({});
 
@@ -62,18 +63,8 @@ export const AllSongs = () => {
     fetchAllSongs();
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-[300px]">
-        <SpinnerComponent
-          color={Colors.PRIMARY}
-          size={Sizes.MD}
-          variant={SpinnerVariant.WAVE}
-        />
-      </div>
-    );
-  }
-
+  if (isLoading) return  <SpinnerComponent />  
+ 
   return (
     <>
       <div className="flex flex-col gap-4">
