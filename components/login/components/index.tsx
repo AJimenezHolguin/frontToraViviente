@@ -72,8 +72,8 @@ export const Login = () => {
   return (
     <>
       <div className="relative lg:flex">
-        <section className="m-[25px] h-full md:flex gap-10 items-start justify-center md:w-[800px] lg:w-[1100px]">
-          <div className="bg-red-500 h-screen">
+        <section className="m-[25px] h-full md:flex flex-col gap-1 items-center justify-center md:w-[800px] lg:w-[1100px]">
+          <div className="bg-red-500 w-full h-full">
           <Image
             alt="Tora-Viviente"
             height={70}
@@ -81,7 +81,7 @@ export const Login = () => {
             width={70}
           />
           </div>
-          <div className="bg-blue-500 sm:mt-3 md:mt-20  md:w-3/4 flex flex-col gap-3 lg:gap-0">
+          <div className="bg-blue-500 sm:mt-3 md:mt-20  md:w-4/5 flex flex-col gap-3 lg:gap-0">
             <Text $v="h1" className={"mt-6"}>
               Sign In
             </Text>
@@ -172,7 +172,7 @@ export const Login = () => {
             </div>
           </div>
         </section>
-        <section className="hidden lg:flex items-center justify-center w-full p-[40px]">
+        <section className="hidden lg:flex items-center justify-center w-3/4 p-[40px]">
           <div className="lg flex flex-col items-center justify-center">
             <Image
               alt={"login"}
@@ -180,7 +180,7 @@ export const Login = () => {
               src={"/login/login.svg"}
               width={400}
             />
-            <p>
+            <p className="w-[90%] text-center">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
               libero iusto repudiandae alias mollitia, eligendi similique ab
               harum asperiores assumenda.@
