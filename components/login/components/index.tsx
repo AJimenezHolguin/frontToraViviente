@@ -73,7 +73,7 @@ export const Login = () => {
     <>
       <div className="relative lg:flex">
         <section className="m-[25px] h-full md:flex flex-col gap-1 items-center justify-center md:w-[800px] lg:w-[1100px]">
-          <div className="bg-red-500 w-full h-full">
+          <div className="w-full h-full">
           <Image
             alt="Tora-Viviente"
             height={70}
@@ -81,7 +81,7 @@ export const Login = () => {
             width={70}
           />
           </div>
-          <div className="bg-blue-500 sm:mt-3 md:mt-20  md:w-4/5 flex flex-col gap-3 lg:gap-0">
+          <div className="sm:mt-3 md:w-4/5 flex flex-col gap-3 lg:gap-0">
             <Text $v="h1" className={"mt-6"}>
               Sign In
             </Text>
