@@ -21,14 +21,14 @@ export const menuItems:SidebarMenuItemProps[] = [
         icon: <IoListOutline size={25} />,
     },
     {
-        title: "Mis Alabanzas",
+        title: "Mis Canciones",
         subTitle: "Mis Alabanzas",
         path: "/dashboard/my-songs",
         icon: <IoMusicalNoteOutline size={25} />,
     },
     {
-        title: "Todas las Alabanzas",
-        subTitle: "Todas las Canciones",
+        title: "Todas las Canciones",
+        subTitle: "Todas las Alabanzas",
         path: "/dashboard/all-songs",
         icon: <IoMusicalNotesOutline size={25} />,
     },
