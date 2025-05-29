@@ -24,14 +24,14 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <>
       <button
-        className="top-4 left-4 z-30 p-2 bg-primary text-black rounded-full md:right-[410px] transition-all duration-300"
+        className="top-4 left-4 z-30 p-2 bg-secondary text-black rounded-full md:right-[410px] transition-all duration-300"
         onClick={onToggle}
       >
         {isOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
       </button>
       <div
         className={`
-          fixed top-0 left-0 z-20 h-screen w-[300px] bg-primary text-slate-300
+          fixed top-0 left-0 z-20 h-screen w-[300px] bg-secondary text-slate-300
           transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           flex flex-col

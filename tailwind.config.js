@@ -14,6 +14,7 @@ const config = {
       colors: {
         primary: COLORSTEXT.primary,
         secondary: COLORSTEXT.secondary, 
+        success: COLORSTEXT.success,
         grey_ligth:COLORSTEXT.grey_ligth,
         grey_dark: COLORSTEXT.grey_dark,
         default: COLORSTEXT.default,

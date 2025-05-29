@@ -14,8 +14,8 @@ export const SidebarMenuItem = ({
 
   return (
     <Link
-      className={`w-full px-2 inline-flex space-x-2 items-center border-b border-black py-3 hover:bg-white/5 transition ease-linear duration-150
-        ${currentPath === path ? " bg-secondary" : ""} 
+      className={`w-full px-2 inline-flex space-x-2 items-center border-b border-black py-3 hover:bg-[#3D8A7F] transition ease-linear duration-150
+        ${currentPath === path ? " bg-danger" : ""} 
       `}
       href={path}
     >
