@@ -8,6 +8,7 @@ import {
   Button,
 } from "@heroui/react";
 import { AlertModalProps } from "./types";
+import { Text } from "../Text";
 
 export const AlertModal: React.FC<AlertModalProps> = ({
   isOpen,
@@ -20,7 +21,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
       <ModalContent>
         <ModalHeader>{type === "success" ? "¡Éxito!" : "Error"}</ModalHeader>
         <ModalBody>
-          <p>{message}</p>
+          <Text>{message}</Text>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onPress={onClose}>

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { SidebarMenuItemProps } from "./types";
 import { usePathname } from "next/navigation";
-
+import { Colors } from "@/types/color.enum";
+import { useState } from "react";
 export const SidebarMenuItem = ({
   title,
   subTitle,
@@ -11,19 +12,31 @@ export const SidebarMenuItem = ({
   icon,
 }: SidebarMenuItemProps) => {
   const currentPath = usePathname();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Link
-      className={`w-full px-2 inline-flex space-x-2 items-center border-b border-black py-3 hover:bg-[#3D8A7F] transition ease-linear duration-150
-        ${currentPath === path ? " bg-danger" : ""} 
+      className={`w-full px-2 inline-flex space-x-2 items-center border-b border-transparent py-3 transition ease-linear duration-150
       `}
       href={path}
+      style={{
+        backgroundColor:
+          currentPath === path ? Colors.SELECTED :
+            isHovered ? Colors.HOVER : "transparent",
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="text-black">{icon}</div>
+      <div className={`p-2`} style={{
+        color: currentPath === path ? Colors.HOVER : Colors.SELECTED
+      }}>{icon}</div>
       <div className="flex flex-col">
-        <span className="text-lg font-bold leading-5 text-black">{title}</span>
-        <span className="text-sm text-neutral-800">{subTitle}</span>
+        <span className="text-lg font-bold leading-5 text-white">{title}</span>
+        <span className={`text-sm`} style={{
+          color: "white"
+        }
+        } > {subTitle}</span>
       </div>
-    </Link>
+    </Link >
   );
 };

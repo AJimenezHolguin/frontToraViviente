@@ -1,36 +1,37 @@
 import { SidebarMenuItemProps } from "../components/SidebarMenuItem/types"
 import { IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline, IoPersonOutline } from 'react-icons/io5';
+import { COLORSTEXT } from "../styles/colors";
 
-export const menuItems:SidebarMenuItemProps[] = [
+export const menuItems: SidebarMenuItemProps[] = [
     {
         title: "Mi Perfil",
         subTitle: "Panel de Usuario",
         path: "/dashboard/my-profile",
-        icon: <IoPersonOutline size={25} />,
+        icon: <IoPersonOutline size={35} />,
     },
     {
         title: "Mis Playlists",
         subTitle: "Mis Listas",
         path: "/dashboard/my-playlists",
-        icon: <IoListCircleOutline size={25} />,
+        icon: <IoListCircleOutline size={35} />,
     },
     {
         title: "Todas las Playlists",
         subTitle: "Listas de Reproducción",
         path: "/dashboard/all-playlist",
-        icon: <IoListOutline size={25} />,
+        icon: <IoListOutline size={35} />,
     },
     {
         title: "Mis Canciones",
         subTitle: "Mis Alabanzas",
         path: "/dashboard/my-songs",
-        icon: <IoMusicalNoteOutline size={25} />,
+        icon: <IoMusicalNoteOutline size={35} />,
     },
     {
         title: "Todas las Canciones",
         subTitle: "Todas las Alabanzas",
         path: "/dashboard/all-songs",
-        icon: <IoMusicalNotesOutline size={25} />,
+        icon: <IoMusicalNotesOutline size={35} />,
     },
 
 ]

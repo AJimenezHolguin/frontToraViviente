@@ -1,12 +1,17 @@
+/** @jsxImportSource @emotion/react */
 "use client";
 
+import { useEffect, useRef } from "react";
 import { SidebarMenuItem } from "@/shared/components/SidebarMenuItem";
 import { menuItems } from "@/shared/constants/menuItems";
-
 import Link from "next/link";
 import { IoBookOutline } from "react-icons/io5";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
+import { Colors } from "@/types/color.enum";
+import { Text } from "@/shared/components/Text";
+import { css } from "@emotion/react";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -14,59 +19,96 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
-  const {data: session} = useSession();
+  const { data: session } = useSession();
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
     signOut({ callbackUrl: "/login" });
   };
 
+  // Cerrar al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+        onToggle();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onToggle]);
+
+  const sidebarStyles = css`
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    height: 100vh;
+    width: 300px;
+    background-color: #4DA699;
+    color: #cbd5e0;
+    transform: ${isOpen ? "translateX(0)" : "translateX(-100%)"};
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+  `;
+
   return (
     <>
       <button
-        className="top-4 left-4 z-30 p-2 bg-secondary text-black rounded-full md:right-[410px] transition-all duration-300"
+        className="top-4 left-4 z-30 p-2 bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
         onClick={onToggle}
       >
-        {isOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
+        {isOpen ? <FiChevronLeft size={30} color={Colors.GREY_DARK} /> : <FiChevronRight size={30} color={Colors.GREY_DARK} />}
       </button>
-      <div
-        className={`
-          fixed top-0 left-0 z-20 h-screen w-[300px] bg-secondary text-slate-300
-          transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          flex flex-col
-          `}
-        id="menu"
-      >
-        <div className="my-12 px-6">
-          <h1 className="flex items-center text-lg md:text-2xl font-bold text-black">
-            <IoBookOutline className="mr-2" id="logo" />
-            <span>Tora viviente</span>
-          </h1>
-          <p className="text-slate-500 text-sm">
+
+      <div css={sidebarStyles} ref={sidebarRef} id="menu">
+        <div style={{ margin: "80px 0px 25px 25px" }}>
+          <div className="flex items-center text-lg md:text-2xl">
+            <IoBookOutline className="mr-2" color={Colors.PRIMARY} />
+            <Text $v="h5" $fw={700} $color={Colors.PRIMARY}>
+              Tora viviente
+            </Text>
+          </div>
+          <Text $v="md" $fw={500} $color={Colors.WHITE}>
             Gestiona tus acciones y actividades
-          </p>
+          </Text>
         </div>
 
         <div className="px-6 pb-7" id="profile">
-          <p className="text-slate-500">Bienvenido,</p>
-          <Link className="inline-flex space-x-2 items-center" href="#">
-            <span className="text-sm md:text-base font-bold">
-              {session?.user?.name}
-            </span>
+          <Text $v="md" $fw={500} $color={Colors.WHITE}>Bienvenido,</Text>
+          <Link className="inline-flex space-x-2 items-center" href="#" onClick={onToggle}>
+            <Text $v="h5" $fw={600} $color={Colors.SELECTED}>
+              {session?.user?.name?.split(" ").map(word =>
+                word.charAt(0).toUpperCase() + word.slice(1)
+              ).join(" ")}
+            </Text>
           </Link>
         </div>
 
         <div className="w-full px-6" id="nav">
           {menuItems.map((item) => (
-            <SidebarMenuItem key={item.path} {...item} />
+            <div key={item.path} onClick={onToggle}>
+              <SidebarMenuItem {...item} />
+            </div>
           ))}
         </div>
-        <div className="px-6 mt-auto mb-6">
+
+        <div className="ml-12 mt-[80px]">
           <Link
-            className="text-sm md:text-base font-bold cursor-pointer"
+            className="text-danger text-lg md:text-base font-bold cursor-pointer"
             href={"/login"}
             onClick={handleLogout}
+            style={{ fontSize: "1.25rem" }}
           >
             Logout
           </Link>

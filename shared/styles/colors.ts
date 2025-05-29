@@ -1,7 +1,7 @@
 export const COLORSTEXT = {
   // primary: "#1C4532",
   // primary: "#F37C1F",
-  primary: "#FF7B09",
+  primary: "#",
   // secondary: "#2F6B50",
   // secondary: "#C75F11",
   lila: "#544f65",
@@ -10,6 +10,7 @@ export const COLORSTEXT = {
   grey_ligth: "#718096",
   grey_dark: "#4A5568",
   default: "#171923",
-  danger: "#2C6B60",
-  hover: "#3D8A7F"
+  danger: "#f40d30",
+  hover: "#3D8A7F",
+  selected: "#3D8A7F"
 } as const;

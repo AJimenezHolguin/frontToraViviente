@@ -19,6 +19,8 @@ const config = {
         grey_dark: COLORSTEXT.grey_dark,
         default: COLORSTEXT.default,
         danger: COLORSTEXT.danger,
+        hover: "#8a823d",
+        selected: "#8a823d",
       },
     },
   },

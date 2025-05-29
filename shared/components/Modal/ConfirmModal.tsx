@@ -7,6 +7,7 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import { ConfirmModalProps } from "./types";
+import { Text } from "../Text";
 
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
@@ -25,7 +26,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       <ModalContent>
         <ModalHeader>Confirmación</ModalHeader>
         <ModalBody>
-          <p>{message}</p>
+          <Text>{message}</Text>
         </ModalBody>
         <ModalFooter>
           <Button color="danger" onPress={onClose}>
