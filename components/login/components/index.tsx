@@ -63,7 +63,7 @@ export const Login = () => {
         });
       }
     } catch (error) {
-      error;
+      throw new Error(error as string);
     } finally {
       setIsLoading(false);
     }
@@ -71,108 +71,112 @@ export const Login = () => {
 
   return (
     <>
-      <div className="relative lg:flex">
-        <section className="m-[25px] h-full md:flex flex-col gap-1 items-center justify-center md:w-[800px] lg:w-[1100px]">
-          <div className="bg-red-500 w-full h-full">
-          <Image
-            alt="Tora-Viviente"
-            height={70}
-            src={"/logo-torah-viviente-2.png"}
-            width={70}
-          />
-          </div>
-          <div className="bg-blue-500 sm:mt-3 md:mt-20  md:w-4/5 flex flex-col gap-3 lg:gap-0">
-            <Text $v="h1" className={"mt-6"}>
-              Sign In
-            </Text>
-            <Form onSubmit={handleSubmit}>
-              <InputComponent
-                classNames={{
-                  [InputClassNameKeys.BASE]: "pt-6",
-                }}
-                color={Colors.PRIMARY}
-                label="E-mail"
-                labelPlacement={LabelPlacementProps.OUTSIDE}
-                placeholder={"example@gmail.com"}
-                type={TypeProps.EMAIL}
-                value={email}
-                variant={VariantProps.BORDERED}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  setEmail(event?.target.value)
-                }
+      <div className="lg:flex">
+        <section className="w-full h-screen md:flex flex-col gap-1 items-center justify-center md:w-[900px] lg:w-[1100px] lg:h-[100vh] lg:p-[50px]">
+          <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-3/4 md:w-dvw lg:w-[90%]">
+              <Image
+                alt="Tora-Viviente"
+                height={40}
+                src={"/logo-torah-viviente-2.png"}
+                width={50}
               />
-              <InputComponent
-                classNames={{
-                  [InputClassNameKeys.BASE]: "pt-6",
-                }}
-                color={Colors.PRIMARY}
-                endContent={
-                  <PasswordToggleIcon
-                    isVisible={isVisible}
-                    toggleVisibility={toggleVisibility}
-                  />
-                }
-                label="Password"
-                labelPlacement={LabelPlacementProps.OUTSIDE}
-                minLength={6}
-                placeholder={"***"}
-                radius={RadiusProps.SM}
-                type={isVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
-                value={password}
-                variant={VariantProps.BORDERED}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  setPassword(event.target.value)
-                }
-              />
+            </div>
 
-              <div className="flex justify-between pt-6 w-full">
-                <CheckboxComponent
+            <div className="w-3/4 lg:w-4/5 flex flex-col justify-center gap-3 lg:gap-0">
+              <Text $v="h1">
+                Iniciar sesión
+              </Text>
+              <Form onSubmit={handleSubmit}>
+                <InputComponent
                   classNames={{
-                    [InputClassNameKeys.BASE]: "pt-8",
+                    [InputClassNameKeys.BASE]: "pt-6 w-[100%]",
                   }}
                   color={Colors.PRIMARY}
+                  label="Correo electrónico"
+                  labelPlacement={LabelPlacementProps.OUTSIDE}
+                  placeholder={"ejemplo@gmail.com"}
+                  type={TypeProps.EMAIL}
+                  value={email}
+                  variant={VariantProps.BORDERED}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    setEmail(event?.target.value)
+                  }
+                />
+                <InputComponent
+                  classNames={{
+                    [InputClassNameKeys.BASE]: "pt-6",
+                  }}
+                  color={Colors.PRIMARY}
+                  endContent={
+                    <PasswordToggleIcon
+                      isVisible={isVisible}
+                      toggleVisibility={toggleVisibility}
+                    />
+                  }
+                  label="Contraseña"
+                  labelPlacement={LabelPlacementProps.OUTSIDE}
+                  minLength={6}
+                  placeholder={"********"}
+                  radius={RadiusProps.SM}
+                  type={isVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
+                  value={password}
+                  variant={VariantProps.BORDERED}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                    setPassword(event.target.value)
+                  }
+                />
+
+                <div className="flex justify-between pt-6 w-full">
+                  <CheckboxComponent
+                    classNames={{
+                      [InputClassNameKeys.BASE]: "pt-8",
+                    }}
+                    color={Colors.PRIMARY}
+                  >
+                    Recordarme
+                  </CheckboxComponent>
+                  <Text
+                    $color={COLORSTEXT.primary}
+                    $v="sm"
+                    className={
+                      "mt-6 font-bold underline decoration-black-500 underline-offset-4"
+                    }
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </Text>
+                </div>
+
+                <ButtonComponent
+                  className="mt-[45px]"
+                  fullWidth={true}
+                  isDisabled={!email || !password}
+                  isLoading={isLoading}
+                  type="submit"
                 >
-                  Remember me
-                </CheckboxComponent>
+                  Iniciar sesión
+                </ButtonComponent>
+              </Form>
+
+              <div className=" mt-6 flex justify-center gap-1">
+                <Text $color={COLORSTEXT.black} $v="sm" className={"font-bold"}>
+                  No tienes una cuenta?
+                </Text>
                 <Text
                   $color={COLORSTEXT.primary}
                   $v="sm"
                   className={
-                    "mt-6 font-bold underline decoration-black-500 underline-offset-4"
+                    "font-bold underline decoration-black-500 underline-offset-4"
                   }
                 >
-                  Forgot Password?
+                  Crear una cuenta
                 </Text>
               </div>
-
-              <ButtonComponent
-                className="mt-[45px]"
-                fullWidth={true}
-                isDisabled={!email || !password}
-                isLoading={isLoading}
-                type="submit"
-              >
-                Sign In
-              </ButtonComponent>
-            </Form>
-
-            <div className="mt-6 flex justify-center gap-1">
-              <Text $color={COLORSTEXT.black} $v="sm" className={"font-bold"}>
-                Don&#8217;t have an account?
-              </Text>
-              <Text
-                $color={COLORSTEXT.primary}
-                $v="sm"
-                className={
-                  "font-bold underline decoration-black-500 underline-offset-4"
-                }
-              >
-                Create now
-              </Text>
             </div>
           </div>
+
         </section>
-        <section className="hidden lg:flex items-center justify-center w-3/4 p-[40px]">
+        <section className="h-screen bg-[#fa8830e7] hidden lg:flex items-center justify-center w-3/4 p-[40px]">
           <div className="lg flex flex-col items-center justify-center">
             <Image
               alt={"login"}
@@ -180,11 +184,11 @@ export const Login = () => {
               src={"/login/login.svg"}
               width={400}
             />
-            <p className="w-[90%] text-center">
+            <Text $v="h5" className="w-[90%] text-white text-center">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
               libero iusto repudiandae alias mollitia, eligendi similique ab
               harum asperiores assumenda.@
-            </p>
+            </Text>
           </div>
         </section>
       </div>
@@ -194,17 +198,17 @@ export const Login = () => {
           description={alert.description}
           endContent={
             <Button
-            color={Colors.PRIMARY}
-            size={Sizes.SM}
-            variant={VariantButtonProps.SOLID}
-            onPress={() => setAlert((prev) => ({ ...prev, visible: false }))}
+              color={Colors.PRIMARY}
+              size={Sizes.SM}
+              variant={VariantButtonProps.SOLID}
+              onPress={() => setAlert((prev) => ({ ...prev, visible: false }))}
             >
               Cerrar
             </Button>
           }
           isVisible={true}
           title={alert.title}
-          type= {AlertType.ERROR}
+          type={AlertType.ERROR}
           variant={AlertVariant.SOLID}
           onClose={() => setAlert((prev) => ({ ...prev, visible: false }))}
         />
