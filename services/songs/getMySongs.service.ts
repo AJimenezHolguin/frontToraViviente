@@ -8,14 +8,14 @@ export const getMySongs = async (): Promise<Song[]> => {
   try {
     const session = await getSession();
 
-    if (!session || !session.user?.id || !session.user?.token) {
+    if (!session || !session.user?.token) {
       throw new Error("Sesión no válida o token faltante");
     }
 
-    const userId = session.user.id;
+   
     const token = session.user.token;
 
-    const response = await axiosInstance.get(`/songs/mysongs/${userId}`, {
+    const response = await axiosInstance.get("/songs/user", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

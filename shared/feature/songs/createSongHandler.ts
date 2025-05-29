@@ -18,7 +18,7 @@ export const createSongHandler = async (
       fileScore: files.fileScore,
     });
 
-    await createSong(userId, payload);
+    await createSong(payload);
 
     return { message: "¡La canción fue creada exitosamente!" };
   } catch (error) {

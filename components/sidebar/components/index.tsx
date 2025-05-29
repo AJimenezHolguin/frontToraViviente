@@ -24,7 +24,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <>
       <button
-        className="top-4 left-4 z-30 p-2 bg-primary text-white rounded-full md:right-[410px] transition-all duration-300"
+        className="top-4 left-4 z-30 p-2 bg-primary text-black rounded-full md:right-[410px] transition-all duration-300"
         onClick={onToggle}
       >
         {isOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
@@ -39,7 +39,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         id="menu"
       >
         <div className="my-12 px-6">
-          <h1 className="flex items-center text-lg md:text-2xl font-bold text-white">
+          <h1 className="flex items-center text-lg md:text-2xl font-bold text-black">
             <IoBookOutline className="mr-2" id="logo" />
             <span>Tora viviente</span>
           </h1>
@@ -64,7 +64,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         </div>
         <div className="px-6 mt-auto mb-6">
           <Link
-            className="text-red-500 cursor-pointer"
+            className="text-sm md:text-base font-bold cursor-pointer"
             href={"/login"}
             onClick={handleLogout}
           >
