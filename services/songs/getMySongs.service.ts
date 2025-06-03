@@ -15,7 +15,7 @@ export const getMySongs = async (): Promise<Song[]> => {
    
     const token = session.user.token;
 
-    const response = await axiosInstance.get("/songs/user", {
+    const response = await axiosInstance.get("/songs/user?page=1&take=2&order=ASC", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
