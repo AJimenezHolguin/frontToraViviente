@@ -17,7 +17,7 @@ import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useSongTable } from "@/shared/hooks/songs/useSongTable";
-import { Colors } from "@/types/color.enum";
+import { ColorButton } from "@/types/color.enum";
 import { Sizes } from "@/types/sizes.enum";
 import { Song } from "@/types/SongsTypesProps";
 import Link from "next/link";
@@ -114,7 +114,7 @@ export const MyPlayLists = () => {
           />
 
           <ButtonComponent
-            color={Colors.PRIMARY}
+            color={ColorButton.PRIMARY}
             endContent={<PlusIcon />}
             onPress={() => {
               setIsModalOpen(true);

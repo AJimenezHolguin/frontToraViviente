@@ -1,6 +1,6 @@
 import { SidebarMenuItemProps } from "../components/SidebarMenuItem/types"
 import { IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline, IoPersonOutline } from 'react-icons/io5';
-import { COLORSTEXT } from "../styles/colors";
+
 
 export const menuItems: SidebarMenuItemProps[] = [
     {

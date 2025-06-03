@@ -5,7 +5,7 @@ import { ModalSong } from "@/shared/components/Modal";
 import { Song } from "@/types/SongsTypesProps";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { Sizes } from "@/types/sizes.enum";
-import { Colors } from "@/types/color.enum";
+import { ColorButton } from "@/types/color.enum";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { getMySongs } from "@/services/songs/getMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
@@ -128,7 +128,7 @@ export const MySongs = () => {
             onValueChange={onSearchChange}
           />
           <ButtonComponent
-            color={Colors.PRIMARY}
+            color={ColorButton.PRIMARY}
             endContent={<PlusIcon />}
             onPress={() => {
               setSelectedSongToEdit(null);

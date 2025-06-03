@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { SidebarMenuItemProps } from "./types";
 import { usePathname } from "next/navigation";
-import { Colors } from "@/types/color.enum";
 import { useState } from "react";
+import { COLORS } from "@/styles/colors";
 export const SidebarMenuItem = ({
   title,
   subTitle,
@@ -21,14 +21,14 @@ export const SidebarMenuItem = ({
       href={path}
       style={{
         backgroundColor:
-          currentPath === path ? Colors.SELECTED :
-            isHovered ? Colors.HOVER : "transparent",
+          currentPath === path ? COLORS.selected :
+            isHovered ? COLORS.hover : "transparent",
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className={`p-2`} style={{
-        color: currentPath === path ? Colors.HOVER : Colors.SELECTED
+        color: currentPath === path ? COLORS.hover : COLORS.selected
       }}>{icon}</div>
       <div className="flex flex-col">
         <span className="text-lg font-bold leading-5 text-white">{title}</span>

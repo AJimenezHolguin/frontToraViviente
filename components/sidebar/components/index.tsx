@@ -8,10 +8,11 @@ import Link from "next/link";
 import { IoBookOutline } from "react-icons/io5";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
-import { Colors } from "@/types/color.enum";
+
 import { Text } from "@/shared/components/Text";
 import { css } from "@emotion/react";
 import { useRouter } from "next/navigation";
+import { COLORS } from "@/styles/colors";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -21,7 +22,7 @@ interface SidebarProps {
 export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   const { data: session } = useSession();
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+ 
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -68,26 +69,26 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         className="top-4 left-4 z-30 p-2 bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
         onClick={onToggle}
       >
-        {isOpen ? <FiChevronLeft size={30} color={Colors.GREY_DARK} /> : <FiChevronRight size={30} color={Colors.GREY_DARK} />}
+        {isOpen ? <FiChevronLeft size={30} color={COLORS.grey_dark} /> : <FiChevronRight size={30} color={COLORS.grey_dark} />}
       </button>
 
       <div css={sidebarStyles} ref={sidebarRef} id="menu">
         <div style={{ margin: "80px 0px 25px 25px" }}>
           <div className="flex items-center text-lg md:text-2xl">
-            <IoBookOutline className="mr-2" color={Colors.PRIMARY} />
-            <Text $v="h5" $fw={700} $color={Colors.PRIMARY}>
+            <IoBookOutline className="mr-2" color={COLORS.primary} />
+            <Text $v="h5" $fw={700} $color={COLORS.primary}>
               Tora viviente
             </Text>
           </div>
-          <Text $v="md" $fw={500} $color={Colors.WHITE}>
+          <Text $v="md" $fw={500} $color={COLORS.white}>
             Gestiona tus acciones y actividades
           </Text>
         </div>
 
         <div className="px-6 pb-7" id="profile">
-          <Text $v="md" $fw={500} $color={Colors.WHITE}>Bienvenido,</Text>
+          <Text $v="md" $fw={500} $color={COLORS.white}>Bienvenido,</Text>
           <Link className="inline-flex space-x-2 items-center" href="#" onClick={onToggle}>
-            <Text $v="h5" $fw={600} $color={Colors.SELECTED}>
+            <Text $v="h5" $fw={600} $color={COLORS.selected}>
               {session?.user?.name?.split(" ").map(word =>
                 word.charAt(0).toUpperCase() + word.slice(1)
               ).join(" ")}

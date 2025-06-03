@@ -1,7 +1,7 @@
 import React from "react";
 import { Input, Button } from "@heroui/react";
 import { SelectedInput } from "../SeletedInput";
-import { Colors } from "@/types/color.enum";
+import { ColorButton } from "@/types/color.enum";
 import { Sizes } from "@/types/sizes.enum";
 import { RadiusProps } from "@/types/radius.enum";
 import { SongFormProps } from "./types";
@@ -43,7 +43,7 @@ export const SongForm: React.FC<SongFormProps> = ({
       <div className="w-1/2 flex flex-col gap-4 justify-center mt-[10px]">
         <div className="flex flex-col gap-1 w-1/2">
           <Button
-            color={Colors.PRIMARY}
+            color={ColorButton.PRIMARY}
             radius={RadiusProps.MD}
             size={Sizes.SM}
             onPress={() => handleFileClick(letraRef)}
@@ -66,7 +66,7 @@ export const SongForm: React.FC<SongFormProps> = ({
 
         <div className="flex flex-col gap-1 w-1/2">
           <Button
-            color={Colors.PRIMARY}
+            color={ColorButton.PRIMARY}
             radius={RadiusProps.MD}
             size={Sizes.SM}
             onPress={() => handleFileClick(acordeRef)}

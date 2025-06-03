@@ -1,4 +1,4 @@
-import { COLORSTEXT } from "@/shared/styles/colors";
+
 import { Song } from "@/types/SongsTypesProps";
 import React from "react";
 import { IoLogoYoutube } from "react-icons/io5";
@@ -6,6 +6,7 @@ import { FaFilePdf, FaRegFilePdf } from "react-icons/fa6";
 import { Tooltip } from "@heroui/react";
 import { DeleteIcon, EditIcon } from "@/shared/components/table/TableIcons";
 import { UseRenderSongCellProps } from "./types";
+import { COLORS } from "@/styles/colors";
 
 export const useRenderSongCell = ({
   onEdit,
@@ -31,7 +32,7 @@ export const useRenderSongCell = ({
             rel="noopener noreferrer"
             target="_blank"
           >
-            <FaFilePdf color={COLORSTEXT.secondary} size={20} />
+            <FaFilePdf color={COLORS.secondary} size={20} />
           </a>
         ) : (
           <span className="text-default-400">N/A</span>
@@ -44,7 +45,7 @@ export const useRenderSongCell = ({
             rel="noopener noreferrer"
             target="_blank"
           >
-            <FaRegFilePdf color={COLORSTEXT.secondary} size={20} />
+            <FaRegFilePdf color={COLORS.secondary} size={20} />
           </a>
         ) : (
           <span className="text-default-400">N/A</span>

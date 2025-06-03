@@ -1,6 +1,6 @@
 import { Spinner } from "@heroui/react";
 import { SpinnerVariant } from "./types";
-import { Colors } from "@/types/color.enum";
+import { ColorButton } from "@/types/color.enum";
 import { Sizes } from "@/types/sizes.enum";
 
 export const SpinnerComponent = () => {
@@ -10,7 +10,7 @@ export const SpinnerComponent = () => {
       style={{ height: "calc(100vh - 100px)"}}
     >
       <Spinner
-        color={Colors.PRIMARY}
+        color={ColorButton.PRIMARY}
         size={Sizes.MD}
         variant={SpinnerVariant.WAVE}
       />

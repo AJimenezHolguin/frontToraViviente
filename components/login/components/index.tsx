@@ -16,17 +16,18 @@ import {
   TypeProps,
   VariantProps,
 } from "@/shared/components/Input/types";
-import { Colors } from "@/types/color.enum";
+import { ColorButton } from "@/types/color.enum";
 import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
 import { CheckboxComponent } from "@/shared/components/Checkbox";
-import { COLORSTEXT } from "@/shared/styles/colors";
+
 import { signIn } from "next-auth/react";
 import CustomAlert from "@/shared/components/CustomAlert";
 import { AlertType, AlertVariant } from "@/types/alert.interface";
 import { VariantButtonProps } from "@/shared/components/Button/types";
 import { Button } from "@heroui/button";
 import { Sizes } from "@/types/sizes.enum";
+import { COLORS } from "@/styles/colors";
 
 export const Login = () => {
   const router = useRouter();
@@ -86,7 +87,7 @@ export const Login = () => {
             <div className="w-3/4 lg:w-4/5 flex flex-col justify-center gap-3 lg:gap-0">
               <Text 
               $v="h1"
-              $color={COLORSTEXT.lila}
+              $color={COLORS.lila}
               >
                 Iniciar sesión
               </Text>
@@ -136,12 +137,12 @@ export const Login = () => {
                     classNames={{
                       [InputClassNameKeys.BASE]: "pt-8",
                     }}
-                    color={Colors.PRIMARY}
+                    color={ColorButton.PRIMARY}
                   >
                     Recordarme
                   </CheckboxComponent>
                   <Text
-                    $color={COLORSTEXT.lila}
+                    $color={COLORS.lila}
                     $v="sm"
                     className={
                       "mt-6 font-bold underline decoration-black-500 underline-offset-4"
@@ -152,7 +153,8 @@ export const Login = () => {
                 </div>
 
                 <ButtonComponent
-                  className="mt-[45px] bg-primary"
+                  color={ColorButton.PRIMARY}
+                  className="mt-[45px] text-white font-bold"
                   fullWidth={true}
                   isDisabled={!email || !password}
                   isLoading={isLoading}
@@ -163,11 +165,11 @@ export const Login = () => {
               </Form>
 
               <div className=" mt-6 flex justify-center gap-1">
-                <Text $color={COLORSTEXT.black} $v="sm" className={"font-bold"}>
+                <Text $color={COLORS.black} $v="sm" className={"font-bold"}>
                   No tienes una cuenta?
                 </Text>
                 <Text
-                  $color={COLORSTEXT.lila}
+                  $color={COLORS.lila}
                   $v="sm"
                   className={
                     "font-bold underline decoration-black-500 underline-offset-4"
@@ -198,17 +200,17 @@ export const Login = () => {
       </div>
       {alert.visible && (
         <CustomAlert
-          color={Colors.DANGER}
+          color={ColorButton.DANGER}
           description={alert.description}
           endContent={
-            <Button
-              color={Colors.PRIMARY}
+            <ButtonComponent
+              color={ColorButton.PRIMARY}
               size={Sizes.SM}
               variant={VariantButtonProps.SOLID}
               onPress={() => setAlert((prev) => ({ ...prev, visible: false }))}
             >
               Cerrar
-            </Button>
+            </ButtonComponent>
           }
           isVisible={true}
           title={alert.title}
