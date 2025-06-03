@@ -1,6 +1,6 @@
 import { Spinner } from "@heroui/react";
 import { SpinnerVariant } from "./types";
-import { ColorButton } from "@/types/color.enum";
+import { ColorButton } from "@/styles/colorButton.enum";
 import { Sizes } from "@/types/sizes.enum";
 
 export const SpinnerComponent = () => {

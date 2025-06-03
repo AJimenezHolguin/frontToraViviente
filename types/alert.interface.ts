@@ -1,4 +1,4 @@
-import { ColorButton } from "./color.enum";
+import { ColorButton } from "../styles/colorButton.enum";
 import { Sizes } from "./sizes.enum";
 
 export enum AlertType {

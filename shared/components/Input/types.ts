@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 import { Sizes } from "@/types/sizes.enum";
-import { Colors } from "@/types/color.enum";
+import { Colors } from "@/styles/colorButton.enum";
 import { RadiusProps } from "@/types/radius.enum";
 import { InputClassNameKeys } from "@/types/classNamesKeys";
 

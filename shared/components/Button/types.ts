@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { PressEvent } from "@heroui/button";
 
 import { Sizes } from "@/types/sizes.enum";
-import { ColorButton } from "@/types/color.enum";
+import { ColorButton } from "@/styles/colorButton.enum";
 import { RadiusProps } from "@/types/radius.enum";
 
 export enum VariantButtonProps {

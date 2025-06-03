@@ -16,7 +16,7 @@ import {
   TypeProps,
   VariantProps,
 } from "@/shared/components/Input/types";
-import { ColorButton } from "@/types/color.enum";
+import { ColorButton } from "@/styles/colorButton.enum";
 import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
 import { CheckboxComponent } from "@/shared/components/Checkbox";

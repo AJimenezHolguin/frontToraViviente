@@ -5,7 +5,7 @@ import { ModalSong } from "@/shared/components/Modal";
 import { Song } from "@/types/SongsTypesProps";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { Sizes } from "@/types/sizes.enum";
-import { ColorButton } from "@/types/color.enum";
+import { ColorButton } from "@/styles/colorButton.enum";
 import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { getMySongs } from "@/services/songs/getMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";

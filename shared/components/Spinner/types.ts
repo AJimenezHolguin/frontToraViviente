@@ -1,4 +1,4 @@
-import { Colors } from "@/types/color.enum";
+import { Colors } from "@/styles/colorButton.enum";
 import { Sizes } from "@/types/sizes.enum";
 
 export interface SpinnerProps {
