@@ -86,7 +86,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             href="#"
             onClick={onToggle}
           >
-            <Text $color={COLORS.selected} $fw={600} $v="h5">
+            <Text $color={COLORS.primary} $fw={600} $v="h5">
               {session?.user?.name
                 ?.split(" ")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
