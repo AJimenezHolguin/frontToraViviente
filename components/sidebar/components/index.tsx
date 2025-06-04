@@ -11,7 +11,7 @@ import { signOut, useSession } from "next-auth/react";
 
 import { Text } from "@/shared/components/Text";
 import { css } from "@emotion/react";
-import { useRouter } from "next/navigation";
+
 import { COLORS } from "@/styles/colors";
 
 interface SidebarProps {
@@ -22,7 +22,6 @@ interface SidebarProps {
 export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   const { data: session } = useSession();
   const sidebarRef = useRef<HTMLDivElement>(null);
- 
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -32,7 +31,10 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   // Cerrar al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
         onToggle();
       }
     };
@@ -55,7 +57,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
     z-index: 20;
     height: 100vh;
     width: 300px;
-    background-color: #4DA699;
+    background-color: #4da699;
     color: #cbd5e0;
     transform: ${isOpen ? "translateX(0)" : "translateX(-100%)"};
     transition: transform 0.3s ease-in-out;
@@ -69,29 +71,40 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         className="top-4 left-4 z-30 p-2 bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
         onClick={onToggle}
       >
-        {isOpen ? <FiChevronLeft size={30} color={COLORS.grey_dark} /> : <FiChevronRight size={30} color={COLORS.grey_dark} />}
+        {isOpen ? (
+          <FiChevronLeft color={COLORS.grey_dark} size={30} />
+        ) : (
+          <FiChevronRight color={COLORS.grey_dark} size={30} />
+        )}
       </button>
 
       <div css={sidebarStyles} ref={sidebarRef} id="menu">
         <div style={{ margin: "80px 0px 25px 25px" }}>
           <div className="flex items-center text-lg md:text-2xl">
             <IoBookOutline className="mr-2" color={COLORS.primary} />
-            <Text $v="h5" $fw={700} $color={COLORS.primary}>
+            <Text $color={COLORS.primary} $fw={700} $v="h5">
               Tora viviente
             </Text>
           </div>
-          <Text $v="md" $fw={500} $color={COLORS.white}>
+          <Text $color={COLORS.white} $fw={500} $v="md">
             Gestiona tus acciones y actividades
           </Text>
         </div>
 
         <div className="px-6 pb-7" id="profile">
-          <Text $v="md" $fw={500} $color={COLORS.white}>Bienvenido,</Text>
-          <Link className="inline-flex space-x-2 items-center" href="#" onClick={onToggle}>
-            <Text $v="h5" $fw={600} $color={COLORS.selected}>
-              {session?.user?.name?.split(" ").map(word =>
-                word.charAt(0).toUpperCase() + word.slice(1)
-              ).join(" ")}
+          <Text $color={COLORS.white} $fw={500} $v="md">
+            Bienvenido,
+          </Text>
+          <Link
+            className="inline-flex space-x-2 items-center"
+            href="#"
+            onClick={onToggle}
+          >
+            <Text $color={COLORS.selected} $fw={600} $v="h5">
+              {session?.user?.name
+                ?.split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
             </Text>
           </Link>
         </div>
@@ -108,8 +121,8 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           <Link
             className="text-danger text-lg md:text-base font-bold cursor-pointer"
             href={"/login"}
-            onClick={handleLogout}
             style={{ fontSize: "1.25rem" }}
+            onClick={handleLogout}
           >
             Logout
           </Link>
