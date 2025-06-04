@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
-import { SessionProvider } from "next-auth/react";
+
 
 export const metadata: Metadata = {
   title: "Tora Viviente",

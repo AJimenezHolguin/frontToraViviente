@@ -12,3 +12,26 @@
     @apply w-full h-full;
   }
 }
+/* globals.css */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3); /* Puedes cambiar el color */
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none; /* Esto oculta las flechitas */
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}

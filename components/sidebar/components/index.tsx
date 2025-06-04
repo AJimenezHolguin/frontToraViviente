@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -8,10 +7,7 @@ import Link from "next/link";
 import { IoBookOutline } from "react-icons/io5";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
-
 import { Text } from "@/shared/components/Text";
-import { css } from "@emotion/react";
-
 import { COLORS } from "@/styles/colors";
 
 interface SidebarProps {
@@ -28,7 +24,6 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
     signOut({ callbackUrl: "/login" });
   };
 
-  // Cerrar al hacer click fuera
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -50,25 +45,10 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
     };
   }, [isOpen, onToggle]);
 
-  const sidebarStyles = css`
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 20;
-    height: 100vh;
-    width: 300px;
-    background-color: #4da699;
-    color: #cbd5e0;
-    transform: ${isOpen ? "translateX(0)" : "translateX(-100%)"};
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-  `;
-
   return (
     <>
       <button
-        className="top-4 left-4 z-30 p-2 bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
+        className="fixed top-4 left-4 z-30  bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
         onClick={onToggle}
       >
         {isOpen ? (
@@ -78,12 +58,14 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         )}
       </button>
 
-      <div // eslint-disable-next-line react/no-unknown-property
-        css={sidebarStyles}
+      <div
         ref={sidebarRef}
+        className={`fixed top-0 left-0 z-20 h-screen w-[300px] bg-[#4da699] text-white transform transition-transform duration-300 flex flex-col ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
         id="menu"
       >
-        <div style={{ margin: "80px 0px 25px 25px" }}>
+        <div className="mt-20 mb-6 ml-6 shrink-0">
           <div className="flex items-center text-lg md:text-2xl">
             <IoBookOutline className="mr-2" color={COLORS.primary} />
             <Text $color={COLORS.primary} $fw={700} $v="h5">
@@ -95,7 +77,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           </Text>
         </div>
 
-        <div className="px-6 pb-7" id="profile">
+        <div className="px-6 pb-5 shrink-0">
           <Text $color={COLORS.white} $fw={500} $v="md">
             Bienvenido,
           </Text>
@@ -113,13 +95,13 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           </Link>
         </div>
 
-        <div className="w-full px-6" id="nav">
+        <div className="flex-1 overflow-y-auto px-6 custom-scrollbar" id="nav">
           {menuItems.map((item) => (
             <div
               key={item.path}
-              onClick={onToggle}
               role="button"
               tabIndex={0}
+              onClick={onToggle}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") onToggle();
               }}
@@ -129,11 +111,10 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
           ))}
         </div>
 
-        <div className="ml-12 mt-[80px]">
+        <div className="p-6 shrink-0">
           <Link
             className="text-danger text-lg md:text-base font-bold cursor-pointer"
             href={"/login"}
-            style={{ fontSize: "1.25rem" }}
             onClick={handleLogout}
           >
             Logout
