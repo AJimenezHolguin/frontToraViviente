@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 import { Sizes } from "@/types/sizes.enum";
-import { Colors } from "@/styles/colorButton.enum";
+import { ColorButton } from "@/styles/colorButton.enum";
 import { RadiusProps } from "@/types/radius.enum";
 import { InputClassNameKeys } from "@/types/classNamesKeys";
 
@@ -40,7 +40,7 @@ export interface ValidationError {
 
 export interface InputProps {
   classNames?: Partial<Record<InputClassNameKeys, string>>;
-  color?: Colors;
+  color?: ColorButton;
   label?: string;
   labelPlacement?: LabelPlacementProps;
   placeholder?: string;

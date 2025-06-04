@@ -8,6 +8,8 @@ import {
 } from "@heroui/react";
 import { ConfirmModalProps } from "./types";
 import { Text } from "../Text";
+import { ButtonComponent } from "../Button";
+import { ColorButton } from "@/styles/colorButton.enum";
 
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
@@ -29,15 +31,18 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Text>{message}</Text>
         </ModalBody>
         <ModalFooter>
-          <Button color="danger" onPress={onClose}>
+          <ButtonComponent 
+            color={ColorButton.DANGER} 
+            onPress={onClose}>
             Cancelar
-          </Button>
-          <Button color="primary" 
-          isLoading={isLoading}
-          onPress={onConfirm} 
+          </ButtonComponent>
+          <ButtonComponent 
+            color={ColorButton.SECONDARY}  
+            isLoading={isLoading}
+            onPress={onConfirm} 
           >
             { title }
-          </Button>
+          </ButtonComponent>
         </ModalFooter>
       </ModalContent>
     </Modal>

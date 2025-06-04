@@ -13,6 +13,7 @@ import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { ReusableTable } from "@/shared/components/table";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
+import { Text } from "@/shared/components/Text";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
@@ -120,7 +121,9 @@ export const MyPlayLists = () => {
               setIsModalOpen(true);
             }}
           >
-            Crear playlist
+             <Text $fw={500} $v="md">
+              Crear playlist
+            </Text>
           </ButtonComponent>
         </div>
         <div className="flex justify-between items-center">

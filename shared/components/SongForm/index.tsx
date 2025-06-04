@@ -1,10 +1,12 @@
 import React from "react";
-import { Input, Button } from "@heroui/react";
 import { SelectedInput } from "../SeletedInput";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { Sizes } from "@/types/sizes.enum";
 import { RadiusProps } from "@/types/radius.enum";
 import { SongFormProps } from "./types";
+import { InputComponent } from "../Input";
+import { VariantProps } from "../Input/types";
+import { ButtonComponent } from "../Button";
 
 export const SongForm: React.FC<SongFormProps> = ({
   form,
@@ -16,21 +18,21 @@ export const SongForm: React.FC<SongFormProps> = ({
 }) => {
   return (
     <>
-      <Input
+      <InputComponent
         isRequired
         label="Nombre"
         placeholder="Nombre de la canción"
         value={form.name}
-        variant="bordered"
+        variant={VariantProps.BORDERED}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
       />
 
-      <Input
+      <InputComponent
         isRequired
         label="URL"
         placeholder="www.youtube.com"
         value={form.linkSong}
-        variant="bordered"
+        variant={VariantProps.BORDERED}
         onChange={(e) => setForm({ ...form, linkSong: e.target.value })}
       />
 
@@ -42,14 +44,14 @@ export const SongForm: React.FC<SongFormProps> = ({
 
       <div className="w-1/2 flex flex-col gap-4 justify-center mt-[10px]">
         <div className="flex flex-col gap-1 w-1/2">
-          <Button
-            color={ColorButton.PRIMARY}
+          <ButtonComponent
+            color={ColorButton.SECONDARY}
             radius={RadiusProps.MD}
             size={Sizes.SM}
             onPress={() => handleFileClick(letraRef)}
           >
             Subir letra PDF
-          </Button>
+          </ButtonComponent>
           <input
             ref={letraRef}
             accept="application/pdf"
@@ -65,14 +67,14 @@ export const SongForm: React.FC<SongFormProps> = ({
         </div>
 
         <div className="flex flex-col gap-1 w-1/2">
-          <Button
-            color={ColorButton.PRIMARY}
+          <ButtonComponent
+            color={ColorButton.SECONDARY}
             radius={RadiusProps.MD}
             size={Sizes.SM}
             onPress={() => handleFileClick(acordeRef)}
           >
             Subir acorde PDF
-          </Button>
+          </ButtonComponent>
           <input
             ref={acordeRef}
             accept="application/pdf"

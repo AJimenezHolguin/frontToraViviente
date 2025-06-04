@@ -4,9 +4,7 @@ import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
 import { ModalSong } from "@/shared/components/Modal";
 import { Song } from "@/types/SongsTypesProps";
 import { SpinnerComponent } from "@/shared/components/Spinner";
-import { Sizes } from "@/types/sizes.enum";
 import { ColorButton } from "@/styles/colorButton.enum";
-import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { getMySongs } from "@/services/songs/getMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
@@ -20,7 +18,7 @@ import { InputComponent } from "@/shared/components/Input";
 import { TypeProps } from "@/shared/components/Input/types";
 import { ButtonComponent } from "@/shared/components/Button";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
-
+import { Text } from "@/shared/components/Text";
 
 export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -62,21 +60,25 @@ export const MySongs = () => {
     sortedItems,
     totalSongs,
     totalPages,
-  } = useSongTable(songs,[
-    "name",
-    "user",
-    "linkSong",
-    "category",
-    "fileSong",
-    "fileScore",
-    "actions",
-  ],columnTitlesPresets["mySongsTitle"]);
+  } = useSongTable(
+    songs,
+    [
+      "name",
+      "user",
+      "linkSong",
+      "category",
+      "fileSong",
+      "fileScore",
+      "actions",
+    ],
+    columnTitlesPresets["mySongsTitle"]
+  );
 
   const fetchSongs = async () => {
     setIsLoading(true);
     try {
       const songsData = await getMySongs();
-      console.log("estas son mis canciones", songsData)
+      console.log("estas son mis canciones", songsData);
 
       setSongs(songsData);
     } catch (error) {
@@ -90,8 +92,8 @@ export const MySongs = () => {
     fetchSongs();
   }, []);
 
-  if (isLoading) return <SpinnerComponent />
-       
+  if (isLoading) return <SpinnerComponent />;
+
   return (
     <>
       <ModalSong
@@ -135,7 +137,9 @@ export const MySongs = () => {
               setIsModalOpen(true);
             }}
           >
-            Crear canción
+            <Text $fw={500} $v="md">
+              Crear canción
+            </Text>
           </ButtonComponent>
         </div>
         <div className="flex justify-between items-center">
