@@ -65,7 +65,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         }`}
         id="menu"
       >
-        <div className="mt-20 mb-6 ml-6 shrink-0">
+        <div className="mt-14 mb-6 ml-6 shrink-0">
           <div className="flex items-center text-lg md:text-2xl">
             <IoBookOutline className="mr-2" color={COLORS.primary} />
             <Text $color={COLORS.primary} $fw={700} $v="h5">

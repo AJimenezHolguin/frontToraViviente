@@ -16,7 +16,7 @@ export const SidebarMenuItem = ({
 
   return (
     <Link
-      className={`w-full px-2 inline-flex space-x-2 items-center border-b border-transparent py-3 transition ease-linear duration-150
+      className={`w-full px-1 inline-flex space-x-2 items-center border-b border-transparent py-2 transition ease-linear duration-150
       `}
       href={path}
       style={{
@@ -27,11 +27,11 @@ export const SidebarMenuItem = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className={`p-2`} style={{
+      <div className={`p-1`} style={{
         color: currentPath === path ? COLORS.hover : COLORS.selected
       }}>{icon}</div>
       <div className="flex flex-col">
-        <span className="text-lg font-bold leading-5 text-white">{title}</span>
+        <span className="text-base font-bold leading-5 text-white">{title}</span>
         <span className={`text-sm`} style={{
           color: "white"
         }
