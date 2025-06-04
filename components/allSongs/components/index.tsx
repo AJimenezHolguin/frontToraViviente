@@ -4,13 +4,12 @@ import { getAllSongs } from "@/services/songs/getAllSongs.service";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps } from "@/shared/components/Input/types";
 import { SpinnerComponent } from "@/shared/components/Spinner";
-import { SpinnerVariant } from "@/shared/components/Spinner/types";
 import { ReusableTable } from "@/shared/components/table";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { SearchIcon } from "@/shared/components/table/TableIcons";
+import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useSongTable } from "@/shared/hooks/songs/useSongTable";
-import { Sizes } from "@/types/sizes.enum";
 import { Song } from "@/types/SongsTypesProps";
 import { useEffect, useState } from "react";
 
@@ -66,6 +65,7 @@ export const AllSongs = () => {
  
   return (
     <>
+     <WrapperTitle title="Lista general de todas las canciones">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <InputComponent
@@ -101,7 +101,6 @@ export const AllSongs = () => {
           </label>
         </div>
       </div>
-
       <ReusableTable
         ariaLabel="Tabla de canciones"
         headerColumns={headerColumns}
@@ -116,6 +115,7 @@ export const AllSongs = () => {
         onSelectionChange={(keys) => setSelectedKeys(keys)}
         onSortChange={setSortDescriptor}
       />
+     </WrapperTitle>
     </>
   );
 };

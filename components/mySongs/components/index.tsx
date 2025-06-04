@@ -19,6 +19,7 @@ import { TypeProps } from "@/shared/components/Input/types";
 import { ButtonComponent } from "@/shared/components/Button";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { Text } from "@/shared/components/Text";
+import { WrapperTitle } from "@/shared/components/WrapperTitle";
 
 export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -95,87 +96,89 @@ export const MySongs = () => {
 
   return (
     <>
-      <ModalSong
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        songToEdit={selectedSongToEdit}
-        onClose={() => {
-          setIsModalOpen(false);
-          setSelectedSongToEdit(null);
-        }}
-        onSongCreated={fetchSongs}
-      />
+      <WrapperTitle title="Lista general de mis canciones">
+        <ModalSong
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          songToEdit={selectedSongToEdit}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedSongToEdit(null);
+          }}
+          onSongCreated={fetchSongs}
+        />
 
-      <ConfirmModal
-        {...ConfirmModalProps}
-        isLoading={loading}
-        placement={PositionModal.CENTER}
-        title={loading ? "Eliminando..." : "Confirmar"}
-      />
-      <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
+        <ConfirmModal
+          {...ConfirmModalProps}
+          isLoading={loading}
+          placement={PositionModal.CENTER}
+          title={loading ? "Eliminando..." : "Confirmar"}
+        />
+        <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
 
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <InputComponent
-            classNames={{
-              base: "w-full sm:max-w-[44%]",
-            }}
-            isClearable={true}
-            placeholder="Buscar por nombre..."
-            startContent={<SearchIcon />}
-            type={TypeProps.SEARCH}
-            value={filterValue}
-            onClear={onClear}
-            onValueChange={onSearchChange}
-          />
-          <ButtonComponent
-            color={ColorButton.PRIMARY}
-            endContent={<PlusIcon />}
-            onPress={() => {
-              setSelectedSongToEdit(null);
-              setIsModalOpen(true);
-            }}
-          >
-            <Text $fw={500} $v="md">
-              Crear canción
-            </Text>
-          </ButtonComponent>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Total {totalSongs} canciones
-          </span>
-          <label className="flex items-center text-default-400 text-small">
-            Filas por página:
-            <select
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={(e) => {
-                setRowsPerPage(Number(e.target.value));
-                setPage(1);
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between gap-3 items-end">
+            <InputComponent
+              classNames={{
+                base: "w-full sm:max-w-[44%]",
+              }}
+              isClearable={true}
+              placeholder="Buscar por nombre..."
+              startContent={<SearchIcon />}
+              type={TypeProps.SEARCH}
+              value={filterValue}
+              onClear={onClear}
+              onValueChange={onSearchChange}
+            />
+            <ButtonComponent
+              color={ColorButton.PRIMARY}
+              endContent={<PlusIcon />}
+              onPress={() => {
+                setSelectedSongToEdit(null);
+                setIsModalOpen(true);
               }}
             >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
+              <Text $fw={500} $v="md">
+                Crear canción
+              </Text>
+            </ButtonComponent>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-default-400 text-small">
+              Total {totalSongs} canciones
+            </span>
+            <label className="flex items-center text-default-400 text-small">
+              Filas por página:
+              <select
+                className="bg-transparent outline-none text-default-400 text-small"
+                onChange={(e) => {
+                  setRowsPerPage(Number(e.target.value));
+                  setPage(1);
+                }}
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+              </select>
+            </label>
+          </div>
         </div>
-      </div>
 
-      <ReusableTable
-        ariaLabel="Tabla de canciones"
-        headerColumns={headerColumns}
-        itemKey="_id"
-        page={page}
-        renderCell={renderCell}
-        selectedKeys={selectedKeys}
-        sortDescriptor={sortDescriptor}
-        sortedItems={sortedItems}
-        totalPages={totalPages}
-        onPageChange={setPage}
-        onSelectionChange={(keys) => setSelectedKeys(keys)}
-        onSortChange={setSortDescriptor}
-      />
+        <ReusableTable
+          ariaLabel="Tabla de canciones"
+          headerColumns={headerColumns}
+          itemKey="_id"
+          page={page}
+          renderCell={renderCell}
+          selectedKeys={selectedKeys}
+          sortDescriptor={sortDescriptor}
+          sortedItems={sortedItems}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          onSelectionChange={(keys) => setSelectedKeys(keys)}
+          onSortChange={setSortDescriptor}
+        />
+      </WrapperTitle>
     </>
   );
 };
