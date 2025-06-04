@@ -78,7 +78,11 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         )}
       </button>
 
-      <div css={sidebarStyles} ref={sidebarRef} id="menu">
+      <div // eslint-disable-next-line react/no-unknown-property
+        css={sidebarStyles}
+        ref={sidebarRef}
+        id="menu"
+      >
         <div style={{ margin: "80px 0px 25px 25px" }}>
           <div className="flex items-center text-lg md:text-2xl">
             <IoBookOutline className="mr-2" color={COLORS.primary} />
@@ -111,7 +115,15 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
 
         <div className="w-full px-6" id="nav">
           {menuItems.map((item) => (
-            <div key={item.path} onClick={onToggle}>
+            <div
+              key={item.path}
+              onClick={onToggle}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") onToggle();
+              }}
+            >
               <SidebarMenuItem {...item} />
             </div>
           ))}

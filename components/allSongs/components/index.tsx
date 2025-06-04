@@ -10,7 +10,6 @@ import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusO
 import { SearchIcon } from "@/shared/components/table/TableIcons";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useSongTable } from "@/shared/hooks/songs/useSongTable";
-import { Colors } from "@/styles/colorButton.enum";
 import { Sizes } from "@/types/sizes.enum";
 import { Song } from "@/types/SongsTypesProps";
 import { useEffect, useState } from "react";
