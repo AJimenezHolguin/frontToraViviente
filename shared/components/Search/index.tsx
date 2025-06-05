@@ -6,7 +6,7 @@ export const SearchComponent = ({
   value,
   onClear,
   onValueChange,
-  classNames = { base: "w-full sm:max-w-[40%]" },
+  classNames,
 }: InputProps) => {
   return (
     <InputComponent

@@ -67,6 +67,7 @@ export const AllSongs = () => {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
+              classNames={{ base: "w-full sm:max-w-[40%]" }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
