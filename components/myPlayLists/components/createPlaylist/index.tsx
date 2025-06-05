@@ -2,7 +2,7 @@
 import { ButtonComponent } from "@/shared/components/Button";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps } from "@/shared/components/Input/types";
-import { SearchIcon } from "@/shared/components/table/TableIcons";
+
 import {
   Modal,
   ModalContent,

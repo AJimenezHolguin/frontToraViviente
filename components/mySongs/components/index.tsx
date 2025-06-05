@@ -118,7 +118,7 @@ export const MySongs = () => {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
-              classNames={{ base: "w-full sm:max-w-[40%]" }}
+              classNames={{ base: "w-full pb-4 sm:max-w-[40%] pb-2" }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
@@ -137,9 +137,9 @@ export const MySongs = () => {
             </ButtonComponent>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-default-400 text-small">
+            <Text className="text-default-400 text-small">
               Total {totalSongs} canciones
-            </span>
+            </Text>
             <label className="flex items-center text-default-400 text-small">
               Filas por página:
               <select
