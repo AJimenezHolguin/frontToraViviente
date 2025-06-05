@@ -1,13 +1,10 @@
 "use client";
 
 import { getAllSongs } from "@/services/songs/getAllSongs.service";
-import { InputComponent } from "@/shared/components/Input";
-import { TypeProps } from "@/shared/components/Input/types";
 import { SearchComponent } from "@/shared/components/Search";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { ReusableTable } from "@/shared/components/table";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
-import { SearchIcon } from "@/shared/components/table/TableIcons";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
@@ -47,7 +44,7 @@ export const AllSongs = () => {
     setIsLoading(true);
     try {
       const songsData = await getAllSongs();
-
+     
       setSongs(songsData);
     } catch (error) {
       console.error(error);
