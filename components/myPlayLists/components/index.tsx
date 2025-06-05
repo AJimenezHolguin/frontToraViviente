@@ -1,16 +1,15 @@
 "use client";
 import { getMySongs } from "@/services/songs/getMySongs.service";
 import { ButtonComponent } from "@/shared/components/Button";
-import { InputComponent } from "@/shared/components/Input";
-import { TypeProps } from "@/shared/components/Input/types";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
+import { SearchComponent } from "@/shared/components/Search";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { ReusableTable } from "@/shared/components/table";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
-import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
+import { PlusIcon } from "@/shared/components/table/TableIcons";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
@@ -99,14 +98,7 @@ export const MyPlayLists = () => {
 
         <div className="flex flex-col gap-4">
           <div className="flex justify-between gap-3 items-end">
-            <InputComponent
-              classNames={{
-                base: "w-full sm:max-w-[44%]",
-              }}
-              isClearable={true}
-              placeholder="Buscar por nombre..."
-              startContent={<SearchIcon />}
-              type={TypeProps.SEARCH}
+            <SearchComponent
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}

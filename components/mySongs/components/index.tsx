@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { PlusIcon, SearchIcon } from "@/shared/components/table/TableIcons";
+import { PlusIcon } from "@/shared/components/table/TableIcons";
 import { ModalSong } from "@/shared/components/Modal";
 import { Song } from "@/types/SongsTypesProps";
 import { SpinnerComponent } from "@/shared/components/Spinner";
@@ -14,12 +14,11 @@ import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
-import { InputComponent } from "@/shared/components/Input";
-import { TypeProps } from "@/shared/components/Input/types";
 import { ButtonComponent } from "@/shared/components/Button";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
+import { SearchComponent } from "@/shared/components/Search";
 
 export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -118,14 +117,7 @@ export const MySongs = () => {
 
         <div className="flex flex-col gap-4">
           <div className="flex justify-between gap-3 items-end">
-            <InputComponent
-              classNames={{
-                base: "w-full sm:max-w-[44%]",
-              }}
-              isClearable={true}
-              placeholder="Buscar por nombre..."
-              startContent={<SearchIcon />}
-              type={TypeProps.SEARCH}
+            <SearchComponent
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}

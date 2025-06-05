@@ -12,11 +12,10 @@ import {
 } from "@heroui/react";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps, VariantProps } from "@/shared/components/Input/types";
-import { SearchIcon } from "@/shared/components/table/TableIcons";
-import { Sizes } from "@/types/sizes.enum";
 import { useEffect, useState } from "react";
 import { getAllSongs } from "@/services/songs/getAllSongs.service";
 import { Song } from "@/types/SongsTypesProps";
+import { SearchComponent } from "../Search";
 
 type ModalPlaylistProps = {
   isOpen: boolean;
@@ -75,15 +74,8 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
             type={TypeProps.TEXT}
             variant={VariantProps.UNDERLINED}
           />
-
-          <InputComponent
-            isClearable
+          <SearchComponent
             classNames={{ base: "pl-5 sm: pr-5 md:max-w-[90%]" }}
-            label="Buscar canción"
-            placeholder="Buscar canción..."
-            size={Sizes.SM}
-            startContent={<SearchIcon />}
-            type={TypeProps.SEARCH}
             value={filterValue}
             onValueChange={setFilterValue}
           />
@@ -92,14 +84,10 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
             <p className="text-sm font-medium mb-2">Canciones disponibles:</p>
             <ScrollShadow
               className="overflow-y-auto h-[200px]"
-              size={13}
               orientation="vertical"
+              size={13}
             >
-              <CheckboxGroup
-                // label="Canciones disponibles:"
-                value={selectedSongs}
-                onChange={setSelectedSongs}
-              >
+              <CheckboxGroup value={selectedSongs} onChange={setSelectedSongs}>
                 <div className="flex flex-col gap-1">
                   {filterAllSongs.map((song) => (
                     <Checkbox key={song._id} value={song._id}>

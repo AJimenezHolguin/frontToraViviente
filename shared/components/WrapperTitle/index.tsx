@@ -11,7 +11,8 @@ export const WrapperTitle: React.FC<WrapperTitleProps> = ( {title, children} ) =
         $color={COLORS.primary}
         $ta="center" 
         $v="h3" 
-        className=" mb-4">{title}
+        className="p-6"
+        >{title}
         </Text>
       {children}
     </div>
