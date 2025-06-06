@@ -19,6 +19,7 @@ import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusO
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
+import { PaginationHeader } from "@/shared/components/PaginationHeader";
 
 export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -68,7 +69,7 @@ export const MySongs = () => {
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-     
+
       setIsLoading(true);
       setSongs(songsData.songs || []);
       setTotalPages(songsData.metadata.pageCount);
@@ -143,28 +144,15 @@ export const MySongs = () => {
             </ButtonComponent>
           </div>
 
-          <div className="flex justify-between items-center">
-            <Text className="text-default-400 text-small">
-              Total {totalSongs} canciones
-            </Text>
-            <label className="flex items-center text-default-400 text-small">
-              Items por página:
-              <select
-                className="bg-transparent outline-none text-default-400 text-small"
-                value={rowsPerPage ?? ""}
-                onChange={(e) => {
-                  setRowsPerPage(Number(e.target.value));
-                  setPage(1)
-                }}
-              >
-                <option selected={true} value="1">
-                  1
-                </option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </label>
-          </div>
+          <PaginationHeader
+            label="Canciones"
+            rowsPerPage={rowsPerPage ?? 0}
+            totalItems={totalSongs}
+            onRowsPerPageChange={(value) => {
+              setRowsPerPage(value);
+              setPage(1);
+            }}
+          />
         </div>
 
         <ReusableTable
