@@ -65,7 +65,7 @@ export const MySongs = () => {
     try {
       const songsData = await getAllMySongs({
         page,
-        take: rowsPerPage ?? 1,
+        take: rowsPerPage ?? 5,
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
