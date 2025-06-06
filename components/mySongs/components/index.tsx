@@ -61,7 +61,6 @@ export const MySongs = () => {
   );
 
   const fetchSongs = async () => {
-    setIsLoading(true);
     try {
       const songsData = await getAllMySongs({
         page,
@@ -69,7 +68,8 @@ export const MySongs = () => {
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-
+     
+      setIsLoading(true);
       setSongs(songsData.songs || []);
       setTotalPages(songsData.metadata.pageCount);
       setTotalSongs(songsData.metadata.total);
@@ -148,12 +148,13 @@ export const MySongs = () => {
               Total {totalSongs} canciones
             </Text>
             <label className="flex items-center text-default-400 text-small">
-              Filas por página:
+              Items por página:
               <select
                 className="bg-transparent outline-none text-default-400 text-small"
                 value={rowsPerPage ?? ""}
                 onChange={(e) => {
                   setRowsPerPage(Number(e.target.value));
+                  setPage(1)
                 }}
               >
                 <option selected={true} value="1">

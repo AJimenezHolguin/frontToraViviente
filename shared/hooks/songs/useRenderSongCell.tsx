@@ -7,17 +7,20 @@ import { Tooltip } from "@heroui/react";
 import { DeleteIcon, EditIcon } from "@/shared/components/table/TableIcons";
 import { UseRenderSongCellProps } from "./types";
 import { COLORS } from "@/styles/colors";
+import { useSession } from "next-auth/react";
 
 export const useRenderSongCell = ({
   onEdit,
   onDelete,
 }: UseRenderSongCellProps) => {
+  const {data:session} = useSession();
+  
   return React.useCallback((data: Song, columnKey: React.Key) => {
     const cellValue = data[columnKey as keyof Song];
 
     switch (columnKey) {
       case "user":
-        return <span>{data.user?.name || "N/A"}</span>;
+        return <span>{session?.user.name || "N/A"}</span>;
       case "linkSong":
         return (
           <a href={data.linkSong} rel="noopener noreferrer" target="_blank">

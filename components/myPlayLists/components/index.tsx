@@ -32,22 +32,11 @@ export const MyPlayLists = () => {
     useModalAlert();
   const { handleDelete, loading } = useDeleteSong(showAlert);
 
-  const renderCell = useRenderSongCell({
-    onEdit: (song) => {
-      setSelectedSongToEdit(song);
-      setIsModalOpen(true);
-    },
-    onDelete: (song) => {
-      showConfirm(`¿Estás seguro de eliminar "${song.name}"?`, async () => {
-        await handleDelete(song);
-        // fetchSongs();
-      });
-    },
-  });
 
   const {
     page,
     setPage,
+    rowsPerPage,
     setRowsPerPage,
     sortDescriptor,
     setSortDescriptor,
@@ -57,31 +46,55 @@ export const MyPlayLists = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-    sortedItems,
-    totalSongs,
-    totalPages,
   } = useSongTable(
-    songs,
-    ["name", "user", "fileSong", "fileScore", "actions"],
-    columnTitlesPresets["myPlayListsTitle"]
+    [
+      "name",
+      "user",
+      "linkSong",
+      "category",
+      "fileSong",
+      "fileScore",
+      "actions",
+    ],
+    columnTitlesPresets["mySongsTitle"]
   );
 
-  // const fetchSongs = async () => {
-  //   setIsLoading(true);
-  //   try {
-  //     const songsData = await getAllMySongs();
+  const fetchSongs = async () => {
+    setIsLoading(true);
+    try {
+      const songsData = await getAllMySongs({
+        page,
+        take: rowsPerPage ?? 1,
+        order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
+        search: filterValue,
+      });
 
-  //     setSongs(songsData);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+      setSongs(songsData.songs || []);
+      // setTotalPages(songsData.metadata.pageCount);
+      // setTotalSongs(songsData.metadata.total);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchSongs();
-  // }, []);
+  useEffect(() => {
+    fetchSongs();
+  }, [page, rowsPerPage, sortDescriptor, filterValue]);
+
+  const renderCell = useRenderSongCell({
+    onEdit: (song) => {
+      setSelectedSongToEdit(song);
+      setIsModalOpen(true);
+    },
+    onDelete: (song) => {
+      showConfirm(`¿Estás seguro de eliminar "${song.name}"?`, async () => {
+        await handleDelete(song);
+        fetchSongs();
+      });
+    },
+  });
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -119,7 +132,7 @@ export const MyPlayLists = () => {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-default-400 text-small">
-              Total {totalSongs} playlist
+              {/* Total {totalSongs} playlist */}
             </span>
             <label className="flex items-center text-default-400 text-small">
               Filas por página:
@@ -130,9 +143,11 @@ export const MyPlayLists = () => {
                   setPage(1);
                 }}
               >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
+              <option selected={true} value="1">
+                  1
+                </option>
+                <option value="2">2</option>
+                <option value="3">3</option>
               </select>
             </label>
           </div>
@@ -145,7 +160,7 @@ export const MyPlayLists = () => {
           }}
         />
 
-        <ReusableTable
+        {/* <ReusableTable
           ariaLabel="Tabla de canciones"
           headerColumns={headerColumns}
           itemKey="_id"
@@ -153,12 +168,12 @@ export const MyPlayLists = () => {
           renderCell={renderCell}
           selectedKeys={selectedKeys}
           sortDescriptor={sortDescriptor}
-          sortedItems={sortedItems}
-          totalPages={totalPages}
+          // sortedItems={sortedItems}
+          // totalPages={totalPages}
           onPageChange={setPage}
           onSelectionChange={(keys) => setSelectedKeys(keys)}
           onSortChange={setSortDescriptor}
-        />
+        /> */}
       </WrapperTitle>
     </>
   );

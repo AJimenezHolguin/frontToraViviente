@@ -37,8 +37,10 @@ export const ReusableTable = <T extends { [key: string]: any }>({
             isCompact
             showControls
             showShadow
+            boundaries={1}
             color="primary"
             page={page}
+            siblings={1}
             total={totalPages}
             onChange={onPageChange}
           />
