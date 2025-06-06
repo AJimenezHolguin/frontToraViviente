@@ -122,7 +122,7 @@ export const MySongs = () => {
         />
         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
               classNames={{ base: "w-full pb-4 sm:max-w-[40%] pb-2" }}
