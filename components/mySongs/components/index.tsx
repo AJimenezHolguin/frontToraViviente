@@ -9,7 +9,7 @@ import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-import { useSongTable } from "../../../shared/hooks/songs/useSongTable";
+import { useSongTable } from "@/shared/hooks/songs/useSongTable";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
@@ -22,32 +22,22 @@ import { SearchComponent } from "@/shared/components/Search";
 
 export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalSongs, setTotalSongs] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
 
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
   const { handleDelete, loading } = useDeleteSong(showAlert);
 
-  const renderCell = useRenderSongCell({
-    onEdit: (song) => {
-      setSelectedSongToEdit(song);
-      setIsModalOpen(true);
-    },
-    onDelete: (song) => {
-      showConfirm(`¿Estás seguro de eliminar "${song.name}"?`, async () => {
-        await handleDelete(song);
-        fetchSongs();
-      });
-    },
-  });
-
   const {
     page,
     setPage,
+    rowsPerPage,
     setRowsPerPage,
     sortDescriptor,
     setSortDescriptor,
@@ -57,11 +47,7 @@ export const MySongs = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-    sortedItems,
-    totalSongs,
-    totalPages,
   } = useSongTable(
-    songs,
     [
       "name",
       "user",
@@ -78,16 +64,15 @@ export const MySongs = () => {
     setIsLoading(true);
     try {
       const songsData = await getAllMySongs({
-        page: 1,
-        take: 3,
-        order: "ASC",
-        search: "",
+        page,
+        take: rowsPerPage ?? 1,
+        order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
+        search: filterValue,
       });
 
-      console.log(" Songs recibidas:", songsData.songs);
-      console.log(" Metadata recibida:", songsData.metadata);
-
       setSongs(songsData.songs || []);
+      setTotalPages(songsData.metadata.pageCount);
+      setTotalSongs(songsData.metadata.total);
     } catch (error) {
       console.error(error);
     } finally {
@@ -97,7 +82,20 @@ export const MySongs = () => {
 
   useEffect(() => {
     fetchSongs();
-  }, []);
+  }, [page, rowsPerPage, sortDescriptor, filterValue]);
+
+  const renderCell = useRenderSongCell({
+    onEdit: (song) => {
+      setSelectedSongToEdit(song);
+      setIsModalOpen(true);
+    },
+    onDelete: (song) => {
+      showConfirm(`¿Estás seguro de eliminar "${song.name}"?`, async () => {
+        await handleDelete(song);
+        fetchSongs();
+      });
+    },
+  });
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -144,6 +142,7 @@ export const MySongs = () => {
               </Text>
             </ButtonComponent>
           </div>
+
           <div className="flex justify-between items-center">
             <Text className="text-default-400 text-small">
               Total {totalSongs} canciones
@@ -152,14 +151,16 @@ export const MySongs = () => {
               Filas por página:
               <select
                 className="bg-transparent outline-none text-default-400 text-small"
+                value={rowsPerPage ?? ""}
                 onChange={(e) => {
                   setRowsPerPage(Number(e.target.value));
-                  setPage(1);
                 }}
               >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
+                <option selected={true} value="1">
+                  1
+                </option>
+                <option value="2">2</option>
+                <option value="3">3</option>
               </select>
             </label>
           </div>
@@ -173,10 +174,10 @@ export const MySongs = () => {
           renderCell={renderCell}
           selectedKeys={selectedKeys}
           sortDescriptor={sortDescriptor}
-          sortedItems={sortedItems}
+          sortedItems={songs}
           totalPages={totalPages}
           onPageChange={setPage}
-          onSelectionChange={(keys) => setSelectedKeys(keys)}
+          onSelectionChange={setSelectedKeys}
           onSortChange={setSortDescriptor}
         />
       </WrapperTitle>
