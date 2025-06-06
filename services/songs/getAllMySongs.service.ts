@@ -4,7 +4,7 @@ import { GetAllMySongsResponse, GetAllSongsParamsProps } from "../typesServices"
 
 export const getAllMySongs = async ({
 page = 1,
-take = 10,
+take = 15,
 order  = "ASC",
 search = "",
 }:GetAllSongsParamsProps
