@@ -1,3 +1,4 @@
+import { Song } from "@/types/SongsTypesProps";
 
 export interface SongInfo {
    _id: string;
@@ -17,4 +18,28 @@ export interface UpdateSong {
    fileSong: FileData | null;
    fileScore: FileData | null;
  }
+
+ export type GetAllSongsParamsProps = {
+   page: number;
+   take: number;
+   order: "ASC" | "DESC";
+   search: string;
+ };
  
+ export type PaginationMetadataResponse = {
+   page: number;
+   take: number;
+   total: number;
+   pageCount: number;
+   hasPreviousPage: boolean;
+   hasNextPage: boolean;
+   order: "ASC" | "DESC";
+   sortBy: string;
+   search: string;
+ };
+ 
+ // Tipo para lo que devuelve este servicio
+ export type GetAllMySongsResponse = {
+   songs: Song[];
+   metadata: PaginationMetadataResponse;
+ };

@@ -5,7 +5,7 @@ import { ModalSong } from "@/shared/components/Modal";
 import { Song } from "@/types/SongsTypesProps";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { ColorButton } from "@/styles/colorButton.enum";
-import { getMySongs } from "@/services/songs/getMySongs.service";
+import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
@@ -77,9 +77,17 @@ export const MySongs = () => {
   const fetchSongs = async () => {
     setIsLoading(true);
     try {
-      const songsData = await getMySongs();
+      const songsData = await getAllMySongs({
+        page: 1,
+        take: 3,
+        order: "ASC",
+        search: "",
+      });
 
-      setSongs(songsData);
+      console.log(" Songs recibidas:", songsData.songs);
+      console.log(" Metadata recibida:", songsData.metadata);
+
+      setSongs(songsData.songs || []);
     } catch (error) {
       console.error(error);
     } finally {

@@ -1,5 +1,5 @@
 "use client";
-import { getMySongs } from "@/services/songs/getMySongs.service";
+import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
 import { ButtonComponent } from "@/shared/components/Button";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
@@ -40,7 +40,7 @@ export const MyPlayLists = () => {
     onDelete: (song) => {
       showConfirm(`¿Estás seguro de eliminar "${song.name}"?`, async () => {
         await handleDelete(song);
-        fetchSongs();
+        // fetchSongs();
       });
     },
   });
@@ -66,22 +66,22 @@ export const MyPlayLists = () => {
     columnTitlesPresets["myPlayListsTitle"]
   );
 
-  const fetchSongs = async () => {
-    setIsLoading(true);
-    try {
-      const songsData = await getMySongs();
+  // const fetchSongs = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const songsData = await getAllMySongs();
 
-      setSongs(songsData);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     setSongs(songsData);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchSongs();
-  }, []);
+  // useEffect(() => {
+  //   fetchSongs();
+  // }, []);
 
   if (isLoading) return <SpinnerComponent />;
 
