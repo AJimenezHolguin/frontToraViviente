@@ -1,28 +1,36 @@
 import axiosInstance from "@/config/axios/axiosInstance";
+import { getSession } from "next-auth/react";
+import {
+  GetAllMySongsResponse,
+  GetAllSongsParamsProps,
+} from "../typesServices";
+import { DEFAULT_PAGINATION } from "../defaultPagination";
 
-import { Song } from "@/types/SongsTypesProps";
-
-export const getAllSongs = async (): Promise<Song[]> => {
+export const getAllSongs = async (
+  params: GetAllSongsParamsProps
+): Promise<GetAllMySongsResponse> => {
   try {
-    const response = await axiosInstance.get<{
-      success: boolean;
-      count: number;
-      data: Song[];
-    }>("/songs");
+    const session = await getSession();
 
-    const songsResponse = response.data.data;
+    if (!session || !session.user?.token) {
+      throw new Error("Sesión no válida o token faltante");
+    }
 
-    return songsResponse.map((song) => ({
-      _id: song._id,
-      name: song.name,
-      user: song.user,
-      linkSong: song.linkSong,
-      category: song.category,
-      fileSong: song.fileSong,
-      fileScore: song.fileScore,
-    }));
-  } catch (error) {
-    console.error("Error fetching songs:", error);
-    throw Error("No se pudieron obtener las canciones");
+    const finalParams = { ...DEFAULT_PAGINATION, ...params };
+
+    const response = await axiosInstance.get<GetAllMySongsResponse>(
+      "/songs",
+      {
+        params: finalParams,
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching songs:",
+      error?.response?.data || error.message
+    );
+    throw new Error("No se pudieron obtener las canciones");
   }
 };
