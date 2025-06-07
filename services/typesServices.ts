@@ -40,6 +40,7 @@ export interface UpdateSong {
  
  // Tipo para lo que devuelve este servicio
  export type GetAllMySongsResponse = {
-   songs: Song[];
+   data: Song[];
    metadata: PaginationMetadataResponse;
+   success: boolean;
  };

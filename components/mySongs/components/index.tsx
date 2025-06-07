@@ -71,7 +71,7 @@ export const MySongs = () => {
       });
 
       setIsLoading(true);
-      setSongs(songsData.songs || []);
+      setSongs(songsData.data || []);
       setTotalPages(songsData.metadata.pageCount);
       setTotalSongs(songsData.metadata.total);
     } catch (error) {

@@ -4,13 +4,11 @@ import {
   GetAllMySongsResponse,
   GetAllSongsParamsProps,
 } from "../typesServices";
+import { DEFAULT_PAGINATION } from "../defaultPagination";
 
-export const getAllMySongs = async ({
-  page = 1,
-  take = 15,
-  order = "ASC",
-  search = "",
-}: GetAllSongsParamsProps): Promise<GetAllMySongsResponse> => {
+export const getAllMySongs = async (
+  params: GetAllSongsParamsProps
+): Promise<GetAllMySongsResponse> => {
   try {
     const session = await getSession();
 
@@ -18,19 +16,16 @@ export const getAllMySongs = async ({
       throw new Error("Sesión no válida o token faltante");
     }
 
-    const response = await axiosInstance.get("/songs/user", {
-      params: {
-        page,
-        take,
-        order,
-        search,
-      },
-    });
+    const finalParams = { ...DEFAULT_PAGINATION, ...params };
 
-    return {
-      songs: response.data.data,
-      metadata: response.data.metadata,
-    };
+    const response = await axiosInstance.get<GetAllMySongsResponse>(
+      "/songs/user",
+      {
+        params: finalParams,
+      }
+    );
+
+    return response.data;
   } catch (error: any) {
     console.error(
       "Error fetching songs:",
