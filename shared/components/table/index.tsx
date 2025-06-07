@@ -58,9 +58,9 @@ export const ReusableTable = <T extends { [key: string]: any }>({
       <TableHeader columns={headerColumns}>
         {(column) => (
           <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
+          key={column.uid}
+          align={["fileSong", "fileScore", "actions"].includes(column.uid) ? "center" : "start"}
+          allowsSorting={column.sortable}
           >
             {column.name}
           </TableColumn>
