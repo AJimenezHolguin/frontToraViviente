@@ -15,8 +15,25 @@ export const useRenderSongCell = ({
     const cellValue = data[columnKey as keyof Song];
 
     switch (columnKey) {
+      case "name":
+        return (
+          <span>
+            {data.name
+              .split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ")}
+          </span>
+        );
       case "user":
-        return <span>{data.user?.name || "N/A"}</span>;
+        const userName = data.user?.name;
+        const capitalizedUserName = userName
+          ? userName
+              .split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ")
+          : "N/A";
+
+        return <span>{capitalizedUserName}</span>;
       case "linkSong":
         return (
           <a href={data.linkSong} rel="noopener noreferrer" target="_blank">

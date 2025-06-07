@@ -93,7 +93,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
         <ModalContent>
           {() => (
             <>
-              <ModalHeader className="flex flex-col gap-2 ">
+              <ModalHeader className="flex flex-col gap-2 text-primary">
                 {songToEdit ? "Editar Canción" : "Nueva Canción"}
               </ModalHeader>
               <ModalBody>
@@ -116,7 +116,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                   Cancelar
                 </ButtonComponent>
                 <ButtonComponent
-                  color={ColorButton.SECONDARY}
+                  color={ColorButton.PRIMARY}
                   isDisabled={!isFormValid || loading }
                   onPress={() =>
                     showConfirm(

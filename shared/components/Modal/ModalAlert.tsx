@@ -20,12 +20,12 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   return (
     <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
       <ModalContent>
-        <ModalHeader>{type === "success" ? "¡Éxito!" : "Error"}</ModalHeader>
+        <ModalHeader className="text-primary">{type === "success" ? "¡Éxito!" : "Error"}</ModalHeader>
         <ModalBody>
           <Text>{message}</Text>
         </ModalBody>
         <ModalFooter>
-          <ButtonComponent color={ColorButton.SECONDARY} onPress={onClose}>
+          <ButtonComponent color={ColorButton.PRIMARY} onPress={onClose}>
             Cerrar
           </ButtonComponent>
         </ModalFooter>
