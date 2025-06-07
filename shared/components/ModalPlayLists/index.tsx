@@ -27,20 +27,20 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
   const [filterValue, setFilterValue] = useState("");
   const [responseData, setResponseData] = useState<Song[]>([]);
 
-  useEffect(() => {
-    const fetchSongs = async () => {
-      if (!isOpen) return;
-      try {
-        const response = await getAllSongs();
+  // useEffect(() => {
+  //   const fetchSongs = async () => {
+  //     if (!isOpen) return;
+  //     try {
+  //       const response = await getAllSongs();
 
-        setResponseData(response);
-      } catch (error) {
-        console.error("Error al obtener las canciones", error);
-      }
-    };
+  //       setResponseData(response);
+  //     } catch (error) {
+  //       console.error("Error al obtener las canciones", error);
+  //     }
+  //   };
 
-    fetchSongs();
-  }, [isOpen]);
+  //   fetchSongs();
+  // }, [isOpen]);
 
   const filterAllSongs = responseData.filter((song) =>
     song.name.toLowerCase().includes(filterValue.toLowerCase())
