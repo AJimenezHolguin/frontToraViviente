@@ -30,6 +30,7 @@ export const ReusableTable = <T extends { [key: string]: any }>({
   return (
     <Table
       isHeaderSticky
+      isVirtualized
       aria-label={ariaLabel}
       bottomContent={
         <div className="py-2 px-2 flex z-0 justify-center items-center">
@@ -47,9 +48,8 @@ export const ReusableTable = <T extends { [key: string]: any }>({
         </div>
       }
       bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px]",
-      }}
+      maxTableHeight={277}
+      rowHeight={40}
       selectedKeys={selectedKeys}
       sortDescriptor={sortDescriptor}
       onSelectionChange={onSelectionChange}
