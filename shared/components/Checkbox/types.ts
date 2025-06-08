@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 import { Sizes } from "../../../types/sizes.enum";
 
-import { Colors } from "@/types/color.enum";
+import { ColorButton } from "@/styles/colorButton.enum";
 import { InputClassNameKeys } from "@/types/classNamesKeys";
 
 export enum OrientacionCheckbox {
@@ -14,7 +14,7 @@ export interface CheckboxProps {
   children?: ReactNode;
   defaultSelected?: boolean;
   orientation?: OrientacionCheckbox;
-  color?: Colors;
+  color?: ColorButton;
   size?: Sizes;
   name?: string;
   value?: string;

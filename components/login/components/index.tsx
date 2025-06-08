@@ -3,30 +3,27 @@ import Image from "next/image";
 import { useState } from "react";
 import { Form } from "@heroui/form";
 import { useRouter } from "next/navigation";
-
 import { InputClassNameKeys } from "../../../types/classNamesKeys";
 import {
   InputComponent,
   PasswordToggleIcon,
 } from "../../../shared/components/Input";
 import { ButtonComponent } from "../../../shared/components/Button";
-
 import {
   LabelPlacementProps,
   TypeProps,
   VariantProps,
 } from "@/shared/components/Input/types";
-import { Colors } from "@/types/color.enum";
+import { ColorButton } from "@/styles/colorButton.enum";
 import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
 import { CheckboxComponent } from "@/shared/components/Checkbox";
-import { COLORSTEXT } from "@/shared/styles/colors";
 import { signIn } from "next-auth/react";
 import CustomAlert from "@/shared/components/CustomAlert";
 import { AlertType, AlertVariant } from "@/types/alert.interface";
 import { VariantButtonProps } from "@/shared/components/Button/types";
-import { Button } from "@heroui/button";
 import { Sizes } from "@/types/sizes.enum";
+import { COLORS } from "@/styles/colors";
 
 export const Login = () => {
   const router = useRouter();
@@ -84,7 +81,7 @@ export const Login = () => {
             </div>
 
             <div className="w-3/4 lg:w-4/5 flex flex-col justify-center gap-3 lg:gap-0">
-              <Text $v="h1">
+              <Text $color={COLORS.lila} $v="h1">
                 Iniciar sesión
               </Text>
               <Form onSubmit={handleSubmit}>
@@ -92,7 +89,6 @@ export const Login = () => {
                   classNames={{
                     [InputClassNameKeys.BASE]: "pt-6 w-[100%]",
                   }}
-                  color={Colors.PRIMARY}
                   label="Correo electrónico"
                   labelPlacement={LabelPlacementProps.OUTSIDE}
                   placeholder={"ejemplo@gmail.com"}
@@ -107,7 +103,6 @@ export const Login = () => {
                   classNames={{
                     [InputClassNameKeys.BASE]: "pt-6",
                   }}
-                  color={Colors.PRIMARY}
                   endContent={
                     <PasswordToggleIcon
                       isVisible={isVisible}
@@ -132,12 +127,12 @@ export const Login = () => {
                     classNames={{
                       [InputClassNameKeys.BASE]: "pt-8",
                     }}
-                    color={Colors.PRIMARY}
+                    color={ColorButton.PRIMARY}
                   >
                     Recordarme
                   </CheckboxComponent>
                   <Text
-                    $color={COLORSTEXT.primary}
+                    $color={COLORS.lila}
                     $v="sm"
                     className={
                       "mt-6 font-bold underline decoration-black-500 underline-offset-4"
@@ -148,7 +143,8 @@ export const Login = () => {
                 </div>
 
                 <ButtonComponent
-                  className="mt-[45px]"
+                  className="mt-[45px] text-white font-bold"
+                  color={ColorButton.PRIMARY}
                   fullWidth={true}
                   isDisabled={!email || !password}
                   isLoading={isLoading}
@@ -159,11 +155,11 @@ export const Login = () => {
               </Form>
 
               <div className=" mt-6 flex justify-center gap-1">
-                <Text $color={COLORSTEXT.black} $v="sm" className={"font-bold"}>
+                <Text $color={COLORS.black} $v="sm" className={"font-bold"}>
                   No tienes una cuenta?
                 </Text>
                 <Text
-                  $color={COLORSTEXT.primary}
+                  $color={COLORS.lila}
                   $v="sm"
                   className={
                     "font-bold underline decoration-black-500 underline-offset-4"
@@ -174,9 +170,8 @@ export const Login = () => {
               </div>
             </div>
           </div>
-
         </section>
-        <section className="h-screen bg-[#fa8830e7] hidden lg:flex items-center justify-center w-3/4 p-[40px]">
+        <section className="h-screen bg-secondary hidden lg:flex items-center justify-center w-3/4 p-[40px]">
           <div className="lg flex flex-col items-center justify-center">
             <Image
               alt={"login"}
@@ -194,17 +189,17 @@ export const Login = () => {
       </div>
       {alert.visible && (
         <CustomAlert
-          color={Colors.DANGER}
+          color={ColorButton.DANGER}
           description={alert.description}
           endContent={
-            <Button
-              color={Colors.PRIMARY}
+            <ButtonComponent
+              color={ColorButton.PRIMARY}
               size={Sizes.SM}
               variant={VariantButtonProps.SOLID}
               onPress={() => setAlert((prev) => ({ ...prev, visible: false }))}
             >
               Cerrar
-            </Button>
+            </ButtonComponent>
           }
           isVisible={true}
           title={alert.title}

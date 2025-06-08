@@ -6,7 +6,7 @@ import {
 } from "../typesServices";
 import { DEFAULT_PAGINATION } from "../defaultPagination";
 
-export const getAllSongs = async (
+export const getAllMySongs = async (
   params: GetAllSongsParamsProps
 ): Promise<GetAllMySongsResponse> => {
   try {
@@ -19,7 +19,7 @@ export const getAllSongs = async (
     const finalParams = { ...DEFAULT_PAGINATION, ...params };
 
     const response = await axiosInstance.get<GetAllMySongsResponse>(
-      "/songs",
+      "/songs/user",
       {
         params: finalParams,
       }

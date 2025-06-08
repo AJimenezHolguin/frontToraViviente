@@ -30,6 +30,7 @@ export const ReusableTable = <T extends { [key: string]: any }>({
   return (
     <Table
       isHeaderSticky
+      isVirtualized
       aria-label={ariaLabel}
       bottomContent={
         <div className="py-2 px-2 flex z-0 justify-center items-center">
@@ -37,17 +38,18 @@ export const ReusableTable = <T extends { [key: string]: any }>({
             isCompact
             showControls
             showShadow
+            boundaries={1}
             color="primary"
             page={page}
+            siblings={1}
             total={totalPages}
             onChange={onPageChange}
           />
         </div>
       }
       bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px]",
-      }}
+      maxTableHeight={277}
+      rowHeight={40}
       selectedKeys={selectedKeys}
       sortDescriptor={sortDescriptor}
       onSelectionChange={onSelectionChange}
@@ -56,9 +58,9 @@ export const ReusableTable = <T extends { [key: string]: any }>({
       <TableHeader columns={headerColumns}>
         {(column) => (
           <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
+          key={column.uid}
+          align={["fileSong", "fileScore", "actions"].includes(column.uid) ? "center" : "start"}
+          allowsSorting={column.sortable}
           >
             {column.name}
           </TableColumn>

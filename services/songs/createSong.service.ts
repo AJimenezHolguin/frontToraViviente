@@ -2,11 +2,11 @@ import { getSession } from "next-auth/react";
 import { UpdateSong } from "../typesServices";
 import axiosInstance from "@/config/axios/axiosInstance";
 
-export const createSong = async (idUser: string, data: UpdateSong) => {
+export const createSong = async ( data: UpdateSong) => {
   try {
     const session = await getSession();
 
-    const response = await axiosInstance.post(`/songs/create/${idUser}`, data, {
+    const response = await axiosInstance.post("/songs/create", data, {
       headers: {
         Authorization: `Bearer ${session?.user.token}`,
       },

@@ -5,9 +5,11 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
 } from "@heroui/react";
 import { AlertModalProps } from "./types";
+import { Text } from "../Text";
+import { ButtonComponent } from "../Button";
+import { ColorButton } from "@/styles/colorButton.enum";
 
 export const AlertModal: React.FC<AlertModalProps> = ({
   isOpen,
@@ -18,14 +20,14 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   return (
     <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
       <ModalContent>
-        <ModalHeader>{type === "success" ? "¡Éxito!" : "Error"}</ModalHeader>
+        <ModalHeader className="text-primary">{type === "success" ? "¡Éxito!" : "Error"}</ModalHeader>
         <ModalBody>
-          <p>{message}</p>
+          <Text>{message}</Text>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onPress={onClose}>
+          <ButtonComponent color={ColorButton.PRIMARY} onPress={onClose}>
             Cerrar
-          </Button>
+          </ButtonComponent>
         </ModalFooter>
       </ModalContent>
     </Modal>
