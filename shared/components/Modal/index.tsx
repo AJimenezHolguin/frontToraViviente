@@ -17,6 +17,9 @@ import { useSongFormData } from "../../hooks/songs/useSongFormData";
 import { useFormValidation } from "../../hooks/songs/useFormValidation";
 import { saveSongHandler } from "@/shared/feature/songs/saveSongHandler";
 import { useModalAlert } from "../../hooks/songs/useModalAlert";
+import { ButtonComponent } from "../Button";
+import { ColorButton } from "@/styles/colorButton.enum";
+import { VariantButtonProps } from "../Button/types";
 
 export const ModalSong: React.FC<ModalSongProps> = ({
   isOpen,
@@ -90,7 +93,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
         <ModalContent>
           {() => (
             <>
-              <ModalHeader className="flex flex-col gap-2">
+              <ModalHeader className="flex flex-col gap-2 text-primary">
                 {songToEdit ? "Editar Canción" : "Nueva Canción"}
               </ModalHeader>
               <ModalBody>
@@ -105,15 +108,15 @@ export const ModalSong: React.FC<ModalSongProps> = ({
               </ModalBody>
 
               <ModalFooter className="mt-[10px]">
-                <Button
-                  color="danger"
-                  variant="solid"
+                <ButtonComponent
+                  color={ColorButton.DANGER}
+                  variant={VariantButtonProps.SOLID}
                   onPress={() => onClose()}
                 >
                   Cancelar
-                </Button>
-                <Button
-                  color="primary"
+                </ButtonComponent>
+                <ButtonComponent
+                  color={ColorButton.PRIMARY}
                   isDisabled={!isFormValid || loading }
                   onPress={() =>
                     showConfirm(
@@ -125,7 +128,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                   }
                 >
                   Guardar
-                </Button>
+                </ButtonComponent>
               </ModalFooter>
             </>
           )}

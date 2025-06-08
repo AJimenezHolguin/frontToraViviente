@@ -1,9 +1,7 @@
-import { Colors } from "@/types/color.enum";
 import { Sizes } from "@/types/sizes.enum";
 
 export interface SpinnerProps {
   size: Sizes;
-  color: Colors;
   variant: SpinnerVariant;
 }
 

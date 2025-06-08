@@ -19,7 +19,7 @@ export const Text: React.FC<TextProps> = ({
       className={clsx("m-0", className)}
       style={{
         fontSize: variantStyles?.fontSize,
-        fontWeight: $fw || variantStyles?.fontWeight,
+        fontWeight: $fw ?? variantStyles?.fontWeight,
         color: $color,
         textAlign: $ta,
       }}

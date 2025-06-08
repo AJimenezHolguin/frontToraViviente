@@ -14,12 +14,20 @@ export const SelectedInput = ({ value, onChange }: SelectedInputProps) => {
         variant="bordered"
         onSelectionChange={(keys) => {
           const selected = Array.from(keys)[0] as string;
-
           onChange(selected);
         }}
       >
         {Object.values(CategoryProps).map((category) => (
-          <SelectItem key={category} textValue={category}>
+          <SelectItem
+            key={category}
+            color="primary"
+            textValue={category}
+            className="group"
+            classNames={{
+              base: "hover:bg-primary-100 hover:text-primary-700 data-[hover=true]:bg-primary-100 data-[hover=true]:text-primary-700",
+              title: "group-hover:text-primary-700"
+            }}
+          >
             {category}
           </SelectItem>
         ))}

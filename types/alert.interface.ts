@@ -1,4 +1,4 @@
-import { Colors } from "./color.enum";
+import { ColorButton } from "../styles/colorButton.enum";
 import { Sizes } from "./sizes.enum";
 
 export enum AlertType {
@@ -15,7 +15,7 @@ export enum AlertVariant {
 }
 
 export interface CustomAlertProps {
-  color: Colors;
+  color: ColorButton;
   endContent: React.ReactNode;
   type: AlertType;
   title: string;
