@@ -65,11 +65,15 @@ export const AllSongs = () => {
 
   return (
     <>
-      <WrapperTitle title="Lista general de mis canciones">
+      <WrapperTitle title="Lista general de todas las canciones">
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
-              classNames={{ base: "w-full pb-4 sm:max-w-[40%] pb-2" }}
+              classNames={{ 
+                base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
+                input: "placeholder:text-secondary ",
+                inputWrapper: "bg-white ",
+               }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
