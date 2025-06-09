@@ -80,7 +80,7 @@ export const Login = () => {
               />
             </div>
 
-            <div className="w-3/4 lg:w-4/5 flex flex-col justify-center gap-3 lg:gap-0">
+            <div className="w-3/4 md:3/4 lg:w-4/5 flex flex-col justify-center gap-3 lg:gap-0">
               <Text $color={COLORS.lila} $v="h1">
                 Iniciar sesión
               </Text>
