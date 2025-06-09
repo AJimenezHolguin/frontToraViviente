@@ -69,7 +69,7 @@ export const Login = () => {
   return (
     <>
       <div className="lg:flex">
-        <section className="w-full h-screen md:flex flex-col gap-1 items-center justify-center md:w-[900px] lg:w-[1100px] lg:h-[100vh] lg:p-[50px]">
+        <section className="w-full h-screen md:flex flex-col gap-1 items-center justify-center md:w-[800px] lg:w-[1100px] lg:h-[100vh] lg:p-[50px]">
           <div className="w-full h-full flex flex-col justify-center items-center">
             <div className="w-3/4 md:w-dvw lg:w-[90%]">
               <Image
@@ -80,7 +80,7 @@ export const Login = () => {
               />
             </div>
 
-            <div className="w-3/4 lg:w-4/5 flex flex-col justify-center gap-3 lg:gap-0">
+            <div className="w-3/4 md:3/4 lg:w-4/5 flex flex-col justify-center gap-3 lg:gap-0">
               <Text $color={COLORS.lila} $v="h1">
                 Iniciar sesión
               </Text>
