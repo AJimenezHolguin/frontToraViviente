@@ -71,7 +71,7 @@ export const Login = () => {
       <div className="lg:flex">
         <section className="w-full h-screen md:flex flex-col gap-1 items-center justify-center md:w-[800px] lg:w-[1100px] lg:h-[100vh] lg:p-[50px]">
           <div className="w-full h-full flex flex-col justify-center items-center">
-            <div className="w-3/4 md:w-dvw lg:w-[90%]">
+            <div className="w-3/4 lg:w-[90%]">
               <Image
                 alt="Tora-Viviente"
                 height={40}
