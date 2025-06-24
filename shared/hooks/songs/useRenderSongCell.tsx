@@ -25,7 +25,7 @@ export const useRenderSongCell = ({
           </span>
         );
       case "user":
-        const userName = data.user?.name;
+        const userName = data.userName;
         const capitalizedUserName = userName
           ? userName
               .split(" ")
