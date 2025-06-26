@@ -2,12 +2,12 @@ import axiosInstance from "@/config/axios/axiosInstance";
 import { getSession } from "next-auth/react";
 import {
   GetAllMySongsResponse,
-  GetAllSongsParamsProps,
+  PaginationParamsProps,
 } from "../typesServices";
 import { DEFAULT_PAGINATION } from "../defaultPagination";
 
 export const getAllSongs = async (
-  params: GetAllSongsParamsProps
+  params: PaginationParamsProps
 ): Promise<GetAllMySongsResponse> => {
   try {
     const session = await getSession();

@@ -6,8 +6,8 @@ export const baseColumns = [
   { name: "CATEGORIA", uid: "category", sortable: true },
   { name: "LETRA", uid: "fileSong" },
   { name: "ACORDE", uid: "fileScore" },
-  { name: "ESTADO", uid: "state" },
   { name: "ACCION", uid: "actions" },
+  { name: "ESTADO", uid: "status" },
 ];
 
 export const columnTitlesPresets: Record<string, Record<string, string>> = {
@@ -37,6 +37,7 @@ export const columnTitlesPresets: Record<string, Record<string, string>> = {
     fileSong: "LETRAS",
     fileScore: "ACORDES",
     actions: "ACCIÓN",
+    status: "ESTADO",
   },
   allPlayListsTitle: {
     id: "ID",

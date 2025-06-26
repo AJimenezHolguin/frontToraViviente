@@ -21,8 +21,3 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
     __v?: number
   }
 
-  export interface SongsResponse {
-    success: boolean;
-    count: number;
-    data: Song[];
-  }

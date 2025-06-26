@@ -31,9 +31,9 @@ export const MySongs = () => {
     null
   );
 
-  const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
+  const { showAlert, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
-  const { handleDelete, loading } = useDeleteSong(showAlert);
+  const { loading } = useDeleteSong(showAlert);
 
   const {
     page,
@@ -89,12 +89,6 @@ export const MySongs = () => {
     onEdit: (song) => {
       setSelectedSongToEdit(song);
       setIsModalOpen(true);
-    },
-    onDelete: (song) => {
-      showConfirm(`¿Estás seguro de eliminar "${song.name}"?`, async () => {
-        await handleDelete(song);
-        fetchSongs();
-      });
     },
   });
 

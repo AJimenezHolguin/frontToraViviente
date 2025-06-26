@@ -1,180 +1,173 @@
-// "use client";
-// import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
-// import { ButtonComponent } from "@/shared/components/Button";
-// import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
-// import { AlertModal } from "@/shared/components/Modal/ModalAlert";
-// import { PositionModal } from "@/shared/components/Modal/types";
-// import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
-// import { SearchComponent } from "@/shared/components/Search";
-// import { SpinnerComponent } from "@/shared/components/Spinner";
-// import { ReusableTable } from "@/shared/components/table";
-// import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
-// import { PlusIcon } from "@/shared/components/table/TableIcons";
-// import { Text } from "@/shared/components/Text";
-// import { WrapperTitle } from "@/shared/components/WrapperTitle";
-// import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
-// import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-// import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
-// import { useSongTable } from "@/shared/hooks/songs/useSongTable";
-// import { ColorButton } from "@/styles/colorButton.enum";
-// import { Song } from "@/types/SongsTypesProps";
-// import { useEffect, useState } from "react";
-
-// export const MyPlayLists = () => {
-//   const [songs, setSongs] = useState<Song[]>([]);
-//   const [isModalOpen, setIsModalOpen] = useState(false);
-//   const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(
-//     null
-//   );
-//   const [isLoading, setIsLoading] = useState(true);
-
-//   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
-//     useModalAlert();
-//   const { handleDelete, loading } = useDeleteSong(showAlert);
+"use client";
+import React, { useEffect, useState } from "react";
+import { PlusIcon } from "@/shared/components/table/TableIcons";
+import { ModalSong } from "@/shared/components/Modal";
+import { Song } from "@/types/SongsTypesProps";
+import { SpinnerComponent } from "@/shared/components/Spinner";
+import { ColorButton } from "@/styles/colorButton.enum";
+import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
+import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
+import { AlertModal } from "@/shared/components/Modal/ModalAlert";
+import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
+import { useSongTable } from "@/shared/hooks/songs/useSongTable";
+import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
+import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
+import { ReusableTable } from "@/shared/components/table";
+import { PositionModal } from "@/shared/components/Modal/types";
+import { ButtonComponent } from "@/shared/components/Button";
+import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
+import { Text } from "@/shared/components/Text";
+import { WrapperTitle } from "@/shared/components/WrapperTitle";
+import { SearchComponent } from "@/shared/components/Search";
+import { PaginationHeader } from "@/shared/components/PaginationHeader";
 
 
-//   const {
-//     page,
-//     setPage,
-//     rowsPerPage,
-//     setRowsPerPage,
-//     sortDescriptor,
-//     setSortDescriptor,
-//     filterValue,
-//     onSearchChange,
-//     onClear,
-//     selectedKeys,
-//     setSelectedKeys,
-//     headerColumns,
-//   } = useSongTable(
-//     [
-//       "name",
-//       "user",
-//       "linkSong",
-//       "category",
-//       "fileSong",
-//       "fileScore",
-//       "actions",
-//     ],
-//     columnTitlesPresets["mySongsTitle"]
-//   );
+export const MyPlayLists = () => {
+  const [playlist, setPlaylist] = useState<Song[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalPlaylists, setTotalPlaylists] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlayListToEdit, setSelectedPlaylistsToEdit] = useState<Song | null>(
+    null
+  );
 
-//   const fetchSongs = async () => {
-//     setIsLoading(true);
-//     try {
-//       const songsData = await getAllMySongs({
-//         page,
-//         take: rowsPerPage ?? 1,
-//         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
-//         search: filterValue,
-//       });
+  const { showAlert, AlertModalProps, ConfirmModalProps } =
+    useModalAlert();
+  const { loading } = useDeleteSong(showAlert);
 
-//       setSongs(songsData.songs || []);
-//       // setTotalPages(songsData.metadata.pageCount);
-//       // setTotalSongs(songsData.metadata.total);
-//     } catch (error) {
-//       console.error(error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
+  const {
+    page,
+    setPage,
+    rowsPerPage,
+    setRowsPerPage,
+    sortDescriptor,
+    setSortDescriptor,
+    filterValue,
+    onSearchChange,
+    onClear,
+    selectedKeys,
+    setSelectedKeys,
+    headerColumns,
+  } = useSongTable(
+    [
+      "name",
+      "user",
+      "fileSong",
+      "fileScore",
+      "actions",
+      "status",
+    ],
+    columnTitlesPresets["myPlayListsTitle"]
+  );
 
-//   useEffect(() => {
-//     fetchSongs();
-//   }, [page, rowsPerPage, sortDescriptor, filterValue]);
+  const fetchSongs = async () => {
+    try {
+      const songsData = await getAllMySongs({
+        page,
+        take: rowsPerPage ?? 5,
+        order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
+        search: filterValue,
+      });
 
-//   const renderCell = useRenderSongCell({
-//     onEdit: (song) => {
-//       setSelectedSongToEdit(song);
-//       setIsModalOpen(true);
-//     },
-//     onDelete: (song) => {
-//       showConfirm(`¿Estás seguro de eliminar "${song.name}"?`, async () => {
-//         await handleDelete(song);
-//         fetchSongs();
-//       });
-//     },
-//   });
+      setIsLoading(true);
+      setPlaylist(songsData.data || []);
+      setTotalPages(songsData.metadata.pageCount);
+      setTotalPlaylists(songsData.metadata.total);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-//   if (isLoading) return <SpinnerComponent />;
+  useEffect(() => {
+    fetchSongs();
+  }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-//   return (
-//     <>
-//       <WrapperTitle title="Lista general de mis playlists">
-//         <ConfirmModal
-//           {...ConfirmModalProps}
-//           isLoading={loading}
-//           placement={PositionModal.CENTER}
-//           title={loading ? "Eliminando..." : "Confirmar"}
-//         />
-//         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
+  const renderCell = useRenderSongCell({
+    onEdit: (song) => {
+        setSelectedPlaylistsToEdit(song);
+      setIsModalOpen(true);
+    },
+  });
 
-//         <div className="flex flex-col gap-4">
-//           <div className="flex justify-between gap-3 items-end">
-//             <SearchComponent
-//               classNames={{ base: "w-full pb-4 sm:max-w-[40%] pb-2" }}
-//               value={filterValue}
-//               onClear={onClear}
-//               onValueChange={onSearchChange}
-//             />
+  if (isLoading) return <SpinnerComponent />;
 
-//             <ButtonComponent
-//               color={ColorButton.PRIMARY}
-//               endContent={<PlusIcon />}
-//               onPress={() => {
-//                 setIsModalOpen(true);
-//               }}
-//             >
-//               <Text $fw={500} $v="md">
-//                 Crear playlist
-//               </Text>
-//             </ButtonComponent>
-//           </div>
-//           <div className="flex justify-between items-center">
-//             <span className="text-default-400 text-small">
-//               {/* Total {totalSongs} playlist */}
-//             </span>
-//             <label className="flex items-center text-default-400 text-small">
-//               Filas por página:
-//               <select
-//                 className="bg-transparent outline-none text-default-400 text-small"
-//                 onChange={(e) => {
-//                   setRowsPerPage(Number(e.target.value));
-//                   setPage(1);
-//                 }}
-//               >
-//               <option selected={true} value="1">
-//                   1
-//                 </option>
-//                 <option value="2">2</option>
-//                 <option value="3">3</option>
-//               </select>
-//             </label>
-//           </div>
-//         </div>
+  return (
+    <>
+      <WrapperTitle title="Lista general de mis playlists">
+        <ModalSong
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          songToEdit={selectedPlayListToEdit}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedPlaylistsToEdit(null);
+          }}
+          onSongCreated={fetchSongs}
+        />
 
-//         <ModalPlaylist
-//           isOpen={isModalOpen}
-//           onClose={() => {
-//             setIsModalOpen(false);
-//           }}
-//         />
+        <ConfirmModal
+          {...ConfirmModalProps}
+          isLoading={loading}
+          placement={PositionModal.CENTER}
+          title={loading ? "Eliminando..." : "Confirmar"}
+        />
+        <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
 
-//         {/* <ReusableTable
-//           ariaLabel="Tabla de canciones"
-//           headerColumns={headerColumns}
-//           itemKey="_id"
-//           page={page}
-//           renderCell={renderCell}
-//           selectedKeys={selectedKeys}
-//           sortDescriptor={sortDescriptor}
-//           // sortedItems={sortedItems}
-//           // totalPages={totalPages}
-//           onPageChange={setPage}
-//           onSelectionChange={(keys) => setSelectedKeys(keys)}
-//           onSortChange={setSortDescriptor}
-//         /> */}
-//       </WrapperTitle>
-//     </>
-//   );
-// };
+        <div className="flex flex-col gap-6">
+          <div className="flex justify-between gap-3 items-start">
+            <SearchComponent
+              classNames={{ 
+                base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
+                input: "placeholder:text-secondary ",
+                inputWrapper: "bg-white ",
+               }}
+              value={filterValue}
+              onClear={onClear}
+              onValueChange={onSearchChange}
+            />
+            <ButtonComponent
+              color={ColorButton.PRIMARY}
+              endContent={<PlusIcon />}
+              onPress={() => {
+                setSelectedPlaylistsToEdit(null);
+                setIsModalOpen(true);
+              }}
+            >
+              <Text $fw={500} $v="md">
+                Crear playlists
+              </Text>
+            </ButtonComponent>
+          </div>
+
+          <PaginationHeader
+            label="Playlists"
+            rowsPerPage={rowsPerPage ?? 0}
+            totalItems={totalPlaylists}
+            onRowsPerPageChange={(value) => {
+              setRowsPerPage(value);
+              setPage(1);
+            }}
+          />
+        </div>
+
+        <ReusableTable
+          ariaLabel="Tabla de playlists"
+          headerColumns={headerColumns}
+          itemKey="_id"
+          page={page}
+          renderCell={renderCell}
+          selectedKeys={selectedKeys}
+          sortDescriptor={sortDescriptor}
+          sortedItems={playlist}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          onSelectionChange={setSelectedKeys}
+          onSortChange={setSortDescriptor}
+        />
+      </WrapperTitle>
+    </>
+  );
+};
