@@ -10,7 +10,8 @@ import { UseRenderPlaylistsCellProps } from "./types";
 import { Playlist } from "@/types/PlaylistsTypesProps";
 import { SwitchComponent } from "@/shared/components/Switch";
 
-export const useRenderSongCell = ({
+
+export const useRenderPlaylistsCell = ({
   onEdit,
 }: UseRenderPlaylistsCellProps) => {
   return React.useCallback((data: Playlist, columnKey: React.Key) => {
@@ -38,18 +39,18 @@ export const useRenderSongCell = ({
         return <span>{capitalizedUserName}</span>;
    
       case "fileSong":
-        // return data.fileSong?.secure_url ? (
-        //   <a
-        //     className="flex justify-center items-center"
-        //     href={data.fileSong.secure_url}
-        //     rel="noopener noreferrer"
-        //     target="_blank"
-        //   >
-        //     <FaFilePdf color={COLORS.secondary} size={20} />
-        //   </a>
-        // ) : (
-        //   <span className="text-default-400">N/A</span>
-        // );
+        return data.songs.fileSong ? (
+          <a
+            className="flex justify-center items-center"
+            href={data.songs.fileSong.secure_url}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <FaFilePdf color={COLORS.secondary} size={20} />
+          </a>
+        ) : (
+          <span className="text-default-400">N/A</span>
+        );
       case "fileScore":
         // return data.fileScore?.secure_url ? (
         //   <a
@@ -78,12 +79,9 @@ export const useRenderSongCell = ({
           </div>
         );
         case "status":
-          return data.status ? (
-           
-              <SwitchComponent  />
+          return  (
+             <SwitchComponent  />
           
-          ) : (
-            <span className="text-default-400">N/A</span>
           );
       default:
         return <span>{String(cellValue)}</span>;

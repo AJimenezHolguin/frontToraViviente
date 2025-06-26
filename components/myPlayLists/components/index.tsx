@@ -20,15 +20,18 @@ import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { PaginationHeader } from "@/shared/components/PaginationHeader";
+import { Playlist } from '../../../types/PlaylistsTypesProps';
+import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
+import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 
 
 export const MyPlayLists = () => {
-  const [playlist, setPlaylist] = useState<Song[]>([]);
+  const [playlist, setPlaylist] = useState<Playlist[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalPlaylists, setTotalPlaylists] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPlayListToEdit, setSelectedPlaylistsToEdit] = useState<Song | null>(
+  const [selectedPlayListToEdit, setSelectedPlaylistsToEdit] = useState<Playlist | null>(
     null
   );
 
@@ -63,17 +66,18 @@ export const MyPlayLists = () => {
 
   const fetchSongs = async () => {
     try {
-      const songsData = await getAllMySongs({
+      const playlistData = await getAllMyPlaylist({
         page,
         take: rowsPerPage ?? 5,
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
+      console.log("estas son las playlists", playlistData)
 
       setIsLoading(true);
-      setPlaylist(songsData.data || []);
-      setTotalPages(songsData.metadata.pageCount);
-      setTotalPlaylists(songsData.metadata.total);
+      setPlaylist(playlistData.data || []);
+      setTotalPages(playlistData.metadata.pageCount);
+      setTotalPlaylists(playlistData.metadata.total);
     } catch (error) {
       console.error(error);
     } finally {
@@ -85,9 +89,9 @@ export const MyPlayLists = () => {
     fetchSongs();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-  const renderCell = useRenderSongCell({
-    onEdit: (song) => {
-        setSelectedPlaylistsToEdit(song);
+  const renderCell = useRenderPlaylistsCell({
+    onEdit: (Playlist) => {
+        setSelectedPlaylistsToEdit(Playlist);
       setIsModalOpen(true);
     },
   });
@@ -97,7 +101,7 @@ export const MyPlayLists = () => {
   return (
     <>
       <WrapperTitle title="Lista general de mis playlists">
-        <ModalSong
+        {/* <ModalSong
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
           songToEdit={selectedPlayListToEdit}
@@ -106,7 +110,7 @@ export const MyPlayLists = () => {
             setSelectedPlaylistsToEdit(null);
           }}
           onSongCreated={fetchSongs}
-        />
+        /> */}
 
         <ConfirmModal
           {...ConfirmModalProps}
