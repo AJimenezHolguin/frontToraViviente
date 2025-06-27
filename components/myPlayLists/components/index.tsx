@@ -35,7 +35,7 @@ export const MyPlayLists = () => {
     null
   );
 
-  const { showAlert, AlertModalProps, ConfirmModalProps } =
+  const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
   const { loading } = useDeleteSong(showAlert);
 
@@ -64,7 +64,7 @@ export const MyPlayLists = () => {
     columnTitlesPresets["myPlayListsTitle"]
   );
 
-  const fetchSongs = async () => {
+  const fetchPlaylists = async () => {
     try {
       const playlistData = await getAllMyPlaylist({
         page,
@@ -72,8 +72,7 @@ export const MyPlayLists = () => {
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-      console.log("estas son las playlists", playlistData)
-
+      console.log("estas son mis playlists", playlistData);
       setIsLoading(true);
       setPlaylist(playlistData.data || []);
       setTotalPages(playlistData.metadata.pageCount);
@@ -86,7 +85,7 @@ export const MyPlayLists = () => {
   };
 
   useEffect(() => {
-    fetchSongs();
+    fetchPlaylists();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
   const renderCell = useRenderPlaylistsCell({
@@ -94,7 +93,12 @@ export const MyPlayLists = () => {
         setSelectedPlaylistsToEdit(Playlist);
       setIsModalOpen(true);
     },
-  });
+    onDelete: (Playlist) => {
+      showConfirm(`¿Estás seguro de que deseas eliminar la playlist "${Playlist.name}"?`, () => {
+    // await HandleDelete(playlist);
+    fetchPlaylists() 
+  })
+}});
 
   if (isLoading) return <SpinnerComponent />;
 
