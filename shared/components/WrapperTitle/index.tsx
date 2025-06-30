@@ -1,9 +1,9 @@
 import { COLORS } from "@/styles/colors"
 import { Text } from "../Text"
-import { WrapperTitleProps } from "./types"
+import { WrapperProps} from "../../../types/wrapperProps"
 
 
-export const WrapperTitle: React.FC<WrapperTitleProps> = ( {title, children} ) => {
+export const WrapperTitle: React.FC<WrapperProps> = ( {title, children} ) => {
 
     return(
         <div className="w-ful px-6 py-1">

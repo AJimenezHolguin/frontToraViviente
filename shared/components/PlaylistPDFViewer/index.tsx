@@ -6,6 +6,12 @@ import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service"
 import { Playlist } from "@/types/PlaylistsTypesProps";
 import { useParams } from "next/navigation";
 import { SpinnerComponent } from "../Spinner";
+import { IoLogoYoutube } from "react-icons/io5";
+import { PiScreencast } from "react-icons/pi";
+import { Text } from "../Text";
+import { COLORS } from "@/styles/colors";
+import { WrapperTitle } from "../WrapperTitle";
+import { WrapperSubTitle } from "../WrapperSubTitle";
 
 // Props del componente
 interface Props {
@@ -24,6 +30,7 @@ interface DisplaySong {
   name: string;
   file: FileData;
   title: string
+  linkSong: string;
 }
 
 // Estructura interna de canción
@@ -52,6 +59,8 @@ export default function PlaylistPDFViewer({ type }: Props) {
   const [selected, setSelected] = useState<FileData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSidebarOpen,setIsSidebarOpen] = useState(true);
+  const [playlistName, setPlaylistName] = useState<string>("");
+
 
   useEffect(() => {
     async function fetchSongs() {
@@ -77,6 +86,9 @@ export default function PlaylistPDFViewer({ type }: Props) {
           console.error("Playlist no encontrada con ID:", playlistId);
           console.error("Playlists disponibles:", res.data.map((p: any) => p._id));
         }
+        if ( playlist){
+          setPlaylistName(playlist.name);
+        }
         
 
         const filteredSongs: DisplaySong[] = playlist
@@ -86,6 +98,7 @@ export default function PlaylistPDFViewer({ type }: Props) {
                 _id: song._id,
                 name: song[type]!.public_id,
                 title: song.title,
+                linkSong: song.linkSong,
                 file: {
                   public_id: song[type]!.public_id,
                   secure_url: song[type]!.secure_url,
@@ -113,17 +126,26 @@ export default function PlaylistPDFViewer({ type }: Props) {
 
   return (
 
-    <div className="flex h-screen overflow-hidden relative border rounded-lg shadow ">
+    <div className="flex h-screen overflow-hidden">
+
+
     {/* Sidebar (Lista de canciones) */}
 <div
   className={`transition-all duration-300 bg-white border-r flex flex-col ${
     isSidebarOpen ? "w-3/4"  : "w-10"
   } overflow-hidden min-w-0`}
 >
-  <div className="flex justify-between items-center p-4">
+  <div className="flex justify-between items-start p-4">
     {isSidebarOpen ? (
       <>
-        <h1 className="text-2xl font-bold">Canciones</h1>
+      
+        <Text $color={COLORS.primary}
+        $ta="left" 
+        $v="h4" 
+        className="pl-1">
+        
+        {playlistName.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+        </Text>
         <button
           onClick={() => setIsSidebarOpen(false)}
           className="text-xl font-bold"
@@ -135,7 +157,7 @@ export default function PlaylistPDFViewer({ type }: Props) {
     ) : (
       <button
         onClick={() => setIsSidebarOpen(true)}
-        className="text-xl font-bold "
+        className="text-xl font-bold"
         title="Mostrar lista"
       >
         &gt;
@@ -145,8 +167,10 @@ export default function PlaylistPDFViewer({ type }: Props) {
 
   {/* Lista de canciones */}
   {isSidebarOpen && (
-    <div className="w-[600px] flex-1 p-4 overflow-y-auto">
-      <ul className="space-y-2">
+    <div className="w-[600px] flex-1 p-4 overflow-y-auto h-full ">
+      <WrapperSubTitle title="Letras: ">   
+        <div className="pt-6">
+      <ul className="flex flex-col ">
         {songs.map((song) => (
           <button
             key={song._id}
@@ -157,27 +181,44 @@ export default function PlaylistPDFViewer({ type }: Props) {
             }`}
             onClick={() => setSelected(song.file)}
           >
-            <FaFilePdf className="text-secondary" />
+            <FaFilePdf className="text-secondary" size={20}/>
             <span className="block w-full break-words"> {song.title.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}</span>
+            <a href={song.linkSong} rel="noopener noreferrer" target="_blank">
+            <IoLogoYoutube color="red" size={20} />
+          </a>
+          
           </button>
         ))}
       </ul>
+        
+        </div>      
+      </WrapperSubTitle>
     </div>
   )}
 </div>
 
     {/* Visor PDF */}
     <div
-      className={`transition-all duration-300 ${
+      className={`transition-all duration-300 h-full overflow-hidden ${
         isSidebarOpen ? "w-full" : "w-full"
       } h-full`}
     >
       {selected ? (
+        <>
+         <div className="p-2 flex justify-end items-center">
+         <a href={selected.secure_url} rel="noopener noreferrer" target="_blank" title="PDF pantalla completa">
+            <PiScreencast size={20} />
+          </a>
+       </div>
         <iframe
-          src={selected.secure_url}
-          className="w-full h-full"
-          title={selected.public_id}
+        src={selected.secure_url}
+        className="w-full h-full"
+        title={selected.public_id}
+        
+        
         />
+        </>
+        
       ) : (
         <div className="p-4">Selecciona una canción para visualizar.</div>
       )}

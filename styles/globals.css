@@ -38,3 +38,11 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
+
+.h-custom {
+  height: calc(100vh - 60);
+}
+
+/* * {
+  outline: 1px solid red !important;
+} */
