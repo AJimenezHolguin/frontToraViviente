@@ -1,3 +1,4 @@
+import { DisplaySong, FileData } from "@/shared/components/PlaylistPDFViewer/types";
 
 
 export interface Playlist {
@@ -23,3 +24,17 @@ export interface Playlist {
     }  
     status: boolean;
 }
+
+export interface PlaylistSidebarProps {
+    songs: DisplaySong[];
+    selected: FileData | null;
+    setSelected: (file: FileData) => void;
+    moveItem: (fromIndex: number, toIndex: number) => void;
+    isSidebarOpen: boolean;
+    toggleSidebar: () => void;
+    playlistName: string;
+  }
+
+  export interface PDFViewerProps {
+    selected: FileData | null;
+  }
