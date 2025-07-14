@@ -23,6 +23,7 @@ import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { Playlist } from '../../../types/PlaylistsTypesProps';
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
+import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
 
 
 export const MyPlayLists = () => {
@@ -105,6 +106,12 @@ export const MyPlayLists = () => {
   return (
     <>
       <WrapperTitle title="Lista general de mis playlists">
+        <ModalPlaylist 
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);  
+        }}
+        />
         {/* <ModalSong
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
@@ -113,7 +120,7 @@ export const MyPlayLists = () => {
             setIsModalOpen(false);
             setSelectedPlaylistsToEdit(null);
           }}
-          onSongCreated={fetchSongs}
+          onSongCreated={fetchPlaylists}
         /> */}
 
         <ConfirmModal
