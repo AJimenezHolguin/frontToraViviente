@@ -21,7 +21,7 @@ export const PDFViewer = ({ selected }: PDFViewerProps) => {
         </a>
       </div>
       <iframe
-        className="w-full h-full"
+        className="w-full h-full sidebar-scroll-viewerpdf"
         src={selected.secure_url}
         title={selected.public_id}
       />

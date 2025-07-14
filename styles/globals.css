@@ -43,6 +43,12 @@
   height: calc(100vh - 60);
 }
 
-/* * {
-  outline: 1px solid red !important;
-} */
+.sidebar-scroll {
+  max-height: calc(100vh - 130px); 
+  overflow-y: auto;
+}
+
+.sidebar-scroll-viewerpdf {
+  max-height: calc(100vh - 100px); 
+  overflow-y: auto;
+}

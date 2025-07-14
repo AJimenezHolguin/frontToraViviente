@@ -1,10 +1,9 @@
-// components/PlaylistPDFViewer/PlaylistSidebar.tsx
+import { IoChevronDown, IoChevronUp, IoLogoYoutube } from "react-icons/io5";
+import { WrapperSubTitle } from "../WrapperSubTitle";
 import { FaFilePdf } from "react-icons/fa6";
-import { IoChevronUp, IoChevronDown, IoLogoYoutube } from "react-icons/io5";
+import { PlaylistSidebarProps } from "@/types/PlaylistsTypesProps";
 import { Text } from "../Text";
 import { COLORS } from "@/styles/colors";
-import { WrapperSubTitle } from "../WrapperSubTitle";
-import { PlaylistSidebarProps } from "@/types/PlaylistsTypesProps";
 
 export const PlaylistSidebar = ({
   songs,
@@ -19,9 +18,10 @@ export const PlaylistSidebar = ({
     <div
       className={`transition-all duration-300 bg-white border-r flex flex-col ${
         isSidebarOpen ? "w-3/4" : "w-10"
-      } overflow-hidden min-w-0`}
+      } overflow-hidden min-w-0 h-full`}
     >
-      <div className="flex justify-between items-start p-4">
+      {/* Encabezado fijo */}
+      <div className="flex justify-between items-start p-4 shrink-0 ">
         {isSidebarOpen ? (
           <>
             <Text $color={COLORS.primary} $ta="left" $v="h4" className="pl-1">
@@ -49,10 +49,11 @@ export const PlaylistSidebar = ({
         )}
       </div>
 
+      {/* Contenido scrollable */}
       {isSidebarOpen && (
-        <div className="w-[600px] flex-1 p-4 overflow-y-auto h-full ">
+        <div className="w-[600px] px-4 pb-4 sidebar-scroll">
           <WrapperSubTitle title="Letras: ">
-            <ul className="flex flex-col pt-6">
+            <ul className="flex flex-col pt-6 space-y-2">
               {songs.map((song, index) => (
                 <button
                   key={song._id}
@@ -72,20 +73,25 @@ export const PlaylistSidebar = ({
                       className="text-gray-600 hover:text-black disabled:opacity-30"
                       disabled={index === 0}
                       title="Mover arriba"
-                      onClick= {() => moveItem(index, index - 1) }
+                      onClick={() => moveItem(index, index - 1)}
                     >
-                      <IoChevronUp className={index === 0 ? "opacity-30" : ""} size={20} />
+                      <IoChevronUp
+                        className={index === 0 ? "opacity-30" : ""}
+                        size={20}
+                      />
                     </button>
 
                     <button
                       className="text-gray-600 hover:text-black disabled:opacity-30"
                       disabled={index === songs.length - 1}
                       title="Mover abajo"
-                      onClick= {() => moveItem(index, index + 1) }
+                      onClick={() => moveItem(index, index + 1)}
                     >
-                      <IoChevronDown 
-                       className={index === songs.length - 1 ? "opacity-30" : "" }
-                      size={20} 
+                      <IoChevronDown
+                        className={
+                          index === songs.length - 1 ? "opacity-30" : ""
+                        }
+                        size={20}
                       />
                     </button>
                   </div>
