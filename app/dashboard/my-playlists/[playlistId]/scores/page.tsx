@@ -1,11 +1,8 @@
+import PlaylistPDFViewer from "@/shared/components/PlaylistPDFViewer";
 
 
-export default function PlaylistsPage() {
+export default function ScoresPage() {
 
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-4">Acordes de la playlists: </h1>
-        
-      </div>
-    );
+    return <PlaylistPDFViewer type="fileScore" />;
+  
   }

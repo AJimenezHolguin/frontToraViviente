@@ -33,6 +33,7 @@ export interface PlaylistSidebarProps {
     isSidebarOpen: boolean;
     toggleSidebar: () => void;
     playlistName: string;
+    type: "fileSong" | "fileScore";
   }
 
   export interface PDFViewerProps {

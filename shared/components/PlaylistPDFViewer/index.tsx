@@ -36,6 +36,7 @@ export default function PlaylistPDFViewer({ type }: Props) {
         setSelected={setSelected}
         songs={songs}
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        type={type}
       />
       <div className="transition-all duration-300 h-full w-full overflow-hidden">
         <PDFViewer selected={selected} />

@@ -13,6 +13,7 @@ export const PlaylistSidebar = ({
   isSidebarOpen,
   toggleSidebar,
   playlistName,
+  type,
 }: PlaylistSidebarProps) => {
   return (
     <div
@@ -52,7 +53,7 @@ export const PlaylistSidebar = ({
       {/* Contenido scrollable */}
       {isSidebarOpen && (
         <div className="w-[600px] px-4 pb-4 sidebar-scroll">
-          <WrapperSubTitle title="Letras: ">
+          <WrapperSubTitle title={type === "fileSong" ? "Letras:" : "Acordes:"}>
             <ul className="flex flex-col pt-6 space-y-2">
               {songs.map((song, index) => (
                 <button
