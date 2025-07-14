@@ -1,14 +1,13 @@
 // hooks/usePlaylistSongs.ts
 import { useEffect, useState } from "react";
-import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 import { Playlist } from "@/types/PlaylistsTypesProps";
-
 import { updatePlaylist } from "@/services/playlists/updatePlaylist.service";
 import {
   DisplaySong,
   FileData,
   SongPlaylist,
 } from "@/shared/components/PlaylistPDFViewer/types";
+import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
 
 export function usePlaylistSongs(
   playlistId: string,
@@ -23,7 +22,7 @@ export function usePlaylistSongs(
     async function fetchSongs() {
       setIsLoading(true);
       try {
-        const res = await getAllMyPlaylist({
+        const res = await getAllPlaylist({
           page: 1,
           take: 10,
           order: "DESC",

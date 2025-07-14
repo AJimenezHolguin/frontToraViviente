@@ -15,6 +15,7 @@ import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
+import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
 
 export const AllPlayLists = () => {
   const [allPlaylist, setAllPlaylist] = useState<Playlist[]>([]);
@@ -45,7 +46,7 @@ export const AllPlayLists = () => {
 
   const fetchPlaylists = async () => {
     try {
-      const playlistData = await getAllMyPlaylist({
+      const playlistData = await getAllPlaylist({
         page,
         take: rowsPerPage ?? 5,
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",

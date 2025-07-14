@@ -1,4 +1,4 @@
-// components/PlaylistPDFViewer/PDFViewer.tsx
+
 
 import { PDFViewerProps } from "@/types/PlaylistsTypesProps";
 import { PiScreencast } from "react-icons/pi";
