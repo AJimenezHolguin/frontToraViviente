@@ -44,7 +44,7 @@ export const useRenderPlaylistsCell = ({
         const hasFileSong = Array.isArray(data.songs) && data.songs.some((song) => song.fileSong?.secure_url);
   
         return hasFileSong ? (
-    <Link
+    <Link 
      className="flex justify-center items-center"
      href={`/dashboard/my-playlists/${data._id}/songs`}
     >

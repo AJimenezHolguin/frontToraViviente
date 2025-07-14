@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 export default function HomePage () {
 
-  redirect("/dashboard/all-playlist")
+  redirect("/dashboard/all-playlists")
   
 
 }

@@ -18,7 +18,7 @@ export const menuItems: SidebarMenuItemProps[] = [
     {
         title: "Todas las Playlists",
         subTitle: "Listas de Reproducción",
-        path: "/dashboard/all-playlist",
+        path: "/dashboard/all-playlists",
         icon: <IoListOutline size={30} />,
     },
     {
