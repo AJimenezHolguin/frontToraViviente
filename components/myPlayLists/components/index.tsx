@@ -16,11 +16,10 @@ import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { PaginationHeader } from "@/shared/components/PaginationHeader";
-import { Playlist } from '../../../types/PlaylistsTypesProps';
+import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
-
 
 export const MyPlayLists = () => {
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
@@ -28,9 +27,8 @@ export const MyPlayLists = () => {
   const [totalPlaylists, setTotalPlaylists] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPlayListToEdit, setSelectedPlaylistsToEdit] = useState<Playlist | null>(
-    null
-  );
+  const [selectedPlayListToEdit, setSelectedPlaylistsToEdit] =
+    useState<Playlist | null>(null);
 
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
@@ -50,14 +48,7 @@ export const MyPlayLists = () => {
     setSelectedKeys,
     headerColumns,
   } = useSongTable(
-    [
-      "name",
-      "user",
-      "fileSong",
-      "fileScore",
-      "actions",
-      "status",
-    ],
+    ["name", "user", "fileSong", "fileScore", "actions", "status"],
     columnTitlesPresets["myPlayListsTitle"]
   );
 
@@ -69,7 +60,7 @@ export const MyPlayLists = () => {
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-  
+
       setIsLoading(true);
       setPlaylist(playlistData.data || []);
       setTotalPages(playlistData.metadata.pageCount);
@@ -87,26 +78,31 @@ export const MyPlayLists = () => {
 
   const renderCell = useRenderPlaylistsCell({
     onEdit: (Playlist) => {
-        setSelectedPlaylistsToEdit(Playlist);
+      setSelectedPlaylistsToEdit(Playlist);
       setIsModalOpen(true);
     },
     onDelete: (Playlist) => {
-      showConfirm(`¿Estás seguro de que deseas eliminar la playlist "${Playlist.name}"?`, () => {
-    // await HandleDelete(playlist);
-    fetchPlaylists() 
-  })
-}});
+      showConfirm(
+        `¿Estás seguro de que deseas eliminar la playlist "${Playlist.name}"?`,
+        () => {
+          // await HandleDelete(playlist);
+          fetchPlaylists();
+        }
+      );
+    },
+    type: "my-playlists",
+  });
 
   if (isLoading) return <SpinnerComponent />;
 
   return (
     <>
       <WrapperTitle title="Lista general de mis playlists">
-        <ModalPlaylist 
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);  
-        }}
+        <ModalPlaylist
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
         />
         {/* <ModalSong
           isOpen={isModalOpen}
@@ -130,11 +126,11 @@ export const MyPlayLists = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-start">
             <SearchComponent
-              classNames={{ 
+              classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
                 inputWrapper: "bg-white ",
-               }}
+              }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}

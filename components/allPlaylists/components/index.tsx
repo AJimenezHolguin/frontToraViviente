@@ -12,20 +12,17 @@ import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusO
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { PaginationHeader } from "@/shared/components/PaginationHeader";
-import { Playlist } from '../../../types/PlaylistsTypesProps';
+import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
-
 
 export const AllPlayLists = () => {
   const [allPlaylist, setAllPlaylist] = useState<Playlist[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalAllPlaylists, setTotalAllPlaylists] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  
 
-  const { showAlert, AlertModalProps, ConfirmModalProps } =
-    useModalAlert();
+  const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
   const { loading } = useDeleteSong(showAlert);
 
   const {
@@ -42,12 +39,7 @@ export const AllPlayLists = () => {
     setSelectedKeys,
     headerColumns,
   } = useSongTable(
-    [
-      "name",
-      "user",
-      "fileSong",
-      "fileScore",
-    ],
+    ["name", "user", "fileSong", "fileScore"],
     columnTitlesPresets["allPlayListsTitle"]
   );
 
@@ -59,7 +51,7 @@ export const AllPlayLists = () => {
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-  
+
       setIsLoading(true);
       setAllPlaylist(playlistData.data || []);
       setTotalPages(playlistData.metadata.pageCount);
@@ -75,15 +67,15 @@ export const AllPlayLists = () => {
     fetchPlaylists();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-  const renderCell = useRenderPlaylistsCell({})
-
+  const renderCell = useRenderPlaylistsCell({
+    type: "all-playlists",
+  });
 
   if (isLoading) return <SpinnerComponent />;
 
   return (
     <>
       <WrapperTitle title="Lista general de todas las playlists">
-        
         <ConfirmModal
           {...ConfirmModalProps}
           isLoading={loading}
@@ -95,16 +87,15 @@ export const AllPlayLists = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-start">
             <SearchComponent
-              classNames={{ 
+              classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
                 inputWrapper: "bg-white ",
-               }}
+              }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
             />
-           
           </div>
 
           <PaginationHeader

@@ -39,3 +39,5 @@ export interface PlaylistSidebarProps {
   export interface PDFViewerProps {
     selected: FileData | null;
   }
+
+ export type PlaylistType  = "my-playlists" | "all-playlists" ;
