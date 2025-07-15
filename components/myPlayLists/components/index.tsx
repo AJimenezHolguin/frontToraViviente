@@ -104,17 +104,7 @@ export const MyPlayLists = () => {
             setIsModalOpen(false);
           }}
         />
-        {/* <ModalSong
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          songToEdit={selectedPlayListToEdit}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedPlaylistsToEdit(null);
-          }}
-          onSongCreated={fetchPlaylists}
-        /> */}
-
+       
         <ConfirmModal
           {...ConfirmModalProps}
           isLoading={loading}

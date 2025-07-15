@@ -26,21 +26,42 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
   const [selectedSongs, setSelectedSongs] = useState<string[]>([]);
   const [filterValue, setFilterValue] = useState("");
   const [responseData, setResponseData] = useState<Song[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchSongs = async () => {
-  //     if (!isOpen) return;
-  //     try {
-  //       const response = await getAllSongs();
+  useEffect(() => {
+    if (!isOpen) return;
+    const fetchAllSongs = async () => {
+      setLoading(true);
+      try {
+        const response = await getAllSongs({
+          page,
+          take: 10,
+          order: "ASC",
+          search: filterValue,
+        });
 
-  //       setResponseData(response);
-  //     } catch (error) {
-  //       console.error("Error al obtener las canciones", error);
-  //     }
-  //   };
+        setResponseData((prev) =>
+          page === 1 ? response.data : [...prev, ...response.data]
+        );
+        setHasMore(response.data.length === 10);
+      } catch (error) {
+        console.error("Error al obtener las canciones", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   fetchSongs();
-  // }, [isOpen]);
+    fetchAllSongs();
+  }, [isOpen, page, filterValue]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setResponseData([]);
+    setPage(1);
+    setHasMore(true);
+  }, [filterValue]);
 
   const filterAllSongs = responseData.filter((song) =>
     song.name.toLowerCase().includes(filterValue.toLowerCase())
@@ -50,6 +71,15 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
     setSelectedSongs([]);
     setFilterValue("");
     onClose();
+  };
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+
+    if (isAtBottom && hasMore && !loading) {
+      setPage((prev) => prev + 1);
+    }
   };
 
   return (
@@ -86,6 +116,7 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
               className="overflow-y-auto h-[200px]"
               orientation="vertical"
               size={13}
+              onScroll={handleScroll}
             >
               <CheckboxGroup value={selectedSongs} onChange={setSelectedSongs}>
                 <div className="flex flex-col gap-1">
@@ -107,11 +138,11 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button color="danger" variant="light" onPress={handleClose}>
-              Close
+            <Button color="danger" onPress={handleClose}>
+              Cancelar
             </Button>
             <Button color="primary" onPress={handleClose}>
-              Action
+              Guardar
             </Button>
           </ModalFooter>
         </>
