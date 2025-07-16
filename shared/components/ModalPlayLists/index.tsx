@@ -1,4 +1,3 @@
-"use client";
 import {
   Modal,
   ModalContent,
@@ -8,7 +7,6 @@ import {
   Button,
   CheckboxGroup,
   Checkbox,
-  ScrollShadow,
 } from "@heroui/react";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps, VariantProps } from "@/shared/components/Input/types";
@@ -32,7 +30,7 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
 
   useEffect(() => {
     if (!isOpen) return;
-    const fetchAllSongs = async () => {
+    const fetchSongs = async () => {
       setLoading(true);
       try {
         const response = await getAllSongs({
@@ -46,15 +44,15 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
           page === 1 ? response.data : [...prev, ...response.data]
         );
         setHasMore(response.data.length === 10);
-      } catch (error) {
-        console.error("Error al obtener las canciones", error);
+      } catch (err) {
+        console.error("Error al obtener canciones", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAllSongs();
-  }, [isOpen, page, filterValue]);
+    fetchSongs();
+  }, [page, filterValue, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -67,19 +65,22 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
     song.name.toLowerCase().includes(filterValue.toLowerCase())
   );
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
+
+    if (atBottom && hasMore && !loading) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
   const handleClose = () => {
     setSelectedSongs([]);
     setFilterValue("");
+    setResponseData([]);  
+    setPage(1);           
+    setHasMore(true); 
     onClose();
-  };
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
-
-    if (isAtBottom && hasMore && !loading) {
-      setPage((prev) => prev + 1);
-    }
   };
 
   return (
@@ -89,37 +90,45 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
       scrollBehavior="inside"
       onClose={handleClose}
     >
-      <ModalContent className="h-[400px]">
+      <ModalContent
+        className="sm:my-0 w-full md:w-[600px]"
+        style={{ maxHeight: "100vh" }}
+      >
         <>
           <ModalHeader className="flex flex-col gap-1">
             Crear Playlist
           </ModalHeader>
 
-          <InputComponent
-            isClearable
-            isRequired
-            classNames={{ base: "pl-5 pb-6 sm: pr-5 md:max-w-[90%]" }}
-            label="Nombre de la playlist"
-            placeholder="Nueva playlist..."
-            type={TypeProps.TEXT}
-            variant={VariantProps.UNDERLINED}
-          />
-          <SearchComponent
-            classNames={{ base: "pl-5 sm: pr-5 md:max-w-[90%]" }}
-            value={filterValue}
-            onValueChange={setFilterValue}
-          />
+          {/* INPUT Y BUSCADOR */}
+          <div className="px-6 flex flex-col gap-4">
+            <InputComponent
+              isClearable
+              isRequired
+              classNames={{ base: "w-full" }}
+              label="Nombre de la playlist"
+              placeholder="Nueva playlist..."
+              type={TypeProps.TEXT}
+              variant={VariantProps.UNDERLINED}
+            />
 
-          <ModalBody className="overflow-y-auto h-[200px]">
+            <SearchComponent
+              classNames={{ base: "w-full" }}
+              value={filterValue}
+              onValueChange={setFilterValue}
+            />
+          </div>
+
+          {/* BODY: LISTA Y SELECCIONADOS */}
+          <ModalBody className="overflow-y-auto px-6 pt-4">
             <p className="text-sm font-medium mb-2">Canciones disponibles:</p>
-            <ScrollShadow
-              className="overflow-y-auto h-[200px]"
-              orientation="vertical"
-              size={13}
+
+            {/* SCROLL INTERNO SOLO PARA CANCIONES */}
+            <div
+              className="h-[200px] overflow-y-auto border rounded-md px-2"
               onScroll={handleScroll}
             >
               <CheckboxGroup value={selectedSongs} onChange={setSelectedSongs}>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 py-2">
                   {filterAllSongs.map((song) => (
                     <Checkbox key={song._id} value={song._id}>
                       {song.name}
@@ -127,17 +136,45 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
                   ))}
                 </div>
               </CheckboxGroup>
-            </ScrollShadow>
-            <p className="text-default-700 text-small">
-              Seleccionado:{" "}
-              {selectedSongs
-                .map((id) => responseData.find((song) => song._id === id)?.name)
-                .filter(Boolean)
-                .join(", ")}
-            </p>
+            </div>
+
+            {/* SELECCIONADOS */}
+            {selectedSongs.length > 0 && (
+              <div
+                className="mt-4 overflow-y-scroll"
+                style={{ height: "100px" }}
+              >
+                <p className="text-sm font-medium mb-1">Seleccionado:</p>
+                <div className="gap-1 pr-1">
+                  {selectedSongs
+                    .map((id) => responseData.find((song) => song._id === id))
+                    .filter(Boolean)
+                    .map((song) => (
+                      <div
+                        key={song!._id}
+                        className="bg-primary/10 rounded-lg px-2 py-1 text-xs text-center text-primary font-medium flex justify-between items-center gap-2"
+                      >
+                        <span className="truncate">{song!.name}</span>
+                        <button
+                          className="text-red-500 hover:text-red-700 text-xs font-bold"
+                          title="Quitar"
+                          onClick={() =>
+                            setSelectedSongs((prev) =>
+                              prev.filter((sid) => sid !== song!._id)
+                            )
+                          }
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
           </ModalBody>
 
-          <ModalFooter>
+          {/* FOOTER */}
+          <ModalFooter className="px-6 py-4 flex justify-end gap-2">
             <Button color="danger" onPress={handleClose}>
               Cancelar
             </Button>
