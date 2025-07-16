@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { getAllSongs } from "@/services/songs/getAllSongs.service";
 import { Song } from "@/types/SongsTypesProps";
 import { SearchComponent } from "../Search";
+import { SwitchComponent } from "../Switch";
 
 type ModalPlaylistProps = {
   isOpen: boolean;
@@ -95,7 +96,7 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
         style={{ maxHeight: "100vh" }}
       >
         <>
-          <ModalHeader className="flex flex-col gap-1">
+          <ModalHeader className="flex flex-col gap-1 text-primary">
             Crear Playlist
           </ModalHeader>
 
@@ -120,14 +121,14 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
 
           {/* BODY: LISTA Y SELECCIONADOS */}
           <ModalBody className="overflow-y-auto px-6 pt-4">
-            <p className="text-sm font-medium mb-2">Canciones disponibles:</p>
+            <p className="text-sm font-medium mb-2 ">Canciones disponibles:</p>
 
             {/* SCROLL INTERNO SOLO PARA CANCIONES */}
             <div
               className="h-[200px] overflow-y-auto border rounded-md px-2"
               onScroll={handleScroll}
             >
-              <CheckboxGroup value={selectedSongs} onChange={setSelectedSongs}>
+              <CheckboxGroup  value={selectedSongs} onChange={setSelectedSongs}>
                 <div className="flex flex-col gap-1 py-2">
                   {filterAllSongs.map((song) => (
                     <Checkbox key={song._id} value={song._id}>
@@ -144,7 +145,7 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
                 className="mt-4 overflow-y-scroll"
                 style={{ height: "100px" }}
               >
-                <p className="text-sm font-medium mb-1">Seleccionado:</p>
+                <p className="text-sm font-medium mb-1 ">Canciones seleccionadas:</p>
                 <div className="gap-1 pr-1">
                   {selectedSongs
                     .map((id) => responseData.find((song) => song._id === id))
@@ -152,7 +153,7 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
                     .map((song) => (
                       <div
                         key={song!._id}
-                        className="bg-primary/10 rounded-lg px-2 py-1 text-xs text-center text-primary font-medium flex justify-between items-center gap-2"
+                        className="bg-primary/10 rounded-lg px-2 py-1 text-xs text-center text-secondary font-medium flex justify-between items-center gap-2"
                       >
                         <span className="truncate">{song!.name}</span>
                         <button
@@ -171,6 +172,11 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
                 </div>
               </div>
             )}
+            <div className="flex">
+          <SwitchComponent />
+          <p className="text-md font-medium mb-2 pt-2 text-primary" style={{paddingLeft: "5px"}}>¿Playlist visible?</p>
+          
+            </div>
           </ModalBody>
 
           {/* FOOTER */}
