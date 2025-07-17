@@ -100,9 +100,11 @@ export const MyPlayLists = () => {
       <WrapperTitle title="Lista general de mis playlists">
         <ModalPlaylist
           isOpen={isModalOpen}
+          playlistToEdit={selectedPlayListToEdit}
           onClose={() => {
             setIsModalOpen(false);
           }}
+          onPlaylistCreated={fetchPlaylists}
         />
        
         <ConfirmModal
