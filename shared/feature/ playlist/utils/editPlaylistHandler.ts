@@ -1,6 +1,5 @@
-
-import { PlaylistFormState } from '../../../hooks/playlists/types';
-import axiosInstance from '../../../../config/axios/axiosInstance';
+import { PlaylistFormState } from "../../../hooks/playlists/types";
+import axiosInstance from "../../../../config/axios/axiosInstance";
 import { Playlist } from "../../../../types/PlaylistsTypesProps";
 
 export const editPlaylistHandler = async (
@@ -13,7 +12,10 @@ export const editPlaylistHandler = async (
     status: form.status,
   };
 
-  const { data } = await axiosInstance.put(`/playlists/${playlistToEdit._id}`, payload);
-  
+  const { data } = await axiosInstance.put(
+    `/playlists/${playlistToEdit._id}`,
+    payload
+  );
+
   return data;
 };

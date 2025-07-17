@@ -66,7 +66,7 @@ export const ModalPlaylist = ({
           order: "ASC",
           search: filterValue,
         });
-      
+
         setResponseData((prev) =>
           page === 1 ? response.data : [...prev, ...response.data]
         );
@@ -95,7 +95,7 @@ export const ModalPlaylist = ({
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
-   
+
     if (atBottom && hasMore && !loading) setPage((prev) => prev + 1);
   };
 
@@ -110,7 +110,7 @@ export const ModalPlaylist = ({
   const handleSave = async () => {
     if (!session?.user) {
       showAlert("error", "No tienes permisos para crear una playlist");
-     
+
       return;
     }
     try {
@@ -135,70 +135,73 @@ export const ModalPlaylist = ({
 
   return (
     <>
-  
-      <Modal isOpen={isOpen} placement="center" scrollBehavior="inside" onClose={handleClose}>
-  <ModalContent className="sm:my-0 w-full md:w-[600px] heigth-form">
-    <>
-      <ModalHeader className="flex flex-col gap-1 text-primary">
-        {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
-      </ModalHeader>
+      <Modal
+        isOpen={isOpen}
+        placement="center"
+        scrollBehavior="inside"
+        onClose={handleClose}
+      >
+        <ModalContent className="sm:my-0 w-full md:w-[600px] heigth-form">
+          <>
+            <ModalHeader className="flex flex-col gap-1 text-primary">
+              {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
+            </ModalHeader>
 
-      {/* SOLO INPUTS QUE NO DEBAN HACER SCROLL */}
-      <div className="px-6 flex flex-col gap-4">
-        <InputComponent
-          isClearable
-          isRequired
-          classNames={{ base: "w-full" }}
-          label="Nombre de la playlist"
-          placeholder="Nueva playlist..."
-          type={TypeProps.TEXT}
-          value={form.name}
-          variant={VariantProps.UNDERLINED}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
+            {/* SOLO INPUTS QUE NO DEBAN HACER SCROLL */}
+            <div className="px-6 flex flex-col gap-4">
+              <InputComponent
+                isClearable
+                isRequired
+                classNames={{ base: "w-full" }}
+                label="Nombre de la playlist"
+                placeholder="Nueva playlist..."
+                type={TypeProps.TEXT}
+                value={form.name}
+                variant={VariantProps.UNDERLINED}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
 
-        <SearchComponent
-          classNames={{ base: "w-full" }}
-          value={filterValue}
-          onValueChange={setFilterValue}
-        />
-      </div>
+              <SearchComponent
+                classNames={{ base: "w-full" }}
+                value={filterValue}
+                onValueChange={setFilterValue}
+              />
+            </div>
 
-      {/* SCROLL INTERNO */}
-      <ModalBody className="overflow-y-auto px-6 pt-4">
-        <PlaylistForm
-          filterAllSongs={filterAllSongs}
-          filterValue={filterValue}
-          form={form}
-          handleScroll={handleScroll}
-          responseData={responseData}
-          setForm={setForm}
-        />
-      </ModalBody>
+            {/* SCROLL INTERNO */}
+            <ModalBody className="overflow-y-auto px-6 pt-4">
+              <PlaylistForm
+                filterAllSongs={filterAllSongs}
+                filterValue={filterValue}
+                form={form}
+                handleScroll={handleScroll}
+                responseData={responseData}
+                setForm={setForm}
+              />
+            </ModalBody>
 
-      <ModalFooter className="px-6 py-4 flex justify-end gap-2">
-        <Button color="danger" onPress={handleClose}>
-          Cancelar
-        </Button>
-        <ButtonComponent
-          color={ColorButton.PRIMARY}
-          isDisabled={!isFormValid || loading}
-          onPress={() =>
-            showConfirm(
-              playlistToEdit
-                ? "¿Estás seguro de que deseas editar la playlist?"
-                : "¿Estás seguro de que deseas crear la playlist?",
-              handleSave
-            )
-          }
-        >
-          Guardar
-        </ButtonComponent>
-      </ModalFooter>
-    </>
-  </ModalContent>
-</Modal>
-
+            <ModalFooter className="px-6 py-4 flex justify-end gap-2">
+              <Button color="danger" onPress={handleClose}>
+                Cancelar
+              </Button>
+              <ButtonComponent
+                color={ColorButton.PRIMARY}
+                isDisabled={!isFormValid || loading}
+                onPress={() =>
+                  showConfirm(
+                    playlistToEdit
+                      ? "¿Estás seguro de que deseas editar la playlist?"
+                      : "¿Estás seguro de que deseas crear la playlist?",
+                    handleSave
+                  )
+                }
+              >
+                Guardar
+              </ButtonComponent>
+            </ModalFooter>
+          </>
+        </ModalContent>
+      </Modal>
 
       <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
       <ConfirmModal

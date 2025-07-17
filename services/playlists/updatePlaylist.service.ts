@@ -1,7 +1,9 @@
 import axiosInstance from "@/config/axios/axiosInstance";
 import { getSession } from "next-auth/react";
-import { UpdatePlaylistPayload, UpdatePlaylistResponse } from "../typesServices";
-
+import {
+  UpdatePlaylistPayload,
+  UpdatePlaylistResponse,
+} from "../typesServices";
 
 export const updatePlaylist = async (
   playlistId: string,
