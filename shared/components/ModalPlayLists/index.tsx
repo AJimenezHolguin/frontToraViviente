@@ -29,9 +29,11 @@ export const ModalPlaylist = ({
   isOpen,
   onClose,
   playlistToEdit,
+  onPlaylistCreated,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  onPlaylistCreated: () => void;
   playlistToEdit: Playlist | null;
 }) => {
   const [filterValue, setFilterValue] = useState("");
@@ -120,6 +122,10 @@ export const ModalPlaylist = ({
       });
       showAlert("success", "Playlist guardada correctamente");
       onClose();
+      setTimeout(() => {
+        onClose();
+        onPlaylistCreated();
+      }, 4000);
     } catch (error) {
       showAlert("error", "Error al guardar la playlist");
     } finally {
@@ -176,6 +182,7 @@ export const ModalPlaylist = ({
         </Button>
         <ButtonComponent
           color={ColorButton.PRIMARY}
+          isDisabled={!isFormValid || loading}
           onPress={() =>
             showConfirm(
               playlistToEdit
