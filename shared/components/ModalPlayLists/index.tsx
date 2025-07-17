@@ -4,6 +4,7 @@ import {
   ModalHeader,
   ModalFooter,
   Button,
+  ModalBody,
 } from "@heroui/react";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps, VariantProps } from "@/shared/components/Input/types";
@@ -22,6 +23,7 @@ import { ConfirmModal } from "../Modal/ConfirmModal";
 import { PositionModal } from "../Modal/types";
 import { PlaylistForm } from "../PlaylistForm"; // NUEVO
 import { Song } from "@/types/SongsTypesProps";
+import { SearchComponent } from "../Search";
 
 export const ModalPlaylist = ({
   isOpen,
@@ -127,64 +129,69 @@ export const ModalPlaylist = ({
 
   return (
     <>
-      <Modal
-        isOpen={isOpen}
-        placement="center"
-        scrollBehavior="inside"
-        onClose={handleClose}
-      >
-        <ModalContent
-          className="sm:my-0 w-full md:w-[600px]"
-          style={{ maxHeight: "100vh" }}
+  
+      <Modal isOpen={isOpen} placement="center" scrollBehavior="inside" onClose={handleClose}>
+  <ModalContent className="sm:my-0 w-full md:w-[600px] heigth-form">
+    <>
+      <ModalHeader className="flex flex-col gap-1 text-primary">
+        {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
+      </ModalHeader>
+
+      {/* SOLO INPUTS QUE NO DEBAN HACER SCROLL */}
+      <div className="px-6 flex flex-col gap-4">
+        <InputComponent
+          isClearable
+          isRequired
+          classNames={{ base: "w-full" }}
+          label="Nombre de la playlist"
+          placeholder="Nueva playlist..."
+          type={TypeProps.TEXT}
+          value={form.name}
+          variant={VariantProps.UNDERLINED}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+        />
+
+        <SearchComponent
+          classNames={{ base: "w-full" }}
+          value={filterValue}
+          onValueChange={setFilterValue}
+        />
+      </div>
+
+      {/* SCROLL INTERNO */}
+      <ModalBody className="overflow-y-auto px-6 pt-4">
+        <PlaylistForm
+          filterAllSongs={filterAllSongs}
+          filterValue={filterValue}
+          form={form}
+          handleScroll={handleScroll}
+          responseData={responseData}
+          setForm={setForm}
+        />
+      </ModalBody>
+
+      <ModalFooter className="px-6 py-4 flex justify-end gap-2">
+        <Button color="danger" onPress={handleClose}>
+          Cancelar
+        </Button>
+        <ButtonComponent
+          color={ColorButton.PRIMARY}
+          onPress={() =>
+            showConfirm(
+              playlistToEdit
+                ? "¿Estás seguro de que deseas editar la playlist?"
+                : "¿Estás seguro de que deseas crear la playlist?",
+              handleSave
+            )
+          }
         >
-          <>
-            <ModalHeader className="flex flex-col gap-1 text-primary">
-              {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
-            </ModalHeader>
+          Guardar
+        </ButtonComponent>
+      </ModalFooter>
+    </>
+  </ModalContent>
+</Modal>
 
-            <div className="px-6 flex flex-col gap-4">
-              <InputComponent
-                isClearable
-                isRequired
-                classNames={{ base: "w-full" }}
-                label="Nombre de la playlist"
-                placeholder="Nueva playlist..."
-                type={TypeProps.TEXT}
-                value={form.name}
-                variant={VariantProps.UNDERLINED}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
-              <PlaylistForm
-                filterAllSongs={filterAllSongs}
-                filterValue={filterValue}
-                form={form}
-                handleScroll={handleScroll}
-                responseData={responseData}
-                setForm={setForm}
-              />
-            </div>
-
-            <ModalFooter className="px-6 py-4 flex justify-end gap-2">
-              <Button color="danger" onPress={handleClose}>
-                Cancelar
-              </Button>
-              <ButtonComponent
-                color={ColorButton.PRIMARY}
-                onPress={() =>
-                  showConfirm(
-                    playlistToEdit
-                      ? "¿Estás seguro de que deseas editar la playlist?"
-                      : "¿Estás seguro de que deseas crear la playlist?",
-                    handleSave
-                  )
-                }
-              >
-                Guardar
-              </ButtonComponent>
-            </ModalFooter>
-          </>
-        </ModalContent>
-      </Modal>
 
       <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
       <ConfirmModal
