@@ -2,20 +2,13 @@ import {
   Modal,
   ModalContent,
   ModalHeader,
-  ModalBody,
   ModalFooter,
   Button,
-  CheckboxGroup,
-  Checkbox,
 } from "@heroui/react";
 import { InputComponent } from "@/shared/components/Input";
 import { TypeProps, VariantProps } from "@/shared/components/Input/types";
 import { useEffect, useState } from "react";
 import { getAllSongs } from "@/services/songs/getAllSongs.service";
-import { Song } from "@/types/SongsTypesProps";
-import { SearchComponent } from "../Search";
-import { SwitchComponent } from "../Switch";
-import { CreatePlaylist } from "@/services/playlists/createPlaylist.service";
 import { Playlist } from "@/types/PlaylistsTypesProps";
 import { useFormValidationPlaylist } from "@/shared/hooks/playlists/useFormValidationPlaylist";
 import { usePlaylistFormData } from "@/shared/hooks/playlists/usePlaylistFormData";
@@ -27,16 +20,18 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { AlertModal } from "../Modal/ModalAlert";
 import { ConfirmModal } from "../Modal/ConfirmModal";
 import { PositionModal } from "../Modal/types";
-import { PlaylistForm } from "../PlaylistForm";
+import { PlaylistForm } from "../PlaylistForm"; // NUEVO
+import { Song } from "@/types/SongsTypesProps";
 
-type ModalPlaylistProps = {
+export const ModalPlaylist = ({
+  isOpen,
+  onClose,
+  playlistToEdit,
+}: {
   isOpen: boolean;
   onClose: () => void;
   playlistToEdit: Playlist | null;
-};
-
-export const ModalPlaylist = ({ isOpen, onClose, playlistToEdit }: ModalPlaylistProps) => {
-  const [selectedSongs, setSelectedSongs] = useState<string[]>([]);
+}) => {
   const [filterValue, setFilterValue] = useState("");
   const [responseData, setResponseData] = useState<Song[]>([]);
   const [page, setPage] = useState(1);
@@ -45,11 +40,16 @@ export const ModalPlaylist = ({ isOpen, onClose, playlistToEdit }: ModalPlaylist
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
   const { data: session } = useSession();
-  const [playlistName, setPlaylistName] = useState("");
-  const [isVisible, setIsVisible] = useState(true);
 
-  const {form, setForm, initialForm} = usePlaylistFormData(isOpen, playlistToEdit);
-  const {isFormValid} = useFormValidationPlaylist(form, initialForm, playlistToEdit);
+  const { form, setForm, initialForm } = usePlaylistFormData(
+    isOpen,
+    playlistToEdit
+  );
+  const { isFormValid } = useFormValidationPlaylist(
+    form,
+    initialForm,
+    playlistToEdit
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -62,7 +62,7 @@ export const ModalPlaylist = ({ isOpen, onClose, playlistToEdit }: ModalPlaylist
           order: "ASC",
           search: filterValue,
         });
-
+      
         setResponseData((prev) =>
           page === 1 ? response.data : [...prev, ...response.data]
         );
@@ -91,114 +91,116 @@ export const ModalPlaylist = ({ isOpen, onClose, playlistToEdit }: ModalPlaylist
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     const atBottom = scrollTop + clientHeight >= scrollHeight - 10;
-
-    if (atBottom && hasMore && !loading) {
-      setPage((prev) => prev + 1);
-    }
+   
+    if (atBottom && hasMore && !loading) setPage((prev) => prev + 1);
   };
 
   const handleClose = () => {
-    setSelectedSongs([]);
     setFilterValue("");
-    setResponseData([]);  
-    setPage(1);           
-    setHasMore(true); 
-    setPlaylistName(""); 
-    setIsVisible(true);
+    setResponseData([]);
+    setPage(1);
+    setHasMore(true);
     onClose();
   };
 
-  const handleSave = async() => {
-    if (!session?.user){
+  const handleSave = async () => {
+    if (!session?.user) {
       showAlert("error", "No tienes permisos para crear una playlist");
      
-      return
+      return;
     }
     try {
       setLoading(true);
       await savePlaylistHandler({
         form,
         playlistToEdit,
-        userId: session?.user.id
-      })
-
+        userId: session?.user.id,
+      });
       showAlert("success", "Playlist guardada correctamente");
       onClose();
-      setTimeout(() => {
-        onClose();
-        // onSongCreated();
-      }, 4000);
-    } catch (error){
+    } catch (error) {
       showAlert("error", "Error al guardar la playlist");
     } finally {
       setLoading(false);
     }
-}
- 
+  };
+
   return (
     <>
-    <Modal
-      isOpen={isOpen}
-      placement="center"
-      scrollBehavior="inside"
-      onClose={handleClose}
-    >
-      <ModalContent
-        className="sm:my-0 w-full md:w-[600px]"
-        style={{ maxHeight: "100vh" }}
+      <Modal
+        isOpen={isOpen}
+        placement="center"
+        scrollBehavior="inside"
+        onClose={handleClose}
       >
-        <>
-          <ModalHeader className="flex flex-col gap-1 text-primary">
-           {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
-          </ModalHeader>
-            {/* BODY: LISTA Y SELECCIONADOS */}
-          <ModalBody className="overflow-y-auto px-6 pt-4">
-           <PlaylistForm
-              filterValue={filterValue}
-              form={form}
-              isVisible={isVisible}
-              responseData={responseData}
-              selectedSongs={selectedSongs}
-              setFilterValue={setFilterValue}
-              setForm={setForm}
-              setIsVisible={setIsVisible}
-              setSelectedSongs={setSelectedSongs}
-              onScroll={handleScroll}
-            />
-  
-          </ModalBody>
+        <ModalContent
+          className="sm:my-0 w-full md:w-[600px]"
+          style={{ maxHeight: "100vh" }}
+        >
+          <>
+            <ModalHeader className="flex flex-col gap-1 text-primary">
+              {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
+            </ModalHeader>
 
-          {/* FOOTER */}
-          <ModalFooter className="px-6 py-4 flex justify-end gap-2">
-            <Button color="danger" onPress={handleClose}>
-              Cancelar
-            </Button>
-            <ButtonComponent 
-              color={ColorButton.PRIMARY}
-              // isDisabled={!isFormValid || loading}
-              onPress={() =>
-                showConfirm(
-                  playlistToEdit
-                    ? "¿Estás seguro de que deseas editar la playlist?"
-                    : "¿Estás seguro de que deseas crear la playlist?",
-                  handleSave
-                )
-              }
-                  >
-                
-              Guardar
-            </ButtonComponent>
-          </ModalFooter>
-        </>
-      </ModalContent>
-    </Modal>
-    <AlertModal {...AlertModalProps} placement={PositionModal.CENTER}/>
-    <ConfirmModal {...ConfirmModalProps} 
-                  isLoading={loading} 
-                  placement = {PositionModal.CENTER}
-                  title={loading ? playlistToEdit ? "Actualizando..." : "Guardando..." 
-                    : playlistToEdit ? "Actualizar": "Guardar"}
-                  />
-                  </>
+            <div className="px-6 flex flex-col gap-4">
+              <InputComponent
+                isClearable
+                isRequired
+                classNames={{ base: "w-full" }}
+                label="Nombre de la playlist"
+                placeholder="Nueva playlist..."
+                type={TypeProps.TEXT}
+                value={form.name}
+                variant={VariantProps.UNDERLINED}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+              <PlaylistForm
+                filterAllSongs={filterAllSongs}
+                filterValue={filterValue}
+                form={form}
+                handleScroll={handleScroll}
+                responseData={responseData}
+                setForm={setForm}
+              />
+            </div>
+
+            <ModalFooter className="px-6 py-4 flex justify-end gap-2">
+              <Button color="danger" onPress={handleClose}>
+                Cancelar
+              </Button>
+              <ButtonComponent
+                color={ColorButton.PRIMARY}
+                onPress={() =>
+                  showConfirm(
+                    playlistToEdit
+                      ? "¿Estás seguro de que deseas editar la playlist?"
+                      : "¿Estás seguro de que deseas crear la playlist?",
+                    handleSave
+                  )
+                }
+              >
+                Guardar
+              </ButtonComponent>
+            </ModalFooter>
+          </>
+        </ModalContent>
+      </Modal>
+
+      <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
+      <ConfirmModal
+        {...ConfirmModalProps}
+        isLoading={loading}
+        placement={PositionModal.CENTER}
+        title={
+          loading
+            ? playlistToEdit
+              ? "Actualizando..."
+              : "Guardando..."
+            : playlistToEdit
+              ? "Actualizar"
+              : "Guardar"
+        }
+      />
+    </>
   );
 };

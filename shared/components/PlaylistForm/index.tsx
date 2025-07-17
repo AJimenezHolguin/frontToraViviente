@@ -1,58 +1,29 @@
-import React from "react";
-import { InputComponent } from "@/shared/components/Input";
-import { VariantProps } from "@/shared/components/Input/types";
-import { SearchComponent } from "@/shared/components/Search";
-import { CheckboxGroup, Checkbox } from "@heroui/react";
-import { SwitchComponent } from "@/shared/components/Switch";
+import { Checkbox, CheckboxGroup } from "@heroui/checkbox";
 import { PlaylistFormProps } from "./types";
+import { SwitchComponent } from "../Switch";
 
 export const PlaylistForm: React.FC<PlaylistFormProps> = ({
   form,
   setForm,
-  responseData,
-  selectedSongs,
-  setSelectedSongs,
   filterValue,
-  setFilterValue,
-  isVisible,
-  setIsVisible,
-  onScroll,
+  responseData,
+  filterAllSongs,
+  handleScroll,
 }) => {
-  const filteredSongs = responseData.filter((song) =>
-    song.name.toLowerCase().includes(filterValue.toLowerCase())
-  );
-
   return (
-    <div className="px-6 flex flex-col gap-4">
-      {/* Nombre de la playlist */}
-      <InputComponent
-        isClearable
-        isRequired
-        classNames={{ base: "w-full" }}
-        label="Nombre de la playlist"
-        placeholder="Nueva playlist..."
-        value={form.name}
-        variant={VariantProps.UNDERLINED}
-        onChange={(e) => setForm({ ...form, name: e.target.value })}
-      />
+    <>
+      <p className="text-sm font-medium mb-2">Canciones disponibles:</p>
 
-      {/* Buscador */}
-      <SearchComponent
-        classNames={{ base: "w-full" }}
-        value={filterValue}
-        onValueChange={setFilterValue}
-      />
-
-      <p className="text-sm font-medium">Canciones disponibles:</p>
-
-      {/* Lista scrollable */}
       <div
         className="h-[200px] overflow-y-auto border rounded-md px-2"
-        onScroll={onScroll}
+        onScroll={handleScroll}
       >
-        <CheckboxGroup value={selectedSongs} onChange={setSelectedSongs}>
+        <CheckboxGroup
+          value={form.songs}
+          onChange={(val) => setForm({ ...form, songs: val })}
+        >
           <div className="flex flex-col gap-1 py-2">
-            {filteredSongs.map((song) => (
+            {filterAllSongs.map((song) => (
               <Checkbox key={song._id} value={song._id}>
                 {song.name}
               </Checkbox>
@@ -61,12 +32,12 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
         </CheckboxGroup>
       </div>
 
-      {/* Canciones seleccionadas */}
-      {selectedSongs.length > 0 && (
+      {/* SELECCIONADOS */}
+      {form.songs.length > 0 && (
         <div className="mt-4 overflow-y-scroll" style={{ height: "100px" }}>
           <p className="text-sm font-medium mb-1">Canciones seleccionadas:</p>
           <div className="gap-1 pr-1">
-            {selectedSongs
+            {form.songs
               .map((id) => responseData.find((song) => song._id === id))
               .filter(Boolean)
               .map((song) => (
@@ -79,9 +50,10 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
                     className="text-red-500 hover:text-red-700 text-xs font-bold"
                     title="Quitar"
                     onClick={() =>
-                      setSelectedSongs((prev) =>
-                        prev.filter((sid) => sid !== song!._id)
-                      )
+                      setForm((prev) => ({
+                        ...prev,
+                        songs: prev.songs.filter((sid) => sid !== song!._id),
+                      }))
                     }
                   >
                     ✕
@@ -92,13 +64,18 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
         </div>
       )}
 
-      {/* Visibilidad */}
-      <div className="flex items-center mt-4">
-        <SwitchComponent isSelected={isVisible} onChange={setIsVisible} />
-        <p className="text-md font-medium text-primary pl-2">
+      <div className="flex mt-2">
+        <SwitchComponent
+          isSelected={form.status}
+          onChange={(val) => setForm({ ...form, status: val })}
+        />
+        <p
+          className="text-md font-medium mb-2 pt-2 text-primary"
+          style={{ paddingLeft: "5px" }}
+        >
           ¿Playlist visible?
         </p>
       </div>
-    </div>
+    </>
   );
 };
