@@ -1,7 +1,19 @@
 import {Switch} from "@heroui/react";
 
-export const SwitchComponent = () => {
+type Props = {
+    isSelected: boolean;
+    onChange: (val: boolean) => void;
+  }
+
+export const SwitchComponent = ({isSelected, onChange}:Props) => {
     return (
-        <Switch defaultSelected aria-label="Automatic updates"/>
+        <Switch 
+        defaultSelected
+        aria-label="Playlist visible"
+        isSelected={isSelected}
+        size="sm"
+        onChange={(event) => onChange(event.target.checked)}
+        
+        />
     )
 }

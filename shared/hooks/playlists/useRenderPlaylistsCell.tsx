@@ -13,6 +13,8 @@ export const useRenderPlaylistsCell = ({
   onDelete,
   type,
 }: UseRenderPlaylistsCellProps & { type?: PlaylistType }) => {
+  const [isVisible, setIsVisible] = React.useState(false);
+
   return React.useCallback(
     (data: Playlist, columnKey: React.Key) => {
       const cellValue = data[columnKey as keyof Playlist];
@@ -91,7 +93,7 @@ export const useRenderPlaylistsCell = ({
             </div>
           );
         case "status":
-          return <SwitchComponent />;
+          return <SwitchComponent isSelected={isVisible} onChange={setIsVisible}/>;
         default:
           return <span>{String(cellValue)}</span>;
       }

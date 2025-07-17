@@ -15,19 +15,41 @@ import { getAllSongs } from "@/services/songs/getAllSongs.service";
 import { Song } from "@/types/SongsTypesProps";
 import { SearchComponent } from "../Search";
 import { SwitchComponent } from "../Switch";
+import { CreatePlaylist } from "@/services/playlists/createPlaylist.service";
+import { Playlist } from "@/types/PlaylistsTypesProps";
+import { useFormValidationPlaylist } from "@/shared/hooks/playlists/useFormValidationPlaylist";
+import { usePlaylistFormData } from "@/shared/hooks/playlists/usePlaylistFormData";
+import { useSession } from "next-auth/react";
+import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
+import { savePlaylistHandler } from "@/shared/feature/ playlist/utils/saveSongHandler";
+import { ButtonComponent } from "../Button";
+import { ColorButton } from "@/styles/colorButton.enum";
+import { AlertModal } from "../Modal/ModalAlert";
+import { ConfirmModal } from "../Modal/ConfirmModal";
+import { PositionModal } from "../Modal/types";
+import { PlaylistForm } from "../PlaylistForm";
 
 type ModalPlaylistProps = {
   isOpen: boolean;
   onClose: () => void;
+  playlistToEdit: Playlist | null;
 };
 
-export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
+export const ModalPlaylist = ({ isOpen, onClose, playlistToEdit }: ModalPlaylistProps) => {
   const [selectedSongs, setSelectedSongs] = useState<string[]>([]);
   const [filterValue, setFilterValue] = useState("");
   const [responseData, setResponseData] = useState<Song[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
+    useModalAlert();
+  const { data: session } = useSession();
+  const [playlistName, setPlaylistName] = useState("");
+  const [isVisible, setIsVisible] = useState(true);
+
+  const {form, setForm, initialForm} = usePlaylistFormData(isOpen, playlistToEdit);
+  const {isFormValid} = useFormValidationPlaylist(form, initialForm, playlistToEdit);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -81,10 +103,40 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
     setResponseData([]);  
     setPage(1);           
     setHasMore(true); 
+    setPlaylistName(""); 
+    setIsVisible(true);
     onClose();
   };
 
+  const handleSave = async() => {
+    if (!session?.user){
+      showAlert("error", "No tienes permisos para crear una playlist");
+     
+      return
+    }
+    try {
+      setLoading(true);
+      await savePlaylistHandler({
+        form,
+        playlistToEdit,
+        userId: session?.user.id
+      })
+
+      showAlert("success", "Playlist guardada correctamente");
+      onClose();
+      setTimeout(() => {
+        onClose();
+        // onSongCreated();
+      }, 4000);
+    } catch (error){
+      showAlert("error", "Error al guardar la playlist");
+    } finally {
+      setLoading(false);
+    }
+}
+ 
   return (
+    <>
     <Modal
       isOpen={isOpen}
       placement="center"
@@ -97,86 +149,23 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
       >
         <>
           <ModalHeader className="flex flex-col gap-1 text-primary">
-            Crear Playlist
+           {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
           </ModalHeader>
-
-          {/* INPUT Y BUSCADOR */}
-          <div className="px-6 flex flex-col gap-4">
-            <InputComponent
-              isClearable
-              isRequired
-              classNames={{ base: "w-full" }}
-              label="Nombre de la playlist"
-              placeholder="Nueva playlist..."
-              type={TypeProps.TEXT}
-              variant={VariantProps.UNDERLINED}
-            />
-
-            <SearchComponent
-              classNames={{ base: "w-full" }}
-              value={filterValue}
-              onValueChange={setFilterValue}
-            />
-          </div>
-
-          {/* BODY: LISTA Y SELECCIONADOS */}
+            {/* BODY: LISTA Y SELECCIONADOS */}
           <ModalBody className="overflow-y-auto px-6 pt-4">
-            <p className="text-sm font-medium mb-2 ">Canciones disponibles:</p>
-
-            {/* SCROLL INTERNO SOLO PARA CANCIONES */}
-            <div
-              className="h-[200px] overflow-y-auto border rounded-md px-2"
+           <PlaylistForm
+              filterValue={filterValue}
+              form={form}
+              isVisible={isVisible}
+              responseData={responseData}
+              selectedSongs={selectedSongs}
+              setFilterValue={setFilterValue}
+              setForm={setForm}
+              setIsVisible={setIsVisible}
+              setSelectedSongs={setSelectedSongs}
               onScroll={handleScroll}
-            >
-              <CheckboxGroup  value={selectedSongs} onChange={setSelectedSongs}>
-                <div className="flex flex-col gap-1 py-2">
-                  {filterAllSongs.map((song) => (
-                    <Checkbox key={song._id} value={song._id}>
-                      {song.name}
-                    </Checkbox>
-                  ))}
-                </div>
-              </CheckboxGroup>
-            </div>
-
-            {/* SELECCIONADOS */}
-            {selectedSongs.length > 0 && (
-              <div
-                className="mt-4 overflow-y-scroll"
-                style={{ height: "100px" }}
-              >
-                <p className="text-sm font-medium mb-1 ">Canciones seleccionadas:</p>
-                <div className="gap-1 pr-1">
-                  {selectedSongs
-                    .map((id) => responseData.find((song) => song._id === id))
-                    .filter(Boolean)
-                    .map((song) => (
-                      <div
-                        key={song!._id}
-                        className="bg-primary/10 rounded-lg px-2 py-1 text-xs text-center text-secondary font-medium flex justify-between items-center gap-2"
-                      >
-                        <span className="truncate">{song!.name}</span>
-                        <button
-                          className="text-red-500 hover:text-red-700 text-xs font-bold"
-                          title="Quitar"
-                          onClick={() =>
-                            setSelectedSongs((prev) =>
-                              prev.filter((sid) => sid !== song!._id)
-                            )
-                          }
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            )}
-            <div className="flex">
-          <SwitchComponent />
-          <p className="text-md font-medium mb-2 pt-2 text-primary" style={{paddingLeft: "5px"}}>¿Playlist visible?</p>
-          
-            </div>
+            />
+  
           </ModalBody>
 
           {/* FOOTER */}
@@ -184,12 +173,32 @@ export const ModalPlaylist = ({ isOpen, onClose }: ModalPlaylistProps) => {
             <Button color="danger" onPress={handleClose}>
               Cancelar
             </Button>
-            <Button color="primary" onPress={handleClose}>
+            <ButtonComponent 
+              color={ColorButton.PRIMARY}
+              // isDisabled={!isFormValid || loading}
+              onPress={() =>
+                showConfirm(
+                  playlistToEdit
+                    ? "¿Estás seguro de que deseas editar la playlist?"
+                    : "¿Estás seguro de que deseas crear la playlist?",
+                  handleSave
+                )
+              }
+                  >
+                
               Guardar
-            </Button>
+            </ButtonComponent>
           </ModalFooter>
         </>
       </ModalContent>
     </Modal>
+    <AlertModal {...AlertModalProps} placement={PositionModal.CENTER}/>
+    <ConfirmModal {...ConfirmModalProps} 
+                  isLoading={loading} 
+                  placement = {PositionModal.CENTER}
+                  title={loading ? playlistToEdit ? "Actualizando..." : "Guardando..." 
+                    : playlistToEdit ? "Actualizar": "Guardar"}
+                  />
+                  </>
   );
 };
