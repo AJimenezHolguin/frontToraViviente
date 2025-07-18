@@ -1,3 +1,4 @@
+import { Playlist } from "@/types/PlaylistsTypesProps";
 import { Song } from "@/types/SongsTypesProps";
 
 export interface SongInfo {
@@ -19,7 +20,7 @@ export interface UpdateSong {
    fileScore: FileData | null;
  }
 
- export type GetAllSongsParamsProps = {
+ export type PaginationParamsProps = {
    page: number;
    take: number;
    order: "ASC" | "DESC";
@@ -44,3 +45,21 @@ export interface UpdateSong {
    metadata: PaginationMetadataResponse;
    success: boolean;
  };
+
+ export type GetAllMyPlaylistsResponse = {
+  data: Playlist[];
+  metadata: PaginationMetadataResponse;
+  success: boolean;
+ }
+ // Tipos para actualizar la playlist
+export interface UpdatePlaylistPayload {
+  name?: string;
+  songs?: string[]; 
+  status?: boolean;
+}
+
+export interface UpdatePlaylistResponse {
+  success: boolean;
+  message: string;
+  data?: Playlist;
+}
