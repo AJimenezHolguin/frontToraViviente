@@ -4,3 +4,7 @@ export interface CreatePlaylistProps {
     songs: string[];
     status: boolean
 }
+
+export interface DeletePlaylistProps {
+    _id: string;
+}

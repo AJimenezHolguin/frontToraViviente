@@ -66,9 +66,9 @@ export const PlaylistSidebar = ({
                   onClick={() => setSelected(song.file)}
                 >
                   <FaFilePdf className="text-secondary" size={20} />
-                  <span className="block w-full break-words">
-                    {song.title.charAt(0).toUpperCase() + song.title.slice(1)}
-                  </span>
+                  <Text className="block w-full break-words">
+                    {song.title.split(" ").map((word)=> word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                  </Text>
                   <div className="flex items-center gap-1 ml-2">
                     <button
                       className="text-gray-600 hover:text-black disabled:opacity-30"
