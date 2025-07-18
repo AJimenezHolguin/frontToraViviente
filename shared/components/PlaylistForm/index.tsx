@@ -1,6 +1,8 @@
 import { Checkbox, CheckboxGroup } from "@heroui/checkbox";
 import { PlaylistFormProps } from "./types";
 import { SwitchComponent } from "../Switch";
+import { Text } from "@/shared/components/Text";
+import { COLORS } from "@/styles/colors";
 
 export const PlaylistForm: React.FC<PlaylistFormProps> = ({
   form,
@@ -25,7 +27,12 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
           <div className="flex flex-col gap-1 py-2">
             {filterAllSongs.map((song) => (
               <Checkbox key={song._id} value={song._id}>
-                {song.name}
+                <Text>
+                {song.name
+                 .split(" ")
+                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                 .join(" ")}
+                </Text>
               </Checkbox>
             ))}
           </div>
@@ -45,7 +52,10 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
                   key={song!._id}
                   className="bg-primary/10 rounded-lg px-2 py-1 text-xs text-center text-secondary font-medium flex justify-between items-center gap-2"
                 >
-                  <span className="truncate">{song!.name}</span>
+                  <Text $color={COLORS.secondary} className="truncate">
+                    {song!.name
+                    .split(" ").map((word)=> word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                  </Text>
                   <button
                     className="text-red-500 hover:text-red-700 text-xs font-bold"
                     title="Quitar"
