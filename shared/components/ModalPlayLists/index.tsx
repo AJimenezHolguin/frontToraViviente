@@ -147,7 +147,7 @@ export const ModalPlaylist = ({
               {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
             </ModalHeader>
 
-            {/* SOLO INPUTS QUE NO DEBAN HACER SCROLL */}
+            {/* SOLO INPUTS NO DEBAN HACER SCROLL */}
             <div className="px-6 flex flex-col gap-4">
               <InputComponent
                 isClearable
