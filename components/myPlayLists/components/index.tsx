@@ -7,7 +7,6 @@ import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { useSongTable } from "@/shared/hooks/songs/useSongTable";
-import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
@@ -20,6 +19,7 @@ import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
+import { useDeletePlaylist } from "@/shared/feature/ playlist/deletePlaylistHandler";
 
 export const MyPlayLists = () => {
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
@@ -32,7 +32,7 @@ export const MyPlayLists = () => {
 
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
-  const { loading } = useDeleteSong(showAlert);
+  const { handleDelete, loading } = useDeletePlaylist(showAlert);
 
   const {
     page,
@@ -84,8 +84,8 @@ export const MyPlayLists = () => {
     onDelete: (Playlist) => {
       showConfirm(
         `¿Estás seguro de que deseas eliminar la playlist "${Playlist.name}"?`,
-        () => {
-          // await HandleDelete(playlist);
+        async () => {
+          await handleDelete(Playlist);
           fetchPlaylists();
         }
       );
@@ -106,7 +106,7 @@ export const MyPlayLists = () => {
           }}
           onPlaylistCreated={fetchPlaylists}
         />
-       
+
         <ConfirmModal
           {...ConfirmModalProps}
           isLoading={loading}

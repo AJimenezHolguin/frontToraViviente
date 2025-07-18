@@ -1,20 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { SpinnerComponent } from "@/shared/components/Spinner";
-import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
-import { AlertModal } from "@/shared/components/Modal/ModalAlert";
-import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { useSongTable } from "@/shared/hooks/songs/useSongTable";
-import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
-import { PositionModal } from "@/shared/components/Modal/types";
 import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
-import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
 
 export const AllPlayLists = () => {
@@ -22,9 +16,6 @@ export const AllPlayLists = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalAllPlaylists, setTotalAllPlaylists] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-
-  const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
-  const { loading } = useDeleteSong(showAlert);
 
   const {
     page,
@@ -77,14 +68,6 @@ export const AllPlayLists = () => {
   return (
     <>
       <WrapperTitle title="Lista general de todas las playlists">
-        <ConfirmModal
-          {...ConfirmModalProps}
-          isLoading={loading}
-          placement={PositionModal.CENTER}
-          title={loading ? "Eliminando..." : "Confirmar"}
-        />
-        <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
-
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-start">
             <SearchComponent

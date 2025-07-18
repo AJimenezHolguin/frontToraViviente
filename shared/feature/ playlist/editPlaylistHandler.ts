@@ -1,6 +1,6 @@
-import { PlaylistFormState } from "../../../hooks/playlists/types";
-import axiosInstance from "../../../../config/axios/axiosInstance";
-import { Playlist } from "../../../../types/PlaylistsTypesProps";
+import { PlaylistFormState } from "../../hooks/playlists/types";
+import axiosInstance from "../../../config/axios/axiosInstance";
+import { Playlist } from "../../../types/PlaylistsTypesProps";
 
 export const editPlaylistHandler = async (
   form: PlaylistFormState,
