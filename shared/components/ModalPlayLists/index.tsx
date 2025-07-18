@@ -15,7 +15,7 @@ import { useFormValidationPlaylist } from "@/shared/hooks/playlists/useFormValid
 import { usePlaylistFormData } from "@/shared/hooks/playlists/usePlaylistFormData";
 import { useSession } from "next-auth/react";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-import { savePlaylistHandler } from "@/shared/feature/ playlist/utils/saveSongHandler";
+import { savePlaylistHandler } from "@/shared/feature/ playlist/saveSongHandler";
 import { ButtonComponent } from "../Button";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { AlertModal } from "../Modal/ModalAlert";
