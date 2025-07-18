@@ -1,14 +1,14 @@
 import axiosInstance from "@/config/axios/axiosInstance";
 import { getSession } from "next-auth/react";
 import {
-  GetAllMySongsResponse,
+    GetAllMyPlaylistsResponse,
   PaginationParamsProps,
 } from "../typesServices";
 import { DEFAULT_PAGINATION } from "../defaultPagination";
 
-export const getAllSongs = async (
+export const getAllPlaylist = async (
   params: PaginationParamsProps
-): Promise<GetAllMySongsResponse> => {
+): Promise<GetAllMyPlaylistsResponse> => {
   try {
     const session = await getSession();
 
@@ -18,8 +18,8 @@ export const getAllSongs = async (
 
     const finalParams = { ...DEFAULT_PAGINATION, ...params };
 
-    const response = await axiosInstance.get<GetAllMySongsResponse>(
-      "/songs",
+    const response = await axiosInstance.get<GetAllMyPlaylistsResponse>(
+      "/playlists",
       {
         params: finalParams,
       }
@@ -28,9 +28,9 @@ export const getAllSongs = async (
     return response.data;
   } catch (error: any) {
     console.error(
-      "Error fetching songs:",
+      "Error fetching all playlists:",
       error?.response?.data || error.message
     );
-    throw new Error("No se pudieron obtener las canciones");
+    throw new Error("No se pudieron obtener todas las playlists");
   }
 };

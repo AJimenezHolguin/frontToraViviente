@@ -15,7 +15,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="bg-slate-100 overflow-y-scroll w-screen h-screen antialiased text-slate-300 selection:bg-blue-600 selection:text-white relative">
+    <div className="bg-slate-100 overflow-y-scroll w-screen h-full antialiased text-slate-300 selection:bg-blue-600 selection:text-white relative">
       <div
         className={`w-full h-[60px] flex justify-center items-center ${!isSidebarOpen ? "bg-secondary" : ""}`}
       >
@@ -33,7 +33,7 @@ export default function DashboardLayout({
         <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
       )}
       <div
-        className={`mt-[10px] P-2 w-full text-slate-900 px-2 ${isSidebarOpen ? "pointer-events-none" : ""}`}
+        className={` w-full text-slate-900 h-[100vh] ${isSidebarOpen ? "pointer-events-none" : ""}`}
       >
         {children}
       </div>

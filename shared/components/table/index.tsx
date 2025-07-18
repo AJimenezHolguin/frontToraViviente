@@ -48,7 +48,7 @@ export const ReusableTable = <T extends { [key: string]: any }>({
         </div>
       }
       bottomContentPlacement="outside"
-      maxTableHeight={277}
+      maxTableHeight={290}
       rowHeight={40}
       selectedKeys={selectedKeys}
       sortDescriptor={sortDescriptor}

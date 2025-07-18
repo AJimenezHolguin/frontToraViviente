@@ -12,7 +12,7 @@
     @apply w-full h-full;
     padding: 0;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden;
   }
 }
 /* globals.css */
@@ -37,4 +37,21 @@
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.h-custom {
+  height: calc(100vh - 60);
+}
+
+.sidebar-scroll {
+  max-height: calc(100vh - 130px); 
+  overflow-y: auto;
+}
+
+.sidebar-scroll-viewerpdf {
+  max-height: calc(100vh - 100px); 
+  overflow-y: auto;
+}
+.heigth-form {
+  max-height: calc(100vh - 10px); 
 }
