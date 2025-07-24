@@ -17,7 +17,7 @@ export const PlaylistSidebar = ({
 }: PlaylistSidebarProps) => {
   return (
     <div
-      className={`transition-all duration-300 bg-white border-r flex flex-col ${
+      className={`z-0 transition-all duration-300 bg-white border-r flex flex-col ${
         isSidebarOpen ? "w-3/4" : "w-10"
       } overflow-hidden min-w-0 h-full`}
     >
