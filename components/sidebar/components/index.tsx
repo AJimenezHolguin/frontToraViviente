@@ -109,8 +109,6 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
               <SidebarMenuItem {...item} />
             </div>
           ))}
-        </div>
-
         <div className="p-6 shrink-0">
           <Link
             className="text-danger text-lg md:text-base font-bold cursor-pointer"
@@ -120,6 +118,8 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             Logout
           </Link>
         </div>
+        </div>
+
       </div>
     </>
   );
