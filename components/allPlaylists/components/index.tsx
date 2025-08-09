@@ -40,7 +40,7 @@ export const AllPlayLists = () => {
       const playlistData = await getAllPlaylist({
         page,
         take: rowsPerPage ?? 5,
-        order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
+        order: sortDescriptor.direction === "descending" ? "ASC" : "DESC",
         search: filterValue,
       });
 

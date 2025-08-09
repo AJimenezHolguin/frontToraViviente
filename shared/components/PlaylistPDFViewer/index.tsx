@@ -27,7 +27,7 @@ export default function PlaylistPDFViewer({ type }: Props) {
     return <div className="p-4">No se encontraron archivos PDF.</div>;
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-[90vh] overflow-hidden">
       <PlaylistSidebar
         isSidebarOpen={isSidebarOpen}
         moveItem={moveItem}
@@ -39,7 +39,11 @@ export default function PlaylistPDFViewer({ type }: Props) {
         type={type}
       />
       <div className="transition-all duration-300 h-full w-full overflow-hidden">
-        <PDFViewer selected={selected} />
+        <PDFViewer 
+        selected={selected} 
+        setSelected={setSelected}
+        songs={songs}
+        />
       </div>
     </div>
   );
