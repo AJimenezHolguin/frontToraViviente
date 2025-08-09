@@ -27,7 +27,7 @@ export default function PlaylistPDFViewer({ type }: Props) {
     return <div className="p-4">No se encontraron archivos PDF.</div>;
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-[90vh] overflow-hidden">
       <PlaylistSidebar
         isSidebarOpen={isSidebarOpen}
         moveItem={moveItem}
