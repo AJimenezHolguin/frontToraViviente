@@ -6,7 +6,7 @@ import { WrapperProps} from "../../../types/wrapperProps"
 export const WrapperTitle: React.FC<WrapperProps> = ( {title, children} ) => {
 
     return(
-        <div className="w-ful px-6 py-1">
+        <div className="w-full px-3 py-1">
       <Text 
         $color={COLORS.primary}
         $ta="center" 

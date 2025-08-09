@@ -57,7 +57,7 @@ export const MyPlayLists = () => {
       const playlistData = await getAllMyPlaylist({
         page,
         take: rowsPerPage ?? 5,
-        order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
+        order: sortDescriptor.direction === "descending" ? "ASC" : "DESC",
         search: filterValue,
       });
 
@@ -115,7 +115,7 @@ export const MyPlayLists = () => {
         />
         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
           <div className="flex justify-between gap-3 items-start">
             <SearchComponent
               classNames={{
