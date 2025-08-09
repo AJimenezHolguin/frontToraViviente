@@ -39,7 +39,11 @@ export default function PlaylistPDFViewer({ type }: Props) {
         type={type}
       />
       <div className="transition-all duration-300 h-full w-full overflow-hidden">
-        <PDFViewer selected={selected} />
+        <PDFViewer 
+        selected={selected} 
+        setSelected={setSelected}
+        songs={songs}
+        />
       </div>
     </div>
   );

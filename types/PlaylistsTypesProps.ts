@@ -1,4 +1,5 @@
 import { DisplaySong, FileData } from "@/shared/components/PlaylistPDFViewer/types";
+import { Dispatch, SetStateAction } from "react";
 
 
 export interface Playlist {
@@ -38,6 +39,8 @@ export interface PlaylistSidebarProps {
 
   export interface PDFViewerProps {
     selected: FileData | null;
+    setSelected: Dispatch<SetStateAction<FileData | null>>;
+    songs: DisplaySong[];
   }
 
  export type PlaylistType  = "my-playlists" | "all-playlists" ;
