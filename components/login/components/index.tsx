@@ -176,13 +176,11 @@ export const Login = () => {
             <Image
               alt={"login"}
               height={300}
-              src={"/login/login.svg"}
+              src={"/login/adorador.jpg"}
               width={400}
             />
             <Text $v="h5" className="w-[90%] text-white text-center">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci
-              libero iusto repudiandae alias mollitia, eligendi similique ab
-              harum asperiores assumenda.@
+              Bendeciré a YAHWH en todo tiempo; mis labios siempre lo alabarán. Salmo 34:1
             </Text>
           </div>
         </section>
