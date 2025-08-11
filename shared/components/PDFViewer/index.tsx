@@ -1,5 +1,4 @@
 "use client";
-
 import { COLORS } from "@/styles/colors";
 import { PDFViewerProps } from "@/types/PlaylistsTypesProps";
 import { PiScreencast } from "react-icons/pi";
