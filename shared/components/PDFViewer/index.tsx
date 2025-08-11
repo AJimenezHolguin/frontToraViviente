@@ -26,7 +26,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
   return (
     <>
-      <div className="p-2 flex justify-between items-center">
+      <div className="py-0.5 px-2  flex justify-between items-center">
         <div className="flex items-center gap-4">
           <button
             className={`px-2 py-1 rounded transition-opacity ${
