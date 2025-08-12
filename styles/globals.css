@@ -55,3 +55,10 @@
 .heigth-form {
   max-height: calc(100vh - 10px); 
 }
+.heigth-pdf {
+  height: 93%;
+}
+
+.heigth-playlistSidebar {
+  height: 100%;
+}
