@@ -181,7 +181,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
       {isMobileOrTablet ? (
         error ? (
-          <iframe className="w-full h-full" src={selected.secure_url} />
+          <iframe className="heigth-pdf w-full " src={selected.secure_url} />
         ) : (
           <div
             ref={pdfContainerRef}
@@ -189,7 +189,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
           />
         )
       ) : (
-        <iframe className="w-full h-full" src={selected.secure_url} />
+        <iframe className="heigth-pdf w-full " src={selected.secure_url} />
       )}
     </>
   );
