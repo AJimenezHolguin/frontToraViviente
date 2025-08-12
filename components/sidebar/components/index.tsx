@@ -9,6 +9,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { signOut, useSession } from "next-auth/react";
 import { Text } from "@/shared/components/Text";
 import { COLORS } from "@/styles/colors";
+import { RoleProps } from "@/types/roles.enum";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -96,7 +97,9 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 custom-scrollbar" id="nav">
-          {menuItems.map((item) => (
+          {menuItems
+          .filter(item => item.allowedRoles.includes(session?.user?.role ?? RoleProps.USER))
+           .map((item) => (
             <div
               key={item.path}
               role="button"
