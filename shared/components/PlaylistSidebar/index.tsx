@@ -19,7 +19,7 @@ export const PlaylistSidebar = ({
     <div
       className={`z-0 transition-all duration-300 bg-white border-r flex flex-col ${
         isSidebarOpen ? "w-3/4" : "w-10"
-      } overflow-hidden min-w-0 h-full`}
+      } overflow-hidden min-w-0 heigth-playlistSidebar`}
     >
       {/* Encabezado fijo */}
       <div className="flex justify-between items-start p-4 shrink-0 ">
