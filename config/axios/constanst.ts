@@ -8,6 +8,7 @@ export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
 // Estados HTTP comunes de error
 export const HTTP_STATUS = {
+  NOT_TOKEN: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
   NOT_FOUND: 404,

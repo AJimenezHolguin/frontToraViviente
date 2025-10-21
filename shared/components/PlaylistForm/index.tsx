@@ -7,11 +7,12 @@ import { COLORS } from "@/styles/colors";
 export const PlaylistForm: React.FC<PlaylistFormProps> = ({
   form,
   setForm,
-  filterValue,
-  responseData,
   filterAllSongs,
   handleScroll,
+  selectedSongsData,
 }) => {
+  const selectedCount = form.songs.length;
+  
   return (
     <>
       <p className="text-sm font-medium mb-2">Canciones disponibles:</p>
@@ -40,12 +41,15 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
       </div>
 
       {/* SELECCIONADOS */}
-      {form.songs.length > 0 && (
+      {selectedCount > 0 && (
         <div className="mt-4 overflow-y-scroll" style={{ height: "100px" }}>
-          <p className="text-sm font-medium mb-1">Canciones seleccionadas:</p>
+          <p className="text-sm font-medium mb-1">
+            Canciones seleccionadas:
+            <span className="text-primary font-semibold ml-6"> {selectedCount}</span>
+            </p>
           <div className="gap-1 pr-1">
             {form.songs
-              .map((id) => responseData.find((song) => song._id === id))
+              .map((id) => selectedSongsData.find((song) => song._id === id))
               .filter(Boolean)
               .map((song) => (
                 <div

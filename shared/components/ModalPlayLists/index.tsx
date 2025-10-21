@@ -21,7 +21,7 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { AlertModal } from "../Modal/ModalAlert";
 import { ConfirmModal } from "../Modal/ConfirmModal";
 import { PositionModal } from "../Modal/types";
-import { PlaylistForm } from "../PlaylistForm"; 
+import { PlaylistForm } from "../PlaylistForm";
 import { Song } from "@/types/SongsTypesProps";
 import { SearchComponent } from "../Search";
 
@@ -41,6 +41,7 @@ export const ModalPlaylist = ({
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [selectedSongsData, setSelectedSongsData] = useState<Song[]>([]);
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
   const { data: session } = useSession();
@@ -54,6 +55,27 @@ export const ModalPlaylist = ({
     initialForm,
     playlistToEdit
   );
+
+  useEffect(() => {
+    const selected = responseData.filter((song) =>
+      form.songs.includes(song._id)
+    );
+  
+    // Agrega nuevas canciones seleccionadas al array persistente
+    setSelectedSongsData((prev) => {
+      const combined = [...prev];
+     
+      selected.forEach((s) => {
+        if (!combined.find((c) => c._id === s._id)) {
+          combined.push(s);
+        }
+      });
+      // Elimina las que ya no están seleccionadas
+     
+      return combined.filter((s) => form.songs.includes(s._id));
+    });
+  }, [form.songs, responseData]);
+  
 
   useEffect(() => {
     if (!isOpen) return;
@@ -136,6 +158,9 @@ export const ModalPlaylist = ({
   return (
     <>
       <Modal
+        backdrop="opaque"
+        isDismissable={false}
+        isKeyboardDismissDisabled={false}
         isOpen={isOpen}
         placement="center"
         scrollBehavior="inside"
@@ -177,6 +202,7 @@ export const ModalPlaylist = ({
                 handleScroll={handleScroll}
                 responseData={responseData}
                 setForm={setForm}
+                selectedSongsData={selectedSongsData} 
               />
             </ModalBody>
 

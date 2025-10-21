@@ -4,14 +4,13 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
 } from "@heroui/react";
 
 import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
-import { ModalSongProps, PositionModal } from './types';
+import { ModalSongProps, PositionModal } from "./types";
 import { SongForm } from "../SongForm";
 import { useSongFormData } from "../../hooks/songs/useSongFormData";
 import { useFormValidation } from "../../hooks/songs/useFormValidation";
@@ -83,7 +82,9 @@ export const ModalSong: React.FC<ModalSongProps> = ({
   return (
     <>
       <Modal
+        backdrop="opaque"
         isDismissable={false}
+        isKeyboardDismissDisabled={false}
         isOpen={isOpen}
         placement={PositionModal.CENTER}
         onOpenChange={(open) => {
@@ -117,7 +118,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
                 </ButtonComponent>
                 <ButtonComponent
                   color={ColorButton.PRIMARY}
-                  isDisabled={!isFormValid || loading }
+                  isDisabled={!isFormValid || loading}
                   onPress={() =>
                     showConfirm(
                       songToEdit
@@ -134,13 +135,21 @@ export const ModalSong: React.FC<ModalSongProps> = ({
           )}
         </ModalContent>
       </Modal>
-      <AlertModal {...AlertModalProps} placement={PositionModal.CENTER}/>
-      <ConfirmModal {...ConfirmModalProps} 
-                    isLoading={loading} 
-                    placement = {PositionModal.CENTER}
-                    title={loading ? songToEdit ? "Actualizando..." : "Guardando..." 
-                      : songToEdit ? "Actualizar": "Guardar"}
-                    />
+      <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
+      <ConfirmModal
+        {...ConfirmModalProps}
+        isLoading={loading}
+        placement={PositionModal.CENTER}
+        title={
+          loading
+            ? songToEdit
+              ? "Actualizando..."
+              : "Guardando..."
+            : songToEdit
+              ? "Actualizar"
+              : "Guardar"
+        }
+      />
     </>
   );
 };
