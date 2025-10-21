@@ -16,5 +16,6 @@ export type PlaylistFormProps = {
   filterValue: string;
   responseData: Song[];
   filterAllSongs: Song[];
+  selectedSongsData: Song[];
   handleScroll: (e: React.UIEvent<HTMLDivElement>) => void;
 };

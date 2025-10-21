@@ -7,10 +7,9 @@ import { COLORS } from "@/styles/colors";
 export const PlaylistForm: React.FC<PlaylistFormProps> = ({
   form,
   setForm,
-  filterValue,
-  responseData,
   filterAllSongs,
   handleScroll,
+  selectedSongsData,
 }) => {
   return (
     <>
@@ -45,7 +44,7 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
           <p className="text-sm font-medium mb-1">Canciones seleccionadas:</p>
           <div className="gap-1 pr-1">
             {form.songs
-              .map((id) => responseData.find((song) => song._id === id))
+              .map((id) => selectedSongsData.find((song) => song._id === id))
               .filter(Boolean)
               .map((song) => (
                 <div
