@@ -1,5 +1,4 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
@@ -21,9 +20,13 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   placement,
 }) => {
   return (
-    <Modal isOpen={isOpen} 
-    placement={placement}
-    onOpenChange={(open) => !open && onClose()} 
+    <Modal
+      backdrop="opaque"
+      isDismissable={false}
+      isKeyboardDismissDisabled={false}
+      isOpen={isOpen}
+      placement={placement}
+      onOpenChange={(open) => !open && onClose()}
     >
       <ModalContent>
         <ModalHeader className="text-primary ">Confirmación</ModalHeader>
@@ -31,17 +34,15 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <Text>{message}</Text>
         </ModalBody>
         <ModalFooter>
-          <ButtonComponent 
-            color={ColorButton.DANGER} 
-            onPress={onClose}>
+          <ButtonComponent color={ColorButton.DANGER} onPress={onClose}>
             Cancelar
           </ButtonComponent>
-          <ButtonComponent 
-            color={ColorButton.PRIMARY}  
+          <ButtonComponent
+            color={ColorButton.PRIMARY}
             isLoading={isLoading}
-            onPress={onConfirm} 
+            onPress={onConfirm}
           >
-            { title }
+            {title}
           </ButtonComponent>
         </ModalFooter>
       </ModalContent>

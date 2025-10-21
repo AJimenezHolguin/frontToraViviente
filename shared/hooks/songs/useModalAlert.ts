@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { AlertType } from "../../components/Modal/types";
 

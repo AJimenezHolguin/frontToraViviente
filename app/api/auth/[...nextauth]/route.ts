@@ -35,13 +35,14 @@ const handler = NextAuth({
             updatedAt: userResponse.user.updatedAt,
           };
         } catch (error) {
-          error;
-
+          console.error("Error en authorize:", error);
+         
           return null;
         }
       },
     }),
   ],
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
