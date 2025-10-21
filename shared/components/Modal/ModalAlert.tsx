@@ -18,9 +18,17 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   message,
 }) => {
   return (
-    <Modal isOpen={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Modal
+      backdrop="opaque"
+      isDismissable={false}
+      isKeyboardDismissDisabled={false}
+      isOpen={isOpen}
+      onOpenChange={(open) => !open && onClose()}
+    >
       <ModalContent>
-        <ModalHeader className="text-primary">{type === "success" ? "¡Éxito!" : "Error"}</ModalHeader>
+        <ModalHeader className="text-primary">
+          {type === "success" ? "¡Éxito!" : "Error"}
+        </ModalHeader>
         <ModalBody>
           <Text>{message}</Text>
         </ModalBody>

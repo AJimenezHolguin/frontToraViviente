@@ -21,7 +21,7 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { AlertModal } from "../Modal/ModalAlert";
 import { ConfirmModal } from "../Modal/ConfirmModal";
 import { PositionModal } from "../Modal/types";
-import { PlaylistForm } from "../PlaylistForm"; 
+import { PlaylistForm } from "../PlaylistForm";
 import { Song } from "@/types/SongsTypesProps";
 import { SearchComponent } from "../Search";
 
@@ -136,6 +136,9 @@ export const ModalPlaylist = ({
   return (
     <>
       <Modal
+        backdrop="opaque"
+        isDismissable={false}
+        isKeyboardDismissDisabled={false}
         isOpen={isOpen}
         placement="center"
         scrollBehavior="inside"
