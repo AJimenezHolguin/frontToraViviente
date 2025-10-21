@@ -11,7 +11,6 @@ const applyInterceptors = (api: AxiosInstance) => {
         config.url?.includes(route)
       );
 
-      // Solo obtiene sesión si no está en rutas excluidas
       if (!isExcluded) {
         const session = await getSession();
         const token = session?.user?.token;
@@ -19,8 +18,6 @@ const applyInterceptors = (api: AxiosInstance) => {
         if (!token) {
           if (typeof window !== "undefined") {
             eventBus.emit("tokenExpired");
-            // await signOut({ callbackUrl: "/login" });
-            //window.location.href ="/login"
           }
 
           return Promise.reject(new Error("Sesión expirada"));
@@ -39,8 +36,6 @@ const applyInterceptors = (api: AxiosInstance) => {
       if (error.response?.status === HTTP_STATUS.NOT_TOKEN) {
         if (typeof window !== "undefined") {
           eventBus.emit("tokenExpired");
-          // await signOut({ callbackUrl: "/login" });
-          //window.location.href = "/login";
         }
       }
 
