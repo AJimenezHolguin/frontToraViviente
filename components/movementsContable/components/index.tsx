@@ -97,7 +97,7 @@ export const MovementsContable = () => {
 
   return (
     <>
-      <WrapperTitle title="Lista general de mis canciones">
+      <WrapperTitle title="Registro Contable General">
         <ModalSong
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
@@ -138,13 +138,13 @@ export const MovementsContable = () => {
               }}
             >
               <Text $fw={500} $v="md">
-                Crear canción
+                Crear registro
               </Text>
             </ButtonComponent>
           </div>
 
           <PaginationHeader
-            label="Canciones"
+            label="Registros"
             rowsPerPage={rowsPerPage ?? 0}
             totalItems={totalSongs}
             onRowsPerPageChange={(value) => {
@@ -155,7 +155,7 @@ export const MovementsContable = () => {
         </div>
 
         <ReusableTable
-          ariaLabel="Tabla de canciones"
+          ariaLabel="Tabla de registros contables"
           headerColumns={headerColumns}
           itemKey="_id"
           page={page}
