@@ -9,20 +9,19 @@ import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-
+import {  useTable } from "@/shared/hooks/songs/useTable";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
-import { columnTitlesPresets, baseColumnsSongs } from '@/shared/components/table/columnsAndStatusOptions';
+import { baseMovementColumns, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { PaginationHeader } from "@/shared/components/PaginationHeader";
-import { useTable } from '@/shared/hooks/songs/useTable';
 
-export const MySongs = () => {
+export const MovementsContable = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalSongs, setTotalSongs] = useState(0);
@@ -36,8 +35,7 @@ export const MySongs = () => {
     useModalAlert();
   const { loading } = useDeleteSong(showAlert);
 
-  const {
-    page,
+  const { page,
     setPage,
     rowsPerPage,
     setRowsPerPage,
@@ -48,19 +46,21 @@ export const MySongs = () => {
     onClear,
     selectedKeys,
     setSelectedKeys,
-    headerColumns,
-  } = useTable(baseColumnsSongs,
+    headerColumns} = useTable(
+    baseMovementColumns,
     [
-      "name",
-      "user",
-      "linkSong",
-      "category",
-      "fileSong",
-      "fileScore",
-      "actions",
+     "numReg",
+    "date",
+    "description",
+    "type",
+    "ingreso",
+    "gasto",
+    "amount",
+    "actions", 
     ],
-    columnTitlesPresets["mySongsTitle"]
-  );
+    columnTitlesPresets["movementsContableTitle"]
+  )
+  
 
   const fetchSongs = async () => {
     try {

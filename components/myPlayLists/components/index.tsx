@@ -6,11 +6,11 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-import { useSongTable } from "@/shared/hooks/songs/useSongTable";
+
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
-import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
+import { baseColumnsSongs, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
@@ -20,6 +20,7 @@ import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlayli
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
 import { useDeletePlaylist } from "@/shared/feature/ playlist/deletePlaylistHandler";
+import { useTable } from '@/shared/hooks/songs/useTable';
 
 export const MyPlayLists = () => {
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
@@ -47,7 +48,7 @@ export const MyPlayLists = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useSongTable(
+  } = useTable(baseColumnsSongs,
     ["name", "user", "fileSong", "fileScore", "actions", "status"],
     columnTitlesPresets["myPlayListsTitle"]
   );

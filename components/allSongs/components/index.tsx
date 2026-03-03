@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { Song } from "@/types/SongsTypesProps";
 import { SpinnerComponent } from "@/shared/components/Spinner";
-import { useSongTable } from "@/shared/hooks/songs/useSongTable";
+import { useTable } from "@/shared/hooks/songs/useTable";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { ReusableTable } from "@/shared/components/table";
-import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
+import { baseColumnsSongs, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { PaginationHeader } from "@/shared/components/PaginationHeader";
@@ -30,7 +30,7 @@ export const AllSongs = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useSongTable(
+  } = useTable(baseColumnsSongs,
     ["name", "user", "linkSong", "category", "fileSong", "fileScore"],
     columnTitlesPresets["allSongsTitle"]
   );

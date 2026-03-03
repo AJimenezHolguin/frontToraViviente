@@ -1,15 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { SpinnerComponent } from "@/shared/components/Spinner";
-import { useSongTable } from "@/shared/hooks/songs/useSongTable";
+
 import { ReusableTable } from "@/shared/components/table";
-import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
+import { baseColumnsSongs, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
+import { useTable } from '@/shared/hooks/songs/useTable';
 
 export const AllPlayLists = () => {
   const [allPlaylist, setAllPlaylist] = useState<Playlist[]>([]);
@@ -30,7 +31,7 @@ export const AllPlayLists = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useSongTable(
+  } = useTable(baseColumnsSongs,
     ["name", "user", "fileSong", "fileScore"],
     columnTitlesPresets["allPlayListsTitle"]
   );
