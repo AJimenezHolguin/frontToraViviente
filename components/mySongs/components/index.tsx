@@ -9,18 +9,19 @@ import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
-import { columnTitlesPresets, baseColumnsSongs } from '@/shared/components/table/columnsAndStatusOptions';
+import {
+  columnTitlesPresets,
+  baseColumnsSongs,
+} from "@/shared/components/table/columnsAndStatusOptions";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
-import { PaginationHeader } from "@/shared/components/PaginationHeader";
-import { useTable } from '@/shared/hooks/songs/useTable';
+import { useTable } from "@/shared/hooks/songs/useTable";
 
 export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -32,8 +33,7 @@ export const MySongs = () => {
     null
   );
 
-  const { showAlert, AlertModalProps, ConfirmModalProps } =
-    useModalAlert();
+  const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
   const { loading } = useDeleteSong(showAlert);
 
   const {
@@ -49,7 +49,8 @@ export const MySongs = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(baseColumnsSongs,
+  } = useTable(
+    baseColumnsSongs,
     [
       "name",
       "user",
@@ -120,11 +121,11 @@ export const MySongs = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-start">
             <SearchComponent
-              classNames={{ 
+              classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
                 inputWrapper: "bg-white ",
-               }}
+              }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
@@ -143,31 +144,28 @@ export const MySongs = () => {
             </ButtonComponent>
           </div>
 
-          <PaginationHeader
-            label="Canciones"
-            rowsPerPage={rowsPerPage ?? 0}
+          <ReusableTable
+            ariaLabel="Tabla de canciones"
             totalItems={totalSongs}
+            label="Canciones"
+            rowsPerPage={rowsPerPage ?? 5}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
             }}
+            headerColumns={headerColumns}
+            itemKey="_id"
+            page={page}
+            renderCell={renderCell}
+            selectedKeys={selectedKeys}
+            sortDescriptor={sortDescriptor}
+            sortedItems={songs}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onSelectionChange={setSelectedKeys}
+            onSortChange={setSortDescriptor}
           />
         </div>
-
-        <ReusableTable
-          ariaLabel="Tabla de canciones"
-          headerColumns={headerColumns}
-          itemKey="_id"
-          page={page}
-          renderCell={renderCell}
-          selectedKeys={selectedKeys}
-          sortDescriptor={sortDescriptor}
-          sortedItems={songs}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          onSelectionChange={setSelectedKeys}
-          onSortChange={setSortDescriptor}
-        />
       </WrapperTitle>
     </>
   );

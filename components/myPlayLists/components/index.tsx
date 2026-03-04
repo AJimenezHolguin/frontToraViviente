@@ -14,7 +14,6 @@ import { baseColumnsSongs, columnTitlesPresets } from "@/shared/components/table
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
-import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
@@ -142,19 +141,15 @@ export const MyPlayLists = () => {
             </ButtonComponent>
           </div>
 
-          <PaginationHeader
-            label="Playlists"
-            rowsPerPage={rowsPerPage ?? 0}
-            totalItems={totalPlaylists}
-            onRowsPerPageChange={(value) => {
-              setRowsPerPage(value);
-              setPage(1);
-            }}
-          />
-        </div>
-
         <ReusableTable
           ariaLabel="Tabla de playlists"
+          totalItems={totalPlaylists}
+          label="Playlists"
+          rowsPerPage={rowsPerPage ?? 5}
+          onRowsPerPageChange={(value) => {
+            setRowsPerPage(value);
+            setPage(1);
+          }}
           headerColumns={headerColumns}
           itemKey="_id"
           page={page}
@@ -166,7 +161,9 @@ export const MyPlayLists = () => {
           onPageChange={setPage}
           onSelectionChange={setSelectedKeys}
           onSortChange={setSortDescriptor}
-        />
+          />
+
+          </div>
       </WrapperTitle>
     </>
   );

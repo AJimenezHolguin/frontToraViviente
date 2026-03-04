@@ -83,19 +83,15 @@ export const AllPlayLists = () => {
             />
           </div>
 
-          <PaginationHeader
-            label="Playlists"
-            rowsPerPage={rowsPerPage ?? 0}
+        <ReusableTable
+          ariaLabel="Tabla de playlists"
+          label="Playlists"
+            rowsPerPage={rowsPerPage ?? 5}
             totalItems={totalAllPlaylists}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
             }}
-          />
-        </div>
-
-        <ReusableTable
-          ariaLabel="Tabla de playlists"
           headerColumns={headerColumns}
           itemKey="_id"
           page={page}
@@ -108,6 +104,7 @@ export const AllPlayLists = () => {
           onSelectionChange={setSelectedKeys}
           onSortChange={setSortDescriptor}
         />
+         </div>
       </WrapperTitle>
     </>
   );

@@ -60,18 +60,6 @@ export const CreatePlayList = () => {
                 placeholder="Nueva playlist..."
                 type={TypeProps.TEXT}
               />
-              {/* <InputComponent
-                classNames={{
-                  base: "pl-5 sm: pr-5 md:max-w-[80%]",
-                }}
-                isClearable={true}
-                label="Buscar canción"
-                placeholder="Buscar canción..."
-                startContent={<SearchIcon />}
-                type={TypeProps.SEARCH}
-                value={filterValue}
-                onValueChange={setFilterValue}
-              /> */}
 
               <ModalBody>
                 <CheckboxGroup

@@ -73,9 +73,9 @@
     "react/jsx-sort-props": [
       "warn",
       {
-        "callbacksLast": true,
+        "callbacksLast": false,
         "shorthandFirst": true,
-        "noSortAlphabetically": false,
+        "noSortAlphabetically": true,
         "reservedFirst": true
       }
     ],

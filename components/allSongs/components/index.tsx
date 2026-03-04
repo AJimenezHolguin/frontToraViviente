@@ -80,19 +80,15 @@ export const AllSongs = () => {
             />
           </div>
 
-          <PaginationHeader
-            label="Canciones"
-            rowsPerPage={rowsPerPage ?? 0}
+        <ReusableTable
+          ariaLabel="Tabla de canciones"
+          label="Canciones"
+            rowsPerPage={rowsPerPage ?? 5}
             totalItems={totalSongs}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
             }}
-          />
-        </div>
-
-        <ReusableTable
-          ariaLabel="Tabla de canciones"
           headerColumns={headerColumns}
           itemKey="_id"
           page={page}
@@ -105,6 +101,7 @@ export const AllSongs = () => {
           onSelectionChange={setSelectedKeys}
           onSortChange={setSortDescriptor}
         />
+      </div>
       </WrapperTitle>
     </>
   );
