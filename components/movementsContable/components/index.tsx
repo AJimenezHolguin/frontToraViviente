@@ -9,13 +9,16 @@ import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-import {  useTable } from "@/shared/hooks/songs/useTable";
+import { useTable } from "@/shared/hooks/songs/useTable";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
-import { baseMovementColumns, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
+import {
+  baseMovementColumns,
+  columnTitlesPresets,
+} from "@/shared/components/table/columnsAndStatusOptions";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
@@ -31,11 +34,11 @@ export const MovementsContable = () => {
     null
   );
 
-  const { showAlert, AlertModalProps, ConfirmModalProps } =
-    useModalAlert();
+  const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
   const { loading } = useDeleteSong(showAlert);
 
-  const { page,
+  const {
+    page,
     setPage,
     rowsPerPage,
     setRowsPerPage,
@@ -46,21 +49,21 @@ export const MovementsContable = () => {
     onClear,
     selectedKeys,
     setSelectedKeys,
-    headerColumns} = useTable(
+    headerColumns,
+  } = useTable(
     baseMovementColumns,
     [
-     "numReg",
-    "date",
-    "description",
-    "type",
-    "ingreso",
-    "gasto",
-    "amount",
-    "actions", 
+      "numReg",
+      "date",
+      "description",
+      "type",
+      "ingreso",
+      "gasto",
+      "amount",
+      "actions",
     ],
     columnTitlesPresets["movementsContableTitle"]
-  )
-  
+  );
 
   const fetchSongs = async () => {
     try {
@@ -120,11 +123,11 @@ export const MovementsContable = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-start">
             <SearchComponent
-              classNames={{ 
+              classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
                 inputWrapper: "bg-white ",
-               }}
+              }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
@@ -143,7 +146,8 @@ export const MovementsContable = () => {
             </ButtonComponent>
           </div>
 
-          <PaginationHeader
+          <ReusableTable
+            ariaLabel="Tabla de registros contables"
             label="Registros"
             rowsPerPage={rowsPerPage ?? 0}
             totalItems={totalSongs}
@@ -151,23 +155,19 @@ export const MovementsContable = () => {
               setRowsPerPage(value);
               setPage(1);
             }}
+            headerColumns={headerColumns}
+            itemKey="_id"
+            page={page}
+            renderCell={renderCell}
+            selectedKeys={selectedKeys}
+            sortDescriptor={sortDescriptor}
+            sortedItems={songs}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onSelectionChange={setSelectedKeys}
+            onSortChange={setSortDescriptor}
           />
         </div>
-
-        <ReusableTable
-          ariaLabel="Tabla de registros contables"
-          headerColumns={headerColumns}
-          itemKey="_id"
-          page={page}
-          renderCell={renderCell}
-          selectedKeys={selectedKeys}
-          sortDescriptor={sortDescriptor}
-          sortedItems={songs}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          onSelectionChange={setSelectedKeys}
-          onSortChange={setSortDescriptor}
-        />
       </WrapperTitle>
     </>
   );

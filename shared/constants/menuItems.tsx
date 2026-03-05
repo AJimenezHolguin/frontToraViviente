@@ -1,22 +1,23 @@
 import { RoleProps } from "@/types/roles.enum";
 import { SidebarMenuItemProps } from "../components/SidebarMenuItem/types"
-import { IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline, IoPersonOutline } from 'react-icons/io5';
+import { IoCalculator, IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline } from 'react-icons/io5';
 
 
 export const menuItems: SidebarMenuItemProps[] = [
+ 
     {
-        title: "Mi Perfil",
-        subTitle: "Panel de Usuario",
-        path: "/dashboard/my-profile",
-        icon: <IoPersonOutline size={30} />,
-        allowedRoles : [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN]
+        title: "Control Financiero",
+        subTitle: "Registro Contable",
+        path: "/dashboard/movements-contable",
+        icon: <IoCalculator size={30} />,
+        allowedRoles : [RoleProps.ADMIN]
     },
     {
         title: "Mis Playlists",
         subTitle: "Mis Listas",
         path: "/dashboard/my-playlists",
         icon: <IoListCircleOutline size={30} />,
-        allowedRoles : [RoleProps.ADMIN]
+        allowedRoles : [RoleProps.ADMIN, RoleProps.MUSICIAN]
     },
     {
         title: "Todas las Playlists",
@@ -30,7 +31,7 @@ export const menuItems: SidebarMenuItemProps[] = [
         subTitle: "Mis Alabanzas",
         path: "/dashboard/my-songs",
         icon: <IoMusicalNoteOutline size={30} />,
-        allowedRoles : [RoleProps.ADMIN]
+        allowedRoles : [RoleProps.ADMIN, RoleProps.MUSICIAN]
     },
     {
         title: "Todas las Canciones",
