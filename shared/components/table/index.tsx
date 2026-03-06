@@ -11,10 +11,17 @@
 // } from "@heroui/react";
 
 // import React from "react";
+// import { Text } from "@/shared/components/Text";
 // import { ReusableTableProps } from "./types";
 
-// export const ReusableTable = <T extends { [key: string]: any }>({
+
+
+// export const ReusableTable = <T extends Record<string, any>>({
 //   ariaLabel,
+//   totalItems,
+//   label,
+//   rowsPerPage,
+//   onRowsPerPageChange,
 //   headerColumns,
 //   sortedItems,
 //   itemKey,
@@ -22,63 +29,111 @@
 //   onSelectionChange,
 //   sortDescriptor,
 //   onSortChange,
-//   renderCell,
+//   // renderCell,
 //   page,
 //   totalPages,
 //   onPageChange,
 // }: ReusableTableProps<T>) => {
 //   return (
-//     <Table
-//       isHeaderSticky
-//       isVirtualized
-//       aria-label={ariaLabel}
-//       bottomContent={
-//         <div className="py-2 px-2 flex z-0 justify-center items-center">
-//           <Pagination
-//             isCompact
-//             showControls
-//             showShadow
-//             boundaries={1}
-//             color="primary"
-//             page={page}
-//             siblings={1}
-//             total={totalPages}
-//             onChange={onPageChange}
-//           />
-//         </div>
-//       }
-//       bottomContentPlacement="outside"
-//       maxTableHeight={290}
-//       rowHeight={40}
-//       selectedKeys={selectedKeys}
-//       sortDescriptor={sortDescriptor}
-//       onSelectionChange={onSelectionChange}
-//       onSortChange={onSortChange}
-//     >
-//       <TableHeader columns={headerColumns}>
-//         {(column) => (
-//           <TableColumn
-//           key={column.uid}
-//           align={["fileSong", "fileScore", "actions"].includes(column.uid) ? "center" : "start"}
-//           allowsSorting={column.sortable}
-//           >
-//             {column.name}
-//           </TableColumn>
+//     <div className="flex flex-col gap-4">
+
+//       {/* 🔹 Header superior opcional */}
+//       {totalItems !== undefined &&
+//         label &&
+//         rowsPerPage !== undefined &&
+//         onRowsPerPageChange && (
+//           <div className="flex justify-between items-center">
+//             <Text className="text-small text-secondary">
+//               Total {totalItems} {label}
+//             </Text>
+
+//             <label className="flex items-center text-small text-secondary">
+//               {label} por página:
+//               <select
+//                 className="bg-transparent outline-none text-small text-secondary"
+//                 value={rowsPerPage}
+//                 onChange={(e) =>
+//                   onRowsPerPageChange(Number(e.target.value))
+//                 }
+//               >
+//                 <option value="5">5</option>
+//                 <option value="10">10</option>
+//                 <option value="15">15</option>
+//               </select>
+//             </label>
+//           </div>
 //         )}
-//       </TableHeader>
-//       <TableBody
-//         emptyContent="No se encontraron resultados"
-//         items={sortedItems}
+
+//       {/* 🔹 Tabla */}
+//       <Table
+//         isHeaderSticky
+//         isVirtualized
+//         aria-label={ariaLabel}
+//         bottomContent={
+//           <div className="py-2 px-2 flex justify-center items-center">
+//             <Pagination
+//               isCompact
+//               showControls
+//               showShadow
+//               boundaries={1}
+//               color="primary"
+//               page={page}
+//               siblings={1}
+//               total={totalPages}
+//               onChange={onPageChange}
+//             />
+//           </div>
+//         }
+//         bottomContentPlacement="outside"
+//         maxTableHeight={290}
+//         rowHeight={40}
+//         selectedKeys={selectedKeys}
+//         sortDescriptor={sortDescriptor}
+//         onSelectionChange={onSelectionChange}
+//         onSortChange={onSortChange}
 //       >
-//         {(item) => (
-//           <TableRow key={item[itemKey] as React.Key}>
-//             {(columnKey) => (
-//               <TableCell>{renderCell(item, columnKey as string)}</TableCell>
-//             )}
-//           </TableRow>
-//         )}
-//       </TableBody>
-//     </Table>
+//         <TableHeader columns={headerColumns}>
+//           {(column) => (
+//             <TableColumn
+//               key={column.uid}
+//               align={
+//                 ["fileSong", "fileScore", "actions"].includes(column.uid)
+//                   ? "center"
+//                   : "start"
+//               }
+//               allowsSorting={column.sortable}
+//             >
+//               {column.name}
+//             </TableColumn>
+//           )}
+//         </TableHeader>
+
+//         <TableBody
+//   emptyContent="No se encontraron resultados"
+//   items={sortedItems}
+// >
+//   {(item) => (
+//     <TableRow key={item[itemKey] as React.Key}>
+//       {(columnKey) => {
+
+//         const column = headerColumns.find(
+//           col => col.uid === columnKey
+//         );
+
+//         return (
+//           <TableCell>
+//             {column?.render
+//               ? column.render(item)
+//               : String(item[columnKey as keyof T])
+//             }
+//           </TableCell>
+//         );
+//       }}
+//     </TableRow>
+//   )}
+// </TableBody>
+//       </Table>
+//     </div>
 //   );
 // };
 
@@ -96,55 +151,21 @@ import {
 
 import React from "react";
 import { Text } from "@/shared/components/Text";
-
-export interface ReusableTableProps<T> {
-  ariaLabel: string;
-
-  // Header superior (antes PaginationHeader)
-  totalItems?: number;
-  label?: string;
-  rowsPerPage?: number;
-  onRowsPerPageChange?: (value: number) => void;
-
-  // Tabla
-  headerColumns: any[];
-  sortedItems: T[];
-  itemKey: keyof T;
-
-  selectedKeys?: any;
-  onSelectionChange?: (keys: any) => void;
-
-  sortDescriptor?: any;
-  onSortChange?: (descriptor: any) => void;
-
-  renderCell: (item: T, columnKey: string) => React.ReactNode;
-
-  // Paginación inferior
-  page: number;
-  totalPages: number;
-  onPageChange: (page: number) => void;
-}
+import { ReusableTableProps } from "./types";
 
 export const ReusableTable = <T extends Record<string, any>>({
   ariaLabel,
-
   totalItems,
   label,
   rowsPerPage,
   onRowsPerPageChange,
-
   headerColumns,
   sortedItems,
   itemKey,
-
   selectedKeys,
   onSelectionChange,
-
   sortDescriptor,
   onSortChange,
-
-  renderCell,
-
   page,
   totalPages,
   onPageChange,
@@ -152,7 +173,7 @@ export const ReusableTable = <T extends Record<string, any>>({
   return (
     <div className="flex flex-col gap-4">
 
-      {/* 🔹 Header superior opcional */}
+      {/* Header superior */}
       {totalItems !== undefined &&
         label &&
         rowsPerPage !== undefined &&
@@ -162,7 +183,7 @@ export const ReusableTable = <T extends Record<string, any>>({
               Total {totalItems} {label}
             </Text>
 
-            <label className="flex items-center text-small text-secondary">
+            <label className="flex items-center text-small text-secondary gap-2">
               {label} por página:
               <select
                 className="bg-transparent outline-none text-small text-secondary"
@@ -171,19 +192,25 @@ export const ReusableTable = <T extends Record<string, any>>({
                   onRowsPerPageChange(Number(e.target.value))
                 }
               >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={15}>15</option>
               </select>
             </label>
           </div>
         )}
 
-      {/* 🔹 Tabla */}
+      {/* Tabla */}
       <Table
         isHeaderSticky
         isVirtualized
         aria-label={ariaLabel}
+        maxTableHeight={290}
+        rowHeight={40}
+        selectedKeys={selectedKeys}
+        sortDescriptor={sortDescriptor}
+        onSelectionChange={onSelectionChange}
+        onSortChange={onSortChange}
         bottomContent={
           <div className="py-2 px-2 flex justify-center items-center">
             <Pagination
@@ -200,43 +227,51 @@ export const ReusableTable = <T extends Record<string, any>>({
           </div>
         }
         bottomContentPlacement="outside"
-        maxTableHeight={290}
-        rowHeight={40}
-        selectedKeys={selectedKeys}
-        sortDescriptor={sortDescriptor}
-        onSelectionChange={onSelectionChange}
-        onSortChange={onSortChange}
       >
+
+        {/* Header */}
         <TableHeader columns={headerColumns}>
           {(column) => (
             <TableColumn
               key={column.uid}
+              allowsSorting={column.sortable}
               align={
                 ["fileSong", "fileScore", "actions"].includes(column.uid)
                   ? "center"
                   : "start"
               }
-              allowsSorting={column.sortable}
             >
               {column.name}
             </TableColumn>
           )}
         </TableHeader>
 
+        {/* Body */}
         <TableBody
-          emptyContent="No se encontraron resultados"
           items={sortedItems}
+          emptyContent="No se encontraron resultados"
         >
           {(item) => (
-            <TableRow key={item[itemKey] as React.Key}>
-              {(columnKey) => (
-                <TableCell>
-                  {renderCell(item, columnKey as string)}
-                </TableCell>
-              )}
+            <TableRow key={String(item[itemKey])}>
+              {(columnKey) => {
+                const column = headerColumns.find(
+                  (col) => col.uid === columnKey
+                );
+
+                const content = column?.render
+                  ? column.render(item)
+                  : String(item[columnKey as keyof T] ?? "");
+
+                return (
+                  <TableCell>
+                    {content}
+                  </TableCell>
+                );
+              }}
             </TableRow>
           )}
         </TableBody>
+
       </Table>
     </div>
   );

@@ -1,41 +1,21 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { PlusIcon } from "@/shared/components/table/TableIcons";
-import { ModalSong } from "@/shared/components/Modal";
-import { Song } from "@/types/SongsTypesProps";
+
 import { SpinnerComponent } from "@/shared/components/Spinner";
-import { ColorButton } from "@/styles/colorButton.enum";
-import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
-import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
-import { AlertModal } from "@/shared/components/Modal/ModalAlert";
-import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { useTable } from "@/shared/hooks/songs/useTable";
 import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
-import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
-import { PositionModal } from "@/shared/components/Modal/types";
-import { ButtonComponent } from "@/shared/components/Button";
-import {
-  baseMovementColumns,
-  columnTitlesPresets,
-} from "@/shared/components/table/columnsAndStatusOptions";
-import { Text } from "@/shared/components/Text";
+import { baseMovementColumns, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
-import { PaginationHeader } from "@/shared/components/PaginationHeader";
+import { getAllMovements } from "@/services/movements/getAllMovements.service";
+import { Movements } from "@/types/movementsTypesProps";
 
-export const MovementsContable = () => {
-  const [songs, setSongs] = useState<Song[]>([]);
+export const AllMovements = () => {
+  const [allMovements, setAllMovements] = useState<Movements[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalSongs, setTotalSongs] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedSongToEdit, setSelectedSongToEdit] = useState<Song | null>(
-    null
-  );
-
-  const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
-  const { loading } = useDeleteSong(showAlert);
 
   const {
     page,
@@ -50,24 +30,14 @@ export const MovementsContable = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(
-    baseMovementColumns,
-    [
-      "numReg",
-      "date",
-      "description",
-      "type",
-      "ingreso",
-      "gasto",
-      "amount",
-      "actions",
-    ],
+  } = useTable(baseMovementColumns,
+    ["date", "numReg", "description", "type", "ingreso", "gasto","state","user","ref_id","saldo",],
     columnTitlesPresets["movementsContableTitle"]
   );
 
-  const fetchSongs = async () => {
+  const fetchAllSongs = async () => {
     try {
-      const songsData = await getAllMySongs({
+      const movementsData = await getAllMovements({
         page,
         take: rowsPerPage ?? 5,
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
@@ -75,9 +45,9 @@ export const MovementsContable = () => {
       });
 
       setIsLoading(true);
-      setSongs(songsData.data || []);
-      setTotalPages(songsData.metadata.pageCount);
-      setTotalSongs(songsData.metadata.total);
+      setAllMovements(movementsData.data || []);
+      setTotalPages(movementsData.metadata.pageCount);
+      setTotalSongs(movementsData.metadata.total);
     } catch (error) {
       console.error(error);
     } finally {
@@ -86,88 +56,52 @@ export const MovementsContable = () => {
   };
 
   useEffect(() => {
-    fetchSongs();
+    fetchAllSongs();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-  const renderCell = useRenderSongCell({
-    onEdit: (song) => {
-      setSelectedSongToEdit(song);
-      setIsModalOpen(true);
-    },
-  });
+  const renderCell = useRenderSongCell({});
 
   if (isLoading) return <SpinnerComponent />;
 
   return (
     <>
-      <WrapperTitle title="Registro Contable General">
-        <ModalSong
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          songToEdit={selectedSongToEdit}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedSongToEdit(null);
-          }}
-          onSongCreated={fetchSongs}
-        />
-
-        <ConfirmModal
-          {...ConfirmModalProps}
-          isLoading={loading}
-          placement={PositionModal.CENTER}
-          title={loading ? "Eliminando..." : "Confirmar"}
-        />
-        <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
-
+      <WrapperTitle title="Lista general de todas las canciones">
         <div className="flex flex-col gap-6">
-          <div className="flex justify-between gap-3 items-start">
+          <div className="flex justify-between gap-3 items-end">
             <SearchComponent
-              classNames={{
+              classNames={{ 
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
                 inputWrapper: "bg-white ",
-              }}
+               }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
             />
-            <ButtonComponent
-              color={ColorButton.PRIMARY}
-              endContent={<PlusIcon />}
-              onPress={() => {
-                setSelectedSongToEdit(null);
-                setIsModalOpen(true);
-              }}
-            >
-              <Text $fw={500} $v="md">
-                Crear registro
-              </Text>
-            </ButtonComponent>
           </div>
 
-          <ReusableTable
-            ariaLabel="Tabla de registros contables"
-            label="Registros"
-            rowsPerPage={rowsPerPage ?? 0}
+        <ReusableTable
+          ariaLabel="Tabla de canciones"
+          label="Canciones"
+            rowsPerPage={rowsPerPage ?? 5}
             totalItems={totalSongs}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
             }}
-            headerColumns={headerColumns}
-            itemKey="_id"
-            page={page}
-            renderCell={renderCell}
-            selectedKeys={selectedKeys}
-            sortDescriptor={sortDescriptor}
-            sortedItems={songs}
-            totalPages={totalPages}
-            onPageChange={setPage}
-            onSelectionChange={setSelectedKeys}
-            onSortChange={setSortDescriptor}
-          />
-        </div>
+          headerColumns={headerColumns}
+          itemKey="_id"
+          page={page}
+          renderCell={renderCell}
+          selectedKeys={selectedKeys}
+          sortDescriptor={sortDescriptor}
+          sortedItems={allMovements}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          onSelectionChange={setSelectedKeys}
+          onSortChange={setSortDescriptor}
+        />
+      </div>
       </WrapperTitle>
     </>
   );

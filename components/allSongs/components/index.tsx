@@ -3,13 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Song } from "@/types/SongsTypesProps";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { useTable } from "@/shared/hooks/songs/useTable";
-import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { ReusableTable } from "@/shared/components/table";
-import { baseColumnsSongs, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
-import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { getAllSongs } from "@/services/songs/getAllSongs.service";
+import { songColumns } from "@/shared/components/table/songColumns";
 
 export const AllSongs = () => {
   const [allSongs, setAllSongs] = useState<Song[]>([]);
@@ -30,9 +28,7 @@ export const AllSongs = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(baseColumnsSongs,
-    ["name", "user", "linkSong", "category", "fileSong", "fileScore"],
-    columnTitlesPresets["allSongsTitle"]
+  } = useTable(songColumns
   );
 
   const fetchAllSongs = async () => {
@@ -59,7 +55,6 @@ export const AllSongs = () => {
     fetchAllSongs();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-  const renderCell = useRenderSongCell({});
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -80,7 +75,7 @@ export const AllSongs = () => {
             />
           </div>
 
-        <ReusableTable
+        <ReusableTable <Song>
           ariaLabel="Tabla de canciones"
           label="Canciones"
             rowsPerPage={rowsPerPage ?? 5}
@@ -92,7 +87,6 @@ export const AllSongs = () => {
           headerColumns={headerColumns}
           itemKey="_id"
           page={page}
-          renderCell={renderCell}
           selectedKeys={selectedKeys}
           sortDescriptor={sortDescriptor}
           sortedItems={allSongs}

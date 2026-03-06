@@ -1,9 +1,9 @@
-import { MovementsContable } from "@/components/movementsContable/components";
+import { AllMovements} from "@/components/movementsContable/components";
 
 export default function MovementsContablePage() {
     return (
 
-        < MovementsContable />
+        < AllMovements />
     )
     
 }

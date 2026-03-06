@@ -80,19 +80,7 @@ export const useRenderSongCell = ({
             </Tooltip>
           </div>
         );
-        case "fileScore":
-          return data.fileScore?.secure_url ? (
-            <a
-              className="flex justify-center items-center"
-              href={data.fileScore.secure_url}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <FaRegFilePdf color={COLORS.secondary} size={20} />
-            </a>
-          ) : (
-            <span className="text-default-400">N/A</span>
-          );
+    
       default:
         return <span>{String(cellValue)}</span>;
     }

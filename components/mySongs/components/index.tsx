@@ -14,14 +14,13 @@ import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
-import {
-  columnTitlesPresets,
-  baseColumnsSongs,
-} from "@/shared/components/table/columnsAndStatusOptions";
+
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { useTable } from "@/shared/hooks/songs/useTable";
+import { songColumns } from "@/shared/components/table/songColumns";
+import { createActionColumn } from "@/shared/components/table/tableActionsColumn";
 
 export const MySongs = () => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -36,6 +35,22 @@ export const MySongs = () => {
   const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
   const { loading } = useDeleteSong(showAlert);
 
+  const handleEditSong = (song: Song) => {
+    setSelectedSongToEdit(song);
+    setIsModalOpen(true);
+  };
+
+
+  const columns = React.useMemo(
+    () => [
+      ...songColumns,
+      createActionColumn<Song>({
+        onEdit: handleEditSong,
+      }),
+    ],
+    [handleEditSong]
+  );
+
   const {
     page,
     setPage,
@@ -49,19 +64,7 @@ export const MySongs = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(
-    baseColumnsSongs,
-    [
-      "name",
-      "user",
-      "linkSong",
-      "category",
-      "fileSong",
-      "fileScore",
-      "actions",
-    ],
-    columnTitlesPresets["mySongsTitle"]
-  );
+  } = useTable<Song>(columns);
 
   const fetchSongs = async () => {
     try {
@@ -87,12 +90,15 @@ export const MySongs = () => {
     fetchSongs();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-  const renderCell = useRenderSongCell({
-    onEdit: (song) => {
-      setSelectedSongToEdit(song);
-      setIsModalOpen(true);
-    },
-  });
+ 
+ 
+
+  // const renderCell = useRenderSongCell({
+  //   onEdit: (song) => {
+  //     setSelectedSongToEdit(song);
+  //     setIsModalOpen(true);
+  //   },
+  // });
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -144,7 +150,7 @@ export const MySongs = () => {
             </ButtonComponent>
           </div>
 
-          <ReusableTable
+          <ReusableTable <Song>
             ariaLabel="Tabla de canciones"
             totalItems={totalSongs}
             label="Canciones"
@@ -155,8 +161,7 @@ export const MySongs = () => {
             }}
             headerColumns={headerColumns}
             itemKey="_id"
-            page={page}
-            renderCell={renderCell}
+            page={page}        
             selectedKeys={selectedKeys}
             sortDescriptor={sortDescriptor}
             sortedItems={songs}

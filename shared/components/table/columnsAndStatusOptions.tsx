@@ -13,16 +13,15 @@ export const baseColumnsSongs = [
 
 export const baseMovementColumns = [
   { name: "ID", uid: "id" },
-  { name: "REGISTRO", uid: "numReg" },
   { name: "FECHA", uid: "date" },
+  { name: "REGISTRO", uid: "numReg" },
   { name: "DESCRIPCIÓN", uid: "description" },
   { name: "TIPO", uid: "type" },
   { name: "INGRESO", uid: "ingreso" },
   { name: "GASTO", uid: "gasto" },
   { name: "ESTADO", uid: "state" },
   { name: "USUARIO", uid: "user" },
-  { name: "REFERENCIA", uid: "ref" },
-  { name: "SALDO", uid: "amount" },
+  { name: "SALDO", uid: "saldo" },
   { name: "ACCIONES", uid: "actions" },
 ];
 
@@ -64,16 +63,15 @@ export const columnTitlesPresets: Record<string, Record<string, string>> = {
   },
   movementsContableTitle: {
     id: "ID",
-    numReg: "REGISTRO",
     date: "FECHA",
+    numReg: "REGISTRO",
     description: "DESCRIPCIÓN",
     type: "TIPO",
     ingreso: "INGRESO",
     gasto: "GASTO",
     state: "ESTADO",
     user: "USUARIO",
-    ref: "REFERENCIA",
-    amount: "SALDO",
+    saldo: "SALDO",
     actions: "ACCIONES",
   }
 };

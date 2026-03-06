@@ -1,3 +1,4 @@
+import { Movements } from "@/types/movementsTypesProps";
 import { Playlist } from "@/types/PlaylistsTypesProps";
 import { Song } from "@/types/SongsTypesProps";
 
@@ -62,4 +63,10 @@ export interface UpdatePlaylistResponse {
   success: boolean;
   message: string;
   data?: Playlist;
+}
+
+export interface GetAllMovementsResponse {
+  data: Movements[];
+  metadata: PaginationMetadataResponse;
+  success: boolean;
 }
