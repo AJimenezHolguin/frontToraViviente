@@ -11,6 +11,7 @@ import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
 import { useTable } from '@/shared/hooks/songs/useTable';
+import { playlistColumns } from "@/shared/components/table/playlistColumns";
 
 export const AllPlayLists = () => {
   const [allPlaylist, setAllPlaylist] = useState<Playlist[]>([]);
@@ -31,10 +32,7 @@ export const AllPlayLists = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(baseColumnsSongs,
-    ["name", "user", "fileSong", "fileScore"],
-    columnTitlesPresets["allPlayListsTitle"]
-  );
+  } = useTable(playlistColumns);
 
   const fetchPlaylists = async () => {
     try {
@@ -83,7 +81,7 @@ export const AllPlayLists = () => {
             />
           </div>
 
-        <ReusableTable
+        <ReusableTable <Playlist>
           ariaLabel="Tabla de playlists"
           label="Playlists"
             rowsPerPage={rowsPerPage ?? 5}
@@ -94,8 +92,7 @@ export const AllPlayLists = () => {
             }}
           headerColumns={headerColumns}
           itemKey="_id"
-          page={page}
-          renderCell={renderCell}
+          page={page}         
           selectedKeys={selectedKeys}
           sortDescriptor={sortDescriptor}
           sortedItems={allPlaylist}
