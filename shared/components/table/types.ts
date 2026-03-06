@@ -4,6 +4,7 @@ export interface TableColumnType<T> {
   uid: string;
   name: string;
   sortable?: boolean;
+  align?: "start" | "center" | "end";
   render?: (item: T) => React.ReactNode;
 }
 

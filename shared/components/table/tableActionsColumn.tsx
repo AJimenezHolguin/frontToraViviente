@@ -11,6 +11,7 @@ export const createActionColumn = <T,>({
 }: ActionColumnOptions<T>): TableColumnType<T> => ({
   uid: "actions",
   name: "ACCIONES",
+  align: "center",
   render: (data: T) => (
     <div className="relative flex justify-center items-center gap-2">
       <Tooltip content="Editar">

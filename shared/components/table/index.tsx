@@ -235,11 +235,7 @@ export const ReusableTable = <T extends Record<string, any>>({
             <TableColumn
               key={column.uid}
               allowsSorting={column.sortable}
-              align={
-                ["fileSong", "fileScore", "actions"].includes(column.uid)
-                  ? "center"
-                  : "start"
-              }
+              align={column.align || "start"}
             >
               {column.name}
             </TableColumn>

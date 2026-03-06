@@ -9,6 +9,7 @@ export const songColumns:TableColumnType<Song>[] = [
     uid: "name",
     name: "NOMBRE",
     sortable: true,
+    align: "start",
     render: (song: Song) => (
       <span>
         {song.name
@@ -22,6 +23,7 @@ export const songColumns:TableColumnType<Song>[] = [
   {
     uid: "userName",
     name: "USUARIO",
+    align: "start",
     render: (song: Song) => (
       <span>
         {song.userName
@@ -35,21 +37,27 @@ export const songColumns:TableColumnType<Song>[] = [
   {
     uid: "linkSong",
     name: "YOUTUBE",
+    align: "center",
     render: (song: Song) => (
+      <div className="flex justify-center">
       <a href={song.linkSong} target="_blank" rel="noopener noreferrer">
         <IoLogoYoutube color="red" size={20} />
       </a>
+      </div>
     ),
   },
 
   {
     uid: "fileSong",
     name: "LETRAS",
+    align: "center",
     render: (song: Song) =>
-      song.fileSong?.secure_url ? (
+        song.fileSong?.secure_url ? (
+      <div className="flex justify-center">
         <a href={song.fileSong.secure_url} target="_blank" rel="noopener noreferrer">
           <FaFilePdf color={COLORS.secondary} size={20} />
         </a>
+      </div>
       ) : (
         <span>N/A</span>
       ),
@@ -58,11 +66,14 @@ export const songColumns:TableColumnType<Song>[] = [
   {
     uid: "fileScore",
     name: "ACORDES",
-    render: (song: Song) =>
+    align: "center",
+    render: (song: Song) => 
       song.fileScore?.secure_url ? (
+        <div className="flex justify-center">
         <a href={song.fileScore.secure_url} target="_blank" rel="noopener noreferrer">
           <FaRegFilePdf color={COLORS.secondary} size={20} />
         </a>
+        </div>
       ) : (
         <span>N/A</span>
       ),
