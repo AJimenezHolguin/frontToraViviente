@@ -46,6 +46,7 @@ export const MySongs = () => {
       ...songColumns,
       createActionColumn<Song>({
         onEdit: handleEditSong,
+      
       }),
     ],
     [handleEditSong]
@@ -175,3 +176,7 @@ export const MySongs = () => {
     </>
   );
 };
+function handleDelete(item: Song): void {
+  throw new Error("Function not implemented.");
+}
+

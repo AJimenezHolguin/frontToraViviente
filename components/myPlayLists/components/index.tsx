@@ -20,6 +20,8 @@ import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service"
 import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
 import { useDeletePlaylist } from "@/shared/feature/ playlist/deletePlaylistHandler";
 import { useTable } from '@/shared/hooks/songs/useTable';
+import { playlistColumns } from "@/shared/components/table/playlistColumns";
+import { createActionColumn } from "@/shared/components/table/tableActionsColumn";
 
 export const MyPlayLists = () => {
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
@@ -34,6 +36,34 @@ export const MyPlayLists = () => {
     useModalAlert();
   const { handleDelete, loading } = useDeletePlaylist(showAlert);
 
+  const handleDeleteAction = (playlist: Playlist) => {
+    showConfirm(
+      `¿Estás seguro de que deseas eliminar la playlist "${playlist.name}"?`,
+      async () => {
+        await handleDelete(playlist);
+        fetchPlaylists();
+      }
+    );
+  };
+
+  const handleEditPlaylist = (playlist: Playlist) => {
+    setSelectedPlaylistsToEdit(playlist);
+    setIsModalOpen(true);
+  }
+  
+  const columns = React.useMemo(
+    () => [
+      ...playlistColumns,
+      createActionColumn<Playlist>({
+     onEdit: handleEditPlaylist,  
+     onDelete: handleDeleteAction 
+      }),
+    ],
+    [handleEditPlaylist]
+  );
+
+   
+
   const {
     page,
     setPage,
@@ -47,10 +77,7 @@ export const MyPlayLists = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(baseColumnsSongs,
-    ["name", "user", "fileSong", "fileScore", "actions", "status"],
-    columnTitlesPresets["myPlayListsTitle"]
-  );
+  } = useTable<Playlist>(columns);
 
   const fetchPlaylists = async () => {
     try {
@@ -76,22 +103,22 @@ export const MyPlayLists = () => {
     fetchPlaylists();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-  const renderCell = useRenderPlaylistsCell({
-    onEdit: (Playlist) => {
-      setSelectedPlaylistsToEdit(Playlist);
-      setIsModalOpen(true);
-    },
-    onDelete: (Playlist) => {
-      showConfirm(
-        `¿Estás seguro de que deseas eliminar la playlist "${Playlist.name}"?`,
-        async () => {
-          await handleDelete(Playlist);
-          fetchPlaylists();
-        }
-      );
-    },
-    type: "my-playlists",
-  });
+  // const renderCell = useRenderPlaylistsCell({
+  //   onEdit: (Playlist) => {
+  //     setSelectedPlaylistsToEdit(Playlist);
+  //     setIsModalOpen(true);
+  //   },
+  //   onDelete: (Playlist) => {
+  //     showConfirm(
+  //       `¿Estás seguro de que deseas eliminar la playlist "${Playlist.name}"?`,
+  //       async () => {
+  //         await handleDelete(Playlist);
+  //         fetchPlaylists();
+  //       }
+  //     );
+  //   },
+  //   type: "my-playlists",
+  // });
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -141,7 +168,7 @@ export const MyPlayLists = () => {
             </ButtonComponent>
           </div>
 
-        <ReusableTable
+        <ReusableTable <Playlist>
           ariaLabel="Tabla de playlists"
           totalItems={totalPlaylists}
           label="Playlists"
@@ -153,7 +180,6 @@ export const MyPlayLists = () => {
           headerColumns={headerColumns}
           itemKey="_id"
           page={page}
-          renderCell={renderCell}
           selectedKeys={selectedKeys}
           sortDescriptor={sortDescriptor}
           sortedItems={playlist}
