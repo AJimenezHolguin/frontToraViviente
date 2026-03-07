@@ -33,8 +33,6 @@ export const ReusableTable = <T extends Record<string, any>>({
 }: ReusableTableProps<T>) => {
   return (
     <div className="flex flex-col gap-4">
-
-      {/* Header superior */}
       {totalItems !== undefined &&
         label &&
         rowsPerPage !== undefined &&
@@ -49,9 +47,7 @@ export const ReusableTable = <T extends Record<string, any>>({
               <select
                 className="bg-transparent outline-none text-small text-secondary"
                 value={rowsPerPage}
-                onChange={(e) =>
-                  onRowsPerPageChange(Number(e.target.value))
-                }
+                onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
               >
                 <option value={5}>5</option>
                 <option value={10}>10</option>
@@ -61,7 +57,6 @@ export const ReusableTable = <T extends Record<string, any>>({
           </div>
         )}
 
-      {/* Tabla */}
       <Table
         isHeaderSticky
         isVirtualized
@@ -89,8 +84,6 @@ export const ReusableTable = <T extends Record<string, any>>({
         }
         bottomContentPlacement="outside"
       >
-
-        {/* Header */}
         <TableHeader columns={headerColumns}>
           {(column) => (
             <TableColumn
@@ -103,7 +96,6 @@ export const ReusableTable = <T extends Record<string, any>>({
           )}
         </TableHeader>
 
-        {/* Body */}
         <TableBody
           items={sortedItems}
           emptyContent="No se encontraron resultados"
@@ -119,16 +111,11 @@ export const ReusableTable = <T extends Record<string, any>>({
                   ? column.render(item)
                   : String(item[columnKey as keyof T] ?? "");
 
-                return (
-                  <TableCell>
-                    {content}
-                  </TableCell>
-                );
+                return <TableCell>{content}</TableCell>;
               }}
             </TableRow>
           )}
         </TableBody>
-
       </Table>
     </div>
   );

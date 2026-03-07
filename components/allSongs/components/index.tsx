@@ -28,8 +28,7 @@ export const AllSongs = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(songColumns
-  );
+  } = useTable(songColumns);
 
   const fetchAllSongs = async () => {
     try {
@@ -55,7 +54,6 @@ export const AllSongs = () => {
     fetchAllSongs();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-
   if (isLoading) return <SpinnerComponent />;
 
   return (
@@ -64,38 +62,38 @@ export const AllSongs = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
-              classNames={{ 
+              classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
                 inputWrapper: "bg-white ",
-               }}
+              }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
             />
           </div>
 
-        <ReusableTable <Song>
-          ariaLabel="Tabla de canciones"
-          label="Canciones"
+          <ReusableTable<Song>
+            ariaLabel="Tabla de canciones"
+            label="Canciones"
             rowsPerPage={rowsPerPage ?? 5}
             totalItems={totalSongs}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
             }}
-          headerColumns={headerColumns}
-          itemKey="_id"
-          page={page}
-          selectedKeys={selectedKeys}
-          sortDescriptor={sortDescriptor}
-          sortedItems={allSongs}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          onSelectionChange={setSelectedKeys}
-          onSortChange={setSortDescriptor}
-        />
-      </div>
+            headerColumns={headerColumns}
+            itemKey="_id"
+            page={page}
+            selectedKeys={selectedKeys}
+            sortDescriptor={sortDescriptor}
+            sortedItems={allSongs}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onSelectionChange={setSelectedKeys}
+            onSortChange={setSortDescriptor}
+          />
+        </div>
       </WrapperTitle>
     </>
   );

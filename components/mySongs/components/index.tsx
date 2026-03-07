@@ -9,12 +9,10 @@ import { getAllMySongs } from "@/services/songs/getAllMySongs.service";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
 import { useDeleteSong } from "@/shared/feature/songs/deleteSongHandler";
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
-
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
@@ -40,13 +38,11 @@ export const MySongs = () => {
     setIsModalOpen(true);
   };
 
-
   const columns = React.useMemo(
     () => [
       ...songColumns,
       createActionColumn<Song>({
         onEdit: handleEditSong,
-      
       }),
     ],
     [handleEditSong]
@@ -90,16 +86,6 @@ export const MySongs = () => {
   useEffect(() => {
     fetchSongs();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
-
- 
- 
-
-  // const renderCell = useRenderSongCell({
-  //   onEdit: (song) => {
-  //     setSelectedSongToEdit(song);
-  //     setIsModalOpen(true);
-  //   },
-  // });
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -151,7 +137,7 @@ export const MySongs = () => {
             </ButtonComponent>
           </div>
 
-          <ReusableTable <Song>
+          <ReusableTable<Song>
             ariaLabel="Tabla de canciones"
             totalItems={totalSongs}
             label="Canciones"
@@ -162,7 +148,7 @@ export const MySongs = () => {
             }}
             headerColumns={headerColumns}
             itemKey="_id"
-            page={page}        
+            page={page}
             selectedKeys={selectedKeys}
             sortDescriptor={sortDescriptor}
             sortedItems={songs}
@@ -176,7 +162,3 @@ export const MySongs = () => {
     </>
   );
 };
-function handleDelete(item: Song): void {
-  throw new Error("Function not implemented.");
-}
-

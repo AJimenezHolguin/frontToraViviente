@@ -21,7 +21,6 @@ export interface ReusableTableProps<T> {
   onSelectionChange: (keys: Selection) => void;
   sortDescriptor: SortDescriptor;
   onSortChange: (descriptor: SortDescriptor) => void;
-  // renderCell: (item: T, columnKey: string) => React.ReactNode;
   page: number;
   totalPages: number;
   onPageChange: (page: number) => void;

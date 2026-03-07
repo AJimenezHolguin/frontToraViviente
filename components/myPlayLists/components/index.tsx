@@ -6,20 +6,17 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
-
 import { ReusableTable } from "@/shared/components/table";
 import { PositionModal } from "@/shared/components/Modal/types";
 import { ButtonComponent } from "@/shared/components/Button";
-import { baseColumnsSongs, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { Playlist } from "../../../types/PlaylistsTypesProps";
-import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
 import { useDeletePlaylist } from "@/shared/feature/ playlist/deletePlaylistHandler";
-import { useTable } from '@/shared/hooks/songs/useTable';
+import { useTable } from "@/shared/hooks/songs/useTable";
 import { playlistColumns } from "@/shared/components/table/playlistColumns";
 import { createActionColumn } from "@/shared/components/table/tableActionsColumn";
 
@@ -49,20 +46,18 @@ export const MyPlayLists = () => {
   const handleEditPlaylist = (playlist: Playlist) => {
     setSelectedPlaylistsToEdit(playlist);
     setIsModalOpen(true);
-  }
-  
+  };
+
   const columns = React.useMemo(
     () => [
       ...playlistColumns,
       createActionColumn<Playlist>({
-     onEdit: handleEditPlaylist,  
-     onDelete: handleDeleteAction 
+        onEdit: handleEditPlaylist,
+        onDelete: handleDeleteAction,
       }),
     ],
     [handleEditPlaylist]
   );
-
-   
 
   const {
     page,
@@ -102,23 +97,6 @@ export const MyPlayLists = () => {
   useEffect(() => {
     fetchPlaylists();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
-
-  // const renderCell = useRenderPlaylistsCell({
-  //   onEdit: (Playlist) => {
-  //     setSelectedPlaylistsToEdit(Playlist);
-  //     setIsModalOpen(true);
-  //   },
-  //   onDelete: (Playlist) => {
-  //     showConfirm(
-  //       `¿Estás seguro de que deseas eliminar la playlist "${Playlist.name}"?`,
-  //       async () => {
-  //         await handleDelete(Playlist);
-  //         fetchPlaylists();
-  //       }
-  //     );
-  //   },
-  //   type: "my-playlists",
-  // });
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -168,28 +146,27 @@ export const MyPlayLists = () => {
             </ButtonComponent>
           </div>
 
-        <ReusableTable <Playlist>
-          ariaLabel="Tabla de playlists"
-          totalItems={totalPlaylists}
-          label="Playlists"
-          rowsPerPage={rowsPerPage ?? 5}
-          onRowsPerPageChange={(value) => {
-            setRowsPerPage(value);
-            setPage(1);
-          }}
-          headerColumns={headerColumns}
-          itemKey="_id"
-          page={page}
-          selectedKeys={selectedKeys}
-          sortDescriptor={sortDescriptor}
-          sortedItems={playlist}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          onSelectionChange={setSelectedKeys}
-          onSortChange={setSortDescriptor}
+          <ReusableTable<Playlist>
+            ariaLabel="Tabla de playlists"
+            totalItems={totalPlaylists}
+            label="Playlists"
+            rowsPerPage={rowsPerPage ?? 5}
+            onRowsPerPageChange={(value) => {
+              setRowsPerPage(value);
+              setPage(1);
+            }}
+            headerColumns={headerColumns}
+            itemKey="_id"
+            page={page}
+            selectedKeys={selectedKeys}
+            sortDescriptor={sortDescriptor}
+            sortedItems={playlist}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onSelectionChange={setSelectedKeys}
+            onSortChange={setSortDescriptor}
           />
-
-          </div>
+        </div>
       </WrapperTitle>
     </>
   );
