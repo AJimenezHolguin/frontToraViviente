@@ -10,7 +10,6 @@ export const playlistColumns:TableColumnType<Playlist>[] = [
     {
         uid: "name",
         name: "NOMBRE",
-        sortable: true,
         align: "start",
         render: (playlist: Playlist) => (
           <span>

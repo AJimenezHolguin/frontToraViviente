@@ -8,7 +8,6 @@ export const songColumns:TableColumnType<Song>[] = [
   {
     uid: "name",
     name: "NOMBRE",
-    sortable: true,
     align: "start",
     render: (song: Song) => (
       <span>
