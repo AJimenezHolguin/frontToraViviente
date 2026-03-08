@@ -32,7 +32,6 @@ export const AllPlayLists = () => {
   } = useTable(playlistColumns);
 
   const fetchPlaylists = async () => {
-    setIsLoading(true);
     try {
       const playlistData = await getAllPlaylist({
         page,
@@ -40,7 +39,8 @@ export const AllPlayLists = () => {
         order: sortDescriptor.direction === "descending" ? "ASC" : "DESC",
         search: filterValue,
       });
-
+      
+      setIsLoading(true);
       setAllPlaylist(playlistData.data || []);
       setTotalPages(playlistData.metadata.pageCount);
       setTotalAllPlaylists(playlistData.metadata.total);

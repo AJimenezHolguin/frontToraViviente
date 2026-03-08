@@ -31,7 +31,6 @@ export const AllSongs = () => {
   } = useTable(songColumns);
 
   const fetchAllSongs = async () => {
-    setIsLoading(true);
     try {
       const songsData = await getAllSongs({
         page,
@@ -39,7 +38,8 @@ export const AllSongs = () => {
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-
+      
+      setIsLoading(true);
       setAllSongs(songsData.data || []);
       setTotalPages(songsData.metadata.pageCount);
       setTotalSongs(songsData.metadata.total);
