@@ -75,6 +75,7 @@ export const MyPlayLists = () => {
   } = useTable<Playlist>(columns);
 
   const fetchPlaylists = async () => {
+    setIsLoading(true);
     try {
       const playlistData = await getAllMyPlaylist({
         page,
@@ -83,7 +84,6 @@ export const MyPlayLists = () => {
         search: filterValue,
       });
 
-      setIsLoading(true);
       setPlaylist(playlistData.data || []);
       setTotalPages(playlistData.metadata.pageCount);
       setTotalPlaylists(playlistData.metadata.total);

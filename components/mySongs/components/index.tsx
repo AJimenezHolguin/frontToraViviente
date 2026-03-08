@@ -64,6 +64,7 @@ export const MySongs = () => {
   } = useTable<Song>(columns);
 
   const fetchSongs = async () => {
+    setIsLoading(true);
     try {
       const songsData = await getAllMySongs({
         page,
@@ -72,7 +73,6 @@ export const MySongs = () => {
         search: filterValue,
       });
 
-      setIsLoading(true);
       setSongs(songsData.data || []);
       setTotalPages(songsData.metadata.pageCount);
       setTotalSongs(songsData.metadata.total);
