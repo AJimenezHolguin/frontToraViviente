@@ -3,20 +3,52 @@ import React, { useEffect, useState } from "react";
 
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { useTable } from "@/shared/hooks/songs/useTable";
-import { useRenderSongCell } from "@/shared/hooks/songs/useRenderSongCell";
+
 import { ReusableTable } from "@/shared/components/table";
-import { baseMovementColumns, columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
+
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { getAllMovements } from "@/services/movements/getAllMovements.service";
 import { Movements } from "@/types/movementsTypesProps";
+import { movementColumns } from "@/shared/components/table/movementsColumn";
+import { createActionColumn } from "@/shared/components/table/tableActionsColumn";
+import { ModalSong } from "@/shared/components/Modal";
+import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
+import { AlertModal } from "@/shared/components/Modal/ModalAlert";
+import { PositionModal } from "@/shared/components/Modal/types";
+import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
+import { ButtonComponent } from "@/shared/components/Button";
+import { ColorButton } from "@/styles/colorButton.enum";
+import { PlusIcon } from "@/shared/components/table/TableIcons";
+import { Text } from "@/shared/components/Text";
 
 export const AllMovements = () => {
   const [allMovements, setAllMovements] = useState<Movements[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalSongs, setTotalSongs] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedMovementToEdit, setSelectedMovementToEdit] = useState<Movements | null>(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
+
+
+  const handleEditMovement = (movement:Movements) => {
+    setSelectedMovementToEdit(movement);
+    setIsModalOpen(true);
+
+  }
+
+  const columns = React.useMemo(
+    () => [
+      ...movementColumns,
+      createActionColumn<Movements>({
+        onEdit: handleEditMovement,
+      }),
+    ],
+    [handleEditMovement]
+  );
   const {
     page,
     setPage,
@@ -30,12 +62,9 @@ export const AllMovements = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(baseMovementColumns,
-    ["date", "numReg", "description", "type", "ingreso", "gasto","state","user","ref_id","saldo",],
-    columnTitlesPresets["movementsContableTitle"]
-  );
+  } = useTable(columns);
 
-  const fetchAllSongs = async () => {
+  const fetchAllMoments = async () => {
     try {
       const movementsData = await getAllMovements({
         page,
@@ -56,16 +85,31 @@ export const AllMovements = () => {
   };
 
   useEffect(() => {
-    fetchAllSongs();
+    fetchAllMoments();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-  const renderCell = useRenderSongCell({});
+
 
   if (isLoading) return <SpinnerComponent />;
 
+ 
+
   return (
     <>
-      <WrapperTitle title="Lista general de todas las canciones">
+      <WrapperTitle title="Registro Contable General">
+      <ModalSong
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          // songToEdit={selectedMovementToEdit}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedMovementToEdit(null);
+          }}
+          onSongCreated={fetchAllMoments}
+        />
+
+        
+        <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
@@ -78,11 +122,23 @@ export const AllMovements = () => {
               onClear={onClear}
               onValueChange={onSearchChange}
             />
+             <ButtonComponent
+              color={ColorButton.PRIMARY}
+              endContent={<PlusIcon />}
+              onPress={() => {
+                // setSelectedSongToEdit(null);
+                setIsModalOpen(true);
+              }}
+            >
+              <Text $fw={500} $v="md">
+                Crear registro
+              </Text>
+            </ButtonComponent>
           </div>
 
         <ReusableTable
-          ariaLabel="Tabla de canciones"
-          label="Canciones"
+          ariaLabel="Tabla de Movimientos"
+          label="Asientos contables"
             rowsPerPage={rowsPerPage ?? 5}
             totalItems={totalSongs}
             onRowsPerPageChange={(value) => {
@@ -90,9 +146,8 @@ export const AllMovements = () => {
               setPage(1);
             }}
           headerColumns={headerColumns}
-          itemKey="_id"
+          itemKey="id"
           page={page}
-          renderCell={renderCell}
           selectedKeys={selectedKeys}
           sortDescriptor={sortDescriptor}
           sortedItems={allMovements}

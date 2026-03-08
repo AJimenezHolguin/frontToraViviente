@@ -40,7 +40,7 @@ export interface UpdateSong {
    search: string;
  };
  
- // Tipo para lo que devuelve este servicio
+ 
  export type GetAllMySongsResponse = {
    data: Song[];
    metadata: PaginationMetadataResponse;
@@ -52,7 +52,7 @@ export interface UpdateSong {
   metadata: PaginationMetadataResponse;
   success: boolean;
  }
- // Tipos para actualizar la playlist
+
 export interface UpdatePlaylistPayload {
   name?: string;
   songs?: string[]; 
