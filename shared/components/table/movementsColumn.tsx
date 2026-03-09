@@ -1,6 +1,8 @@
 import { Movements } from "@/types/movementsTypesProps";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { TableColumnType } from "./types";
+import { Text } from "@/shared/components/Text";
+import { COLORS } from "@/styles/colors";
 
 export const formatDate = (date: string) => {
   return new Intl.DateTimeFormat("es-CO", {
@@ -17,7 +19,9 @@ export const movementColumns: TableColumnType<Movements>[] = [
     sortable: true,
     render: (item: Movements) => (
       <div className="flex justify-center">
+        <Text $fw={500}>
         <span >{item.numReg}</span>
+    </Text>  
       </div>
   ),
   },
@@ -34,17 +38,29 @@ export const movementColumns: TableColumnType<Movements>[] = [
   {
     uid: "type",
     name: "TIPO",
-    render: (item: Movements) => <span>{item.type}</span>,
+    render: (item: Movements) => (
+    <Text $fw={500}>
+      <span>{item.type}</span>
+    </Text>
+    ),
   },
   {
     uid: "ingreso",
     name: "INGRESO",
-    render: (item: Movements) => <span>{formatCurrency(item.ingreso)}</span>,
+    render: (item: Movements) => (
+      <Text $color={COLORS.secondary} $fw={500}>
+        <span>{formatCurrency(item.ingreso)}</span>
+      </Text>
+  ),
   },
   {
     uid: "gasto",
     name: "GASTO",
-    render: (item: Movements) => <span>{formatCurrency(item.gasto)}</span>,
+    render: (item: Movements) => (
+      <Text $color={COLORS.danger} $fw={500}>
+        <span>{formatCurrency(item.gasto)}</span>
+      </Text>
+  ),
   },
   {
     uid: "state",
@@ -59,6 +75,10 @@ export const movementColumns: TableColumnType<Movements>[] = [
   {
     uid: "saldo",
     name: "SALDO",
-    render: (item: Movements) => <span>{formatCurrency(item.saldo)}</span>,
+    render: (item: Movements) => (
+      <Text $fw={500}>
+        <span>{formatCurrency(item.saldo)}</span>
+      </Text>
+  ),
   },
 ];
