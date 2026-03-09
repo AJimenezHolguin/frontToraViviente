@@ -3,6 +3,9 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import { TableColumnType } from "./types";
 import { Text } from "@/shared/components/Text";
 import { COLORS } from "@/styles/colors";
+import { getMovementTypeColor } from "@/styles/movementsTypesStyles";
+
+
 
 export const formatDate = (date: string) => {
   return new Intl.DateTimeFormat("es-CO", {
@@ -12,6 +15,7 @@ export const formatDate = (date: string) => {
   }).format(new Date(date));
 };
 
+
 export const movementColumns: TableColumnType<Movements>[] = [
   {
     uid: "numReg",
@@ -19,7 +23,7 @@ export const movementColumns: TableColumnType<Movements>[] = [
     sortable: true,
     render: (item: Movements) => (
       <div className="flex justify-center">
-        <Text $fw={500}>
+        <Text $fw={700}>
         <span >{item.numReg}</span>
     </Text>  
       </div>
@@ -38,17 +42,22 @@ export const movementColumns: TableColumnType<Movements>[] = [
   {
     uid: "type",
     name: "TIPO",
-    render: (item: Movements) => (
-    <Text $fw={500}>
-      <span>{item.type}</span>
+    align: "center",
+    render: (item: Movements) => {
+    const typeStyle = getMovementTypeColor(item.type)
+      
+      return (
+    <Text className={"px-2 rounded-lg"} $ta={"center"} $color={typeStyle.$color} $bg={typeStyle.$bg} $fw={500}>
+      <span >{item.type}</span>
     </Text>
-    ),
+      )
+    }  
   },
   {
     uid: "ingreso",
     name: "INGRESO",
     render: (item: Movements) => (
-      <Text $color={COLORS.secondary} $fw={500}>
+      <Text $color={COLORS.secondary} $fw={700}>
         <span>{formatCurrency(item.ingreso)}</span>
       </Text>
   ),
@@ -57,7 +66,7 @@ export const movementColumns: TableColumnType<Movements>[] = [
     uid: "gasto",
     name: "GASTO",
     render: (item: Movements) => (
-      <Text $color={COLORS.danger} $fw={500}>
+      <Text $color={COLORS.danger} $fw={700}>
         <span>{formatCurrency(item.gasto)}</span>
       </Text>
   ),
@@ -65,7 +74,11 @@ export const movementColumns: TableColumnType<Movements>[] = [
   {
     uid: "state",
     name: "ESTADO",
-    render: (item: Movements) => <span>{item.state}</span>,
+    render: (item: Movements) => (
+    <Text $color={item.state === "activo" ? COLORS.secondary  : COLORS.light_gray} $fw={500}>
+      <span>{item.state}</span>
+    </Text>
+  ),
   },
   {
     uid: "user",
@@ -76,7 +89,7 @@ export const movementColumns: TableColumnType<Movements>[] = [
     uid: "saldo",
     name: "SALDO",
     render: (item: Movements) => (
-      <Text $fw={500}>
+      <Text $fw={700}>
         <span>{formatCurrency(item.saldo)}</span>
       </Text>
   ),
