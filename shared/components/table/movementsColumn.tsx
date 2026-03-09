@@ -32,6 +32,7 @@ export const movementColumns: TableColumnType<Movements>[] = [
   {
     uid: "date",
     name: "FECHA",
+    align: "center",
     render: (item: Movements) => <span className="whitespace-nowrap">{formatDate(item.date)}</span>,
   },
   {
@@ -46,8 +47,8 @@ export const movementColumns: TableColumnType<Movements>[] = [
     render: (item: Movements) => {
     const typeStyle = getMovementTypeColor(item.type)
       
-      return (
-    <Text className={"px-2 rounded-lg"} $ta={"center"} $color={typeStyle.$color} $bg={typeStyle.$bg} $fw={500}>
+    return (
+    <Text className={"inline-flex px-2 rounded-lg"} $ta={"center"} $color={typeStyle.$color} $bg={typeStyle.$bg} $fw={500}>
       <span >{item.type}</span>
     </Text>
       )
@@ -58,7 +59,7 @@ export const movementColumns: TableColumnType<Movements>[] = [
     name: "INGRESO",
     render: (item: Movements) => (
       <Text $color={COLORS.secondary} $fw={700}>
-        <span>{formatCurrency(item.ingreso)}</span>
+        {item.ingreso > 0 ? formatCurrency(item.ingreso) : "-"}    
       </Text>
   ),
   },
@@ -67,7 +68,7 @@ export const movementColumns: TableColumnType<Movements>[] = [
     name: "GASTO",
     render: (item: Movements) => (
       <Text $color={COLORS.danger} $fw={700}>
-        <span>{formatCurrency(item.gasto)}</span>
+        {item.gasto > 0 ? formatCurrency(item.gasto) : "-"}
       </Text>
   ),
   },
