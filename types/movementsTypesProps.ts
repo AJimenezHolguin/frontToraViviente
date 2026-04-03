@@ -15,4 +15,5 @@ export interface Movements {
     user_name: string;
     user_email: string;
     created_at: string;
+    monto?: string;
 }

@@ -21,6 +21,7 @@ import { ButtonComponent } from "@/shared/components/Button";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { PlusIcon } from "@/shared/components/table/TableIcons";
 import { Text } from "@/shared/components/Text";
+import AccountingModal from "@/shared/components/AccountingModal";
 
 export const AllMovements = () => {
   const [allMovements, setAllMovements] = useState<Movements[]>([]);
@@ -89,6 +90,11 @@ export const AllMovements = () => {
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
 
+const lastNumReg = allMovements.length
+? Math.max(...allMovements.map((m) => m.numReg))
+: 0;
+
+const nextNumReg = lastNumReg + 1;
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -97,7 +103,7 @@ export const AllMovements = () => {
   return (
     <>
       <WrapperTitle title="Registro Contable General">
-      <ModalSong
+      {/* <ModalSong
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
           // songToEdit={selectedMovementToEdit}
@@ -106,7 +112,19 @@ export const AllMovements = () => {
             setSelectedMovementToEdit(null);
           }}
           onSongCreated={fetchAllMoments}
-        />
+        /> */}
+        <AccountingModal
+        isOpen={isModalOpen}
+        
+        onClose={() => setIsModalOpen(false)}
+        recordToEdit={selectedMovementToEdit}
+        nextNumReg={nextNumReg}
+        onSave={(data) => {
+          console.log(data);
+          setIsModalOpen(false);
+          
+        }}
+      />
 
         
         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
@@ -126,6 +144,7 @@ export const AllMovements = () => {
               color={ColorButton.PRIMARY}
               endContent={<PlusIcon />}
               onPress={() => {
+                setSelectedMovementToEdit(null)
                 // setSelectedSongToEdit(null);
                 setIsModalOpen(true);
               }}
