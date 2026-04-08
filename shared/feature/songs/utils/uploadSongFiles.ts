@@ -43,7 +43,6 @@ export const uploadSongFiles = async (
 
     return { fileSong: uploadedFileSong, fileScore: uploadedFileScore };
   } catch (err) {
-    // Limpieza si falla
     if (
       form.fileSong &&
       uploadedFileSong?.public_id !== previousFiles?.song &&

@@ -70,3 +70,17 @@ export interface GetAllMovementsResponse {
   metadata: PaginationMetadataResponse;
   success: boolean;
 }
+export interface CreateMovementRequest {
+  date: string;
+  description: string;
+  type: 'ingreso' | 'gasto'
+  monto: number;
+}
+export interface CreateMovementResponse {
+  id?: string;
+  date: string;
+  description: string;
+  type: string;
+  monto: number;
+  createdAt?: string;
+}
