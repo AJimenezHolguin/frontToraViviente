@@ -21,6 +21,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
   useEffect(() => {
     const userAgent =
       navigator.userAgent || navigator.vendor || (window as any).opera;
+
     setIsMobileOrTablet(/Android|iPhone|iPad|iPod/i.test(userAgent));
   }, []);
 
@@ -30,6 +31,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
     const loadPdf = async () => {
       try {
         const pdf = await pdfjsLib.getDocument(selected.secure_url).promise;
+
         pdfInstanceRef.current = pdf;
         setNumPages(pdf.numPages);
         setPageNumber(1);
@@ -51,6 +53,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
   const renderPage = async (num: number, scaleValue: number) => {
     const container = pdfContainerRef.current;
+
     if (!container || !pdfInstanceRef.current) return;
 
     container.innerHTML = "";
@@ -60,6 +63,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
+
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
@@ -101,7 +105,6 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
   return (
     <>
-      {/* Controles de canciones */}
       <div className="py-0.5 px-1 flex justify-between items-center">
         <div className="flex items-center ">
           <button
@@ -143,7 +146,6 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
         </a>
       </div>
 
-      {/* Controles de PDF */}
       {isMobileOrTablet && !error && (
         <div className="flex flex-wrap items-center gap-3 p-2 bg-gray-100">
           <button
@@ -181,7 +183,11 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
       {isMobileOrTablet ? (
         error ? (
-          <iframe className="heigth-pdf w-full " src={selected.secure_url} />
+          <iframe
+            className="heigth-pdf w-full"
+            src={selected.secure_url}
+            title={`PDF Viewer - ${selected.public_id}`}
+          />
         ) : (
           <div
             ref={pdfContainerRef}
@@ -189,7 +195,11 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
           />
         )
       ) : (
-        <iframe className="heigth-pdf w-full " src={selected.secure_url} />
+        <iframe
+          className="heigth-pdf w-full"
+          src={selected.secure_url}
+          title={`PDF Viewer - ${selected.public_id}`}
+        />
       )}
     </>
   );
