@@ -12,7 +12,6 @@ import { getAllMovements } from "@/services/movements/getAllMovements.service";
 import { Movements } from "@/types/movementsTypesProps";
 import { movementColumns } from "@/shared/components/table/movementsColumn";
 import { createActionColumn } from "@/shared/components/table/tableActionsColumn";
-import { ModalSong } from "@/shared/components/Modal";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { PositionModal } from "@/shared/components/Modal/types";
@@ -22,30 +21,48 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { PlusIcon } from "@/shared/components/table/TableIcons";
 import { Text } from "@/shared/components/Text";
 import AccountingModal from "@/shared/components/AccountingModal";
+import { useDeleteMovement } from "@/shared/feature/movements/deleteMovementHandler";
 
 export const AllMovements = () => {
   const [allMovements, setAllMovements] = useState<Movements[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalSongs, setTotalSongs] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedMovementToEdit, setSelectedMovementToEdit] = useState<Movements | null>(null);
+  const [selectedMovementToEdit, setSelectedMovementToEdit] =
+    useState<Movements | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const { showAlert, AlertModalProps, ConfirmModalProps } = useModalAlert();
 
+  const { showConfirm, showAlert, AlertModalProps, ConfirmModalProps } =
+    useModalAlert();
 
-  const handleEditMovement = (movement:Movements) => {
+  const { handleDelete, loading } = useDeleteMovement(showAlert);
+
+  const handleDeleteAction = (movement: Movements) => {
+    showConfirm(
+      `¿Estás seguro de que deseas eliminar el asiento contable "${movement.numReg}"?`,
+      async (description?:string) => {
+        await handleDelete(movement, description || "");
+        fetchAllMoments();
+      },
+      {
+        withInput: true,
+        inputLabel:"motivo de anulación"
+      }
+    );
+  };
+
+  const handleEditMovement = (movement: Movements) => {
     setSelectedMovementToEdit(movement);
     setIsModalOpen(true);
-
-  }
+  };
 
   const columns = React.useMemo(
     () => [
       ...movementColumns,
       createActionColumn<Movements>({
         onEdit: handleEditMovement,
+        onDelete: handleDeleteAction,
       }),
     ],
     [handleEditMovement]
@@ -63,7 +80,7 @@ export const AllMovements = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable(columns);
+  } = useTable<Movements>(columns);
 
   const fetchAllMoments = async () => {
     try {
@@ -89,63 +106,52 @@ export const AllMovements = () => {
     fetchAllMoments();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
+  const lastNumReg = allMovements.length
+    ? Math.max(...allMovements.map((m) => m.numReg))
+    : 0;
 
-const lastNumReg = allMovements.length
-? Math.max(...allMovements.map((m) => m.numReg))
-: 0;
-
-const nextNumReg = lastNumReg + 1;
+  const nextNumReg = lastNumReg + 1;
 
   if (isLoading) return <SpinnerComponent />;
-
- 
 
   return (
     <>
       <WrapperTitle title="Registro Contable General">
-      {/* <ModalSong
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          // songToEdit={selectedMovementToEdit}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedMovementToEdit(null);
-          }}
-          onSongCreated={fetchAllMoments}
-        /> */}
         <AccountingModal
-        isOpen={isModalOpen}
-        
-        onClose={() => setIsModalOpen(false)}
-        recordToEdit={selectedMovementToEdit}
-        nextNumReg={nextNumReg}
-        onSave={(data) => {
-          console.log(data);
-          setIsModalOpen(false);
-          
-        }}
-      />
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          recordToEdit={selectedMovementToEdit}
+          nextNumReg={nextNumReg}
+          onSave={(data) => {
+            console.log(data);
+            setIsModalOpen(false);
+          }}
+        />
+        <ConfirmModal
+          {...ConfirmModalProps}
+          isLoading={loading}
+          placement={PositionModal.CENTER}
+          title={loading ? "Anulando..." : "Confirmar"}
+        />
 
-        
         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
-              classNames={{ 
+              classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
                 inputWrapper: "bg-white ",
-               }}
+              }}
               value={filterValue}
               onClear={onClear}
               onValueChange={onSearchChange}
             />
-             <ButtonComponent
+            <ButtonComponent
               color={ColorButton.PRIMARY}
               endContent={<PlusIcon />}
               onPress={() => {
-                setSelectedMovementToEdit(null)
-                // setSelectedSongToEdit(null);
+                setSelectedMovementToEdit(null);
                 setIsModalOpen(true);
               }}
             >
@@ -155,27 +161,27 @@ const nextNumReg = lastNumReg + 1;
             </ButtonComponent>
           </div>
 
-        <ReusableTable
-          ariaLabel="Tabla de Movimientos"
-          label="Asientos contables"
+          <ReusableTable<Movements>
+            ariaLabel="Tabla de Movimientos"
+            label="Asientos contables"
             rowsPerPage={rowsPerPage ?? 5}
             totalItems={totalSongs}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
             }}
-          headerColumns={headerColumns}
-          itemKey="id"
-          page={page}
-          selectedKeys={selectedKeys}
-          sortDescriptor={sortDescriptor}
-          sortedItems={allMovements}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          onSelectionChange={setSelectedKeys}
-          onSortChange={setSortDescriptor}
-        />
-      </div>
+            headerColumns={headerColumns}
+            itemKey="id"
+            page={page}
+            selectedKeys={selectedKeys}
+            sortDescriptor={sortDescriptor}
+            sortedItems={allMovements}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onSelectionChange={setSelectedKeys}
+            onSortChange={setSortDescriptor}
+          />
+        </div>
       </WrapperTitle>
     </>
   );
