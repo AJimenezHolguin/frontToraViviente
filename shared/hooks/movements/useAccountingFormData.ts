@@ -1,6 +1,13 @@
-import { MovementFormState } from "./../../components/AccountingModal/types";
 import { Movements } from "@/types/movementsTypesProps";
 import { useState, useEffect } from "react";
+import { getMovementById } from "@/services/movements/getMovementById.service";
+
+export interface MovementFormState {
+  date: string;
+  type: "ingreso" | "gasto";
+  monto: string;
+  description: string;
+}
 
 export const useAccountingFormData = (
   isOpen: boolean,
@@ -14,22 +21,32 @@ export const useAccountingFormData = (
   };
 
   const [form, setForm] = useState<MovementFormState>(emptyForm);
-  const [initialForm, setInitialForm] = useState<MovementFormState | null>(
-    null
-  );
+  const [initialForm, setInitialForm] = useState<MovementFormState | null>(null);
 
   useEffect(() => {
-    if (isOpen && recordToEdit?.id) {
-    
-      const updatedForm: MovementFormState = {
-        date: recordToEdit.date || "",
-        type: recordToEdit.type as "ingreso" | "gasto",
-        monto: recordToEdit.monto?.toString() ?? "",
-        description: recordToEdit.description || "",
-      };
+    const fetchMovement = async () => {
+      if (!recordToEdit?.id) return;
 
-      setForm(updatedForm);
-      setInitialForm(updatedForm);
+      try {
+        const movement = await getMovementById(recordToEdit.id);
+        console.log("data", movement);
+       
+        const updatedForm: MovementFormState = {
+          date: movement.date || "",
+          type: movement.type as "ingreso" | "gasto",
+          monto: movement.monto?.toString() ?? "",
+          description: movement.description || "",
+        };
+
+        setForm(updatedForm);
+        setInitialForm(updatedForm);
+      } catch (error) {
+        console.error("Error loading movement:", error);
+      }
+    };
+
+    if (isOpen && recordToEdit) {
+      fetchMovement();
     }
   }, [isOpen, recordToEdit]);
 

@@ -4,16 +4,7 @@ import { TableColumnType } from "./types";
 import { Text } from "@/shared/components/Text";
 import { COLORS } from "@/styles/colors";
 import { getMovementTypeColor } from "@/styles/movementsTypesStyles";
-
-
-
-export const formatDate = (date: string) => {
-  return new Intl.DateTimeFormat("es-CO", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(new Date(date));
-};
+import { formatDate } from '../../feature/movements/formatDate';
 
 
 export const movementColumns: TableColumnType<Movements>[] = [
