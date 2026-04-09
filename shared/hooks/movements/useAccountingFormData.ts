@@ -2,6 +2,7 @@ import { Movements } from "@/types/movementsTypesProps";
 import { useState, useEffect } from "react";
 import { getMovementById } from "@/services/movements/getMovementById.service";
 import { MovementFormState } from "@/shared/components/AccountingModal/types";
+import { getNextMovementNumReg } from "@/services/movements/getNextMovementNumReg.service";
 
 export const useAccountingFormData = (
   isOpen: boolean,
@@ -18,6 +19,7 @@ export const useAccountingFormData = (
   const [initialForm, setInitialForm] = useState<MovementFormState | null>(
     null
   );
+  const [nextNumReg, setNextNumReg] = useState< number | null>(null)
 
   useEffect(() => {
     const fetchMovement = async () => {
@@ -46,9 +48,20 @@ export const useAccountingFormData = (
   }, [isOpen, recordToEdit]);
 
   useEffect(() => {
+    const fetchNextNumReg = async () => {
+      try {
+        const num = await getNextMovementNumReg();
+        
+        setNextNumReg(num);
+      } catch (error) {
+        console.error("Error fetching next numReg:", error);
+      }
+    };
+  
     if (isOpen && !recordToEdit) {
       setForm(emptyForm);
       setInitialForm(null);
+      fetchNextNumReg();
     }
   }, [isOpen, recordToEdit]);
 
@@ -68,5 +81,6 @@ export const useAccountingFormData = (
     setForm,
     initialForm,
     isFormModified,
+    nextNumReg,
   };
 };

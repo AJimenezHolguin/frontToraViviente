@@ -37,12 +37,11 @@ export default function AccountingModal({
   isOpen,
   onClose,
   recordToEdit,
-  nextNumReg,
   onSave,
 }: Props) {
   const [loading, setLoading] = useState(false);
 
-  const { form, setForm, initialForm } = useAccountingFormData(
+  const { form, setForm, initialForm, nextNumReg } = useAccountingFormData(
     isOpen,
     recordToEdit
   );
@@ -106,7 +105,7 @@ export default function AccountingModal({
             <ModalHeader className="flex flex-col gap-1">
               <h2 className="text-2xl font-bold">
                 {isEditing
-                  ? "Editar Registro Contable"
+                  ? "Ajuste Al Registro Contable"
                   : "Nuevo Registro Contable"}
               </h2>
               <p className="text-sm text-default-500">
