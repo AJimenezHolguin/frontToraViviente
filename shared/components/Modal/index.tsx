@@ -12,12 +12,15 @@ import { ConfirmModal } from "./ConfirmModal";
 import { AlertModal } from "./ModalAlert";
 import { ModalSongProps, PositionModal } from "./types";
 import { SongForm } from "../SongForm";
-import { useSongFormData } from "../../hooks/songs/useSongFormData";
-import { useFormValidation } from "../../hooks/songs/useFormValidation";
+
 import { saveSongHandler } from "@/shared/feature/songs/saveSongHandler";
-import { useModalAlert } from "../../hooks/songs/useModalAlert";
+
 import { ButtonComponent } from "../Button";
 import { ColorButton } from "@/styles/colorButton.enum";
+
+import { useSongFormData } from "@/shared/hooks/songs/useSongFormData";
+import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
+import { useFormValidation } from "@/shared/hooks/songs/useFormValidation";
 import { VariantButtonProps } from "../Button/types";
 
 export const ModalSong: React.FC<ModalSongProps> = ({

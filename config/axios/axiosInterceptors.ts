@@ -1,7 +1,8 @@
 import { AxiosInstance } from "axios";
-import { getSession, signOut } from "next-auth/react";
-import { HTTP_STATUS } from "./constanst";
+import { getSession } from "next-auth/react";
+
 import { eventBus } from "@/shared/utils/eventBus";
+import { HTTP_STATUS } from "./constanst";
 
 const excludedRoutes = ["/auth/login", "/auth/register"];
 const applyInterceptors = (api: AxiosInstance) => {

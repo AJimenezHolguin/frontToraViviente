@@ -1,7 +1,9 @@
 import { getSession } from 'next-auth/react';
-import { PaginationParamsProps, GetAllMovementsResponse } from '../typesServices';
-import { DEFAULT_PAGINATION } from '../defaultPagination';
+
+
 import axiosInstance from '@/config/axios/axiosInstance';
+import { GetAllMovementsResponse, PaginationParamsProps } from '../typesServices';
+import { DEFAULT_PAGINATION } from '../defaultPagination';
 
 export const getAllMovements = async (
     params: PaginationParamsProps

@@ -1,13 +1,7 @@
 import { Movements } from "@/types/movementsTypesProps";
 import { useState, useEffect } from "react";
 import { getMovementById } from "@/services/movements/getMovementById.service";
-
-export interface MovementFormState {
-  date: string;
-  type: "ingreso" | "gasto";
-  monto: string;
-  description: string;
-}
+import { MovementFormState } from "@/shared/components/AccountingModal/types";
 
 export const useAccountingFormData = (
   isOpen: boolean,
@@ -21,7 +15,9 @@ export const useAccountingFormData = (
   };
 
   const [form, setForm] = useState<MovementFormState>(emptyForm);
-  const [initialForm, setInitialForm] = useState<MovementFormState | null>(null);
+  const [initialForm, setInitialForm] = useState<MovementFormState | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchMovement = async () => {
@@ -29,8 +25,7 @@ export const useAccountingFormData = (
 
       try {
         const movement = await getMovementById(recordToEdit.id);
-        console.log("data", movement);
-       
+
         const updatedForm: MovementFormState = {
           date: movement.date || "",
           type: movement.type as "ingreso" | "gasto",

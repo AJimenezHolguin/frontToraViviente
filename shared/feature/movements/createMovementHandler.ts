@@ -1,8 +1,6 @@
-import {
-  CreateMovementRequest,
-  CreateMovementResponse,
-} from "../../../services/typesServices";
-import { createMovement } from "../../../services/movements/createMovement.service";
+import { createMovement } from "@/services/movements/createMovement.service";
+import { CreateMovementRequest, CreateMovementResponse } from "@/services/typesServices";
+
 
 export const createMovementHandler = async (
   form: CreateMovementRequest

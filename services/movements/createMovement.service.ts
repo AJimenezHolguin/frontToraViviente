@@ -1,9 +1,6 @@
 import { getSession } from "next-auth/react";
 import axiosInstance from "@/config/axios/axiosInstance";
-import {
-  CreateMovementRequest,
-  CreateMovementResponse,
-} from "../typesServices";
+import { CreateMovementRequest, CreateMovementResponse } from '@/services/typesServices';
 
 export const createMovement = async (
   data: CreateMovementRequest

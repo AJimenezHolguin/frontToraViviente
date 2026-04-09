@@ -1,12 +1,9 @@
-// Lanza un error si la variable no está configurada
 if (!process.env.NEXT_PUBLIC_API_URL) {
   throw new Error("NEXT_PUBLIC_API_URL no está configurado.");
 }
 
-// Construye la URL base
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
-// Estados HTTP comunes de error
 export const HTTP_STATUS = {
   NOT_TOKEN: 400,
   UNAUTHORIZED: 401,
@@ -15,7 +12,6 @@ export const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
-// Encabezados por defecto
 export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
   Accept: "application/json",

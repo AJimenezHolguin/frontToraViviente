@@ -115,7 +115,6 @@ export default function AccountingModal({
             </ModalHeader>
 
             <ModalBody className="space-y-5">
-              {/* Record ID */}
               <div>
                 <p className="text-xs font-bold uppercase text-default-400">
                   N° Registro
@@ -125,7 +124,6 @@ export default function AccountingModal({
                 </p>
               </div>
 
-              {/* Date */}
               <Input
                 type="date"
                 label="Fecha"
@@ -134,7 +132,6 @@ export default function AccountingModal({
                 isDisabled={isEditing}
               />
 
-              {/* Type */}
               <RadioGroup
                 label="Tipo de Registro"
                 orientation="horizontal"
@@ -152,7 +149,6 @@ export default function AccountingModal({
                 </Radio>
               </RadioGroup>
 
-              {/* Amount */}
               <Input
                 type="text"
                 label="Monto"
@@ -162,7 +158,6 @@ export default function AccountingModal({
                 startContent={<span>$</span>}
               />
 
-              {/* Description */}
               <Textarea
                 label="Descripción"
                 placeholder="Ej: Pago de servicios de consultoría mensual"

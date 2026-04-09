@@ -12,13 +12,14 @@ import { ButtonComponent } from "@/shared/components/Button";
 import { Text } from "@/shared/components/Text";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
-import { Playlist } from "../../../types/PlaylistsTypesProps";
+
 import { getAllMyPlaylist } from "@/services/playlists/getAllMyPlaylist.service";
 import { ModalPlaylist } from "@/shared/components/ModalPlayLists";
 import { useDeletePlaylist } from "@/shared/feature/ playlist/deletePlaylistHandler";
 import { useTable } from "@/shared/hooks/songs/useTable";
 import { playlistColumns } from "@/shared/components/table/playlistColumns";
 import { createActionColumn } from "@/shared/components/table/tableActionsColumn";
+import { Playlist } from "@/types/PlaylistsTypesProps";
 
 export const MyPlayLists = () => {
   const [playlist, setPlaylist] = useState<Playlist[]>([]);

@@ -4,7 +4,6 @@ import { SpinnerComponent } from "@/shared/components/Spinner";
 import { ReusableTable } from "@/shared/components/table";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
-import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { Playlist } from "../../../types/PlaylistsTypesProps";
 import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
 import { useTable } from "@/shared/hooks/songs/useTable";
