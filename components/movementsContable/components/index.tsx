@@ -42,6 +42,7 @@ export const AllMovements = () => {
     showConfirm(
       `¿Estás seguro de que deseas eliminar el asiento contable "${movement.numReg}"?`,
       async (description?:string) => {
+        console.log("DESCRIPCION FINAL", description)
         await handleDelete(movement, description || "");
         fetchAllMoments();
       },

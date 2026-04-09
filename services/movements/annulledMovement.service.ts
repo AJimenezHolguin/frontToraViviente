@@ -3,7 +3,7 @@ import axiosInstance from "@/config/axios/axiosInstance";
 
 export const annulledMovement = async (
   movementId: string,
-  movementDescription: string
+  description: string
 ) => {
   try {
     const session = await getSession();
@@ -16,7 +16,7 @@ export const annulledMovement = async (
 
     await axiosInstance.patch(
       `/movements/anulled/${movementId}`,
-      { movementDescription },
+      { description },
       {
         headers: {
           Authorization: `Bearer ${token}`,
