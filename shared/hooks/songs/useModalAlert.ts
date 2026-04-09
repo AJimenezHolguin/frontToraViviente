@@ -6,17 +6,32 @@ export const useModalAlert = () => {
   const [alertMessage, setAlertMessage] = useState("");
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [onConfirmAction, setOnConfirmAction] = useState<() => void>(() => {});
+  const [onConfirmAction, setOnConfirmAction] = useState<
+    (inputValue?: string) => void
+  >(() => {});
   const [confirmMessage, setConfirmMessage] = useState("");
+
+  const [confirmConfig, setConfirmConfig] = useState<{
+    withInput?: boolean;
+    inputLabel?: string;
+  }>({});
 
   const showAlert = (type: AlertType, message: string) => {
     setAlertType(type);
     setAlertMessage(message);
   };
 
-  const showConfirm = (message: string, onConfirm: () => void) => {
+  const showConfirm = (
+    message: string,
+    onConfirm: (inputValue?: string) => void,
+    config?: {
+      withInput?: boolean;
+      inputLabel?: string;
+    }
+  ) => {
     setConfirmMessage(message);
     setOnConfirmAction(() => onConfirm);
+    setConfirmConfig(config || {});
     setIsConfirmOpen(true);
   };
 
@@ -31,10 +46,12 @@ export const useModalAlert = () => {
     isOpen: isConfirmOpen,
     message: confirmMessage,
     onClose: () => setIsConfirmOpen(false),
-    onConfirm: async () => {
-      await onConfirmAction();
+    onConfirm: async (inputValue?: string) => {
+      await onConfirmAction(inputValue);
       setIsConfirmOpen(false);
     },
+    withInput: confirmConfig.withInput,
+    inputLabel: confirmConfig.inputLabel,
   };
 
   return {
