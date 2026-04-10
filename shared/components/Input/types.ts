@@ -26,6 +26,7 @@ export enum TypeProps {
   TEL = "tel",
   SEARCH = "search",
   FILE = "file",
+  DATE = "date",
 }
 
 export interface ValidationResult {
@@ -58,6 +59,7 @@ export interface InputProps {
   isClearable?: boolean;
   isRequired?: boolean;
   isInvalid?: boolean;
+  disabled?: boolean;
   minLength?: number;
   maxLength?: number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;

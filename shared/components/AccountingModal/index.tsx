@@ -28,6 +28,8 @@ import { inputStyles, inputWithLabelStyles } from "@/styles/inputStyles";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { ButtonComponent } from "../Button";
 import { VariantButtonProps } from "../Button/types";
+import { InputComponent } from "../Input";
+import { TypeProps} from '../Input/types';
 
 export type Props = {
   isOpen: boolean;
@@ -130,13 +132,13 @@ export default function AccountingModal({
                 </p>
               </div>
 
-              <Input
-                type="date"
+              <InputComponent
+                type={TypeProps.DATE}
                 label="Fecha"
                 value={form.date}
                 onChange={(e) => handleChange("date", e.target.value)}
-                isDisabled={isEditing}
-                classNames={inputWithLabelStyles}
+                disabled={isEditing}
+                classNames={inputStyles}
               />
 
               <RadioGroup
@@ -156,14 +158,14 @@ export default function AccountingModal({
                 </Radio>
               </RadioGroup>
 
-              <Input
-                type="text"
+              <InputComponent
+                type={TypeProps.TEXT}
                 label="Monto"
                 placeholder="0.00"
                 value={form.monto}
                 onChange={(e) => handleChange("monto", e.target.value)}
                 startContent={<span>$</span>}
-                classNames={inputWithLabelStyles}
+                classNames={inputStyles}
               />
 
               <Textarea
