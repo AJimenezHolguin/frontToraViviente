@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   ModalBody,
@@ -13,8 +13,6 @@ import { ButtonComponent } from "../Button";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { inputStyles } from "@/styles/inputStyles";
 
-
-
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
   onClose,
@@ -24,11 +22,17 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   title = "Confirmación",
   placement,
   withInput = false,
-  inputLabel
+  inputLabel,
 }) => {
-
   const [inputValue, setInputValue] = useState("");
- 
+  const isInputValid = inputValue.trim().length > 0;
+
+  useEffect(() => {
+    if (isOpen) {
+      setInputValue("");
+    }
+  }, [isOpen]);
+
   return (
     <Modal
       backdrop="opaque"
@@ -43,15 +47,16 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <ModalBody>
           <Text>{message}</Text>
           {withInput && (
-          <Textarea
-           label={inputLabel || "Descripción"}
-            placeholder="Escribe el motivo..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-             minRows={3}
-             classNames={inputStyles}
-          />
-  )}
+            <Textarea
+              isRequired={true}
+              label={inputLabel || "Descripción"}
+              placeholder="Escribe el motivo..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              minRows={3}
+              classNames={inputStyles}
+            />
+          )}
         </ModalBody>
         <ModalFooter>
           <ButtonComponent color={ColorButton.DANGER} onPress={onClose}>
@@ -60,6 +65,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <ButtonComponent
             color={ColorButton.PRIMARY}
             isLoading={isLoading}
+            isDisabled={withInput && !isInputValid}
             onPress={() => onConfirm(inputValue)}
           >
             {title}

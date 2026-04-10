@@ -25,6 +25,9 @@ import { saveMovementHandler } from "@/shared/feature/movements/saveMovementHand
 import { useState } from "react";
 import { MovementFormState } from "./types";
 import { inputStyles, inputWithLabelStyles } from "@/styles/inputStyles";
+import { ColorButton } from "@/styles/colorButton.enum";
+import { ButtonComponent } from "../Button";
+import { VariantButtonProps } from "../Button/types";
 
 export type Props = {
   isOpen: boolean;
@@ -97,13 +100,14 @@ export default function AccountingModal({
       size="sm"
       classNames={{
         wrapper: "flex items-center justify-center",
+        base: "rounded-1"
       }}
       style={{ margin: 0 }}
     >
-      <ModalContent className="rounded-3xl">
+      <ModalContent >
         {(onClose) => (
           <form onSubmit={handleSubmit}>
-            <ModalHeader className="flex flex-col gap-1">
+            <ModalHeader className=" text-primary flex flex-col gap-1">
               <h2 className="text-2xl font-bold">
                 {isEditing
                   ? "Ajuste Al Registro Contable"
@@ -174,17 +178,17 @@ export default function AccountingModal({
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="flat" color="danger" onPress={onClose}>
+              <ButtonComponent variant={VariantButtonProps.SOLID} color={ColorButton.DANGER} onPress={onClose}>
                 Cancelar
-              </Button>
+              </ButtonComponent>
 
-              <Button
-                color="primary"
+              <ButtonComponent
+                color={ColorButton.PRIMARY}
                 type="submit"
                 isDisabled={!isFormValid || loading}
               >
                 {isEditing ? "Actualizar registro" : "Guardar registro"}
-              </Button>
+              </ButtonComponent>
             </ModalFooter>
           </form>
         )}
