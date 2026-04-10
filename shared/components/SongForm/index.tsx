@@ -27,7 +27,6 @@ export const SongForm: React.FC<SongFormProps> = ({
         value={form.name}
         variant={VariantProps.BORDERED}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
-      
       />
 
       <InputComponent

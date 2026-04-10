@@ -59,6 +59,8 @@ export interface InputProps {
   isClearable?: boolean;
   isRequired?: boolean;
   isInvalid?: boolean;
+  isReadOnly?: boolean;
+  isDisabled?: boolean;
   disabled?: boolean;
   minLength?: number;
   maxLength?: number;

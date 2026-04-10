@@ -38,6 +38,8 @@ export const InputComponent: React.FC<InputProps> = ({
   errorMessage,
   fullWidth,
   isRequired,
+  isDisabled,
+  isReadOnly,
   maxLength,
   minLength,
   endContent = undefined,
@@ -82,6 +84,8 @@ export const InputComponent: React.FC<InputProps> = ({
       onChange={onChange}
       onValueChange={onValueChange}
       onClear={onClear}
+      isDisabled={isDisabled}
+      isReadOnly={isReadOnly}
     />
   );
 };

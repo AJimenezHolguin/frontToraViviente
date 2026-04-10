@@ -14,8 +14,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
-  Input,
   Textarea,
   RadioGroup,
   Radio,
@@ -24,7 +22,7 @@ import {
 import { saveMovementHandler } from "@/shared/feature/movements/saveMovementHandler";
 import { useState } from "react";
 import { MovementFormState } from "./types";
-import { inputStyles, inputWithLabelStyles } from "@/styles/inputStyles";
+import { inputStyles } from "@/styles/inputStyles";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { ButtonComponent } from "../Button";
 import { VariantButtonProps } from "../Button/types";
@@ -137,7 +135,8 @@ export default function AccountingModal({
                 label="Fecha"
                 value={form.date}
                 onChange={(e) => handleChange("date", e.target.value)}
-                disabled={isEditing}
+                isDisabled={isEditing}
+                isReadOnly={isEditing}
                 classNames={inputStyles}
               />
 
