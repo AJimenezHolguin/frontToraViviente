@@ -24,6 +24,7 @@ import {
 import { saveMovementHandler } from "@/shared/feature/movements/saveMovementHandler";
 import { useState } from "react";
 import { MovementFormState } from "./types";
+import { inputStyles, inputWithLabelStyles } from "@/styles/inputStyles";
 
 export type Props = {
   isOpen: boolean;
@@ -113,7 +114,9 @@ export default function AccountingModal({
               </p>
             </ModalHeader>
 
-            <ModalBody className="space-y-5">
+            <ModalBody 
+             
+            className="space-y-5">
               <div>
                 <p className="text-xs font-bold uppercase text-default-400">
                   N° Registro
@@ -129,6 +132,7 @@ export default function AccountingModal({
                 value={form.date}
                 onChange={(e) => handleChange("date", e.target.value)}
                 isDisabled={isEditing}
+                classNames={inputWithLabelStyles}
               />
 
               <RadioGroup
@@ -155,6 +159,7 @@ export default function AccountingModal({
                 value={form.monto}
                 onChange={(e) => handleChange("monto", e.target.value)}
                 startContent={<span>$</span>}
+                classNames={inputWithLabelStyles}
               />
 
               <Textarea
@@ -163,6 +168,8 @@ export default function AccountingModal({
                 value={form.description}
                 onChange={(e) => handleChange("description", e.target.value)}
                 minRows={3}
+                classNames={inputStyles}
+                
               />
             </ModalBody>
 

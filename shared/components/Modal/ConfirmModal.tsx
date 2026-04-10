@@ -11,6 +11,7 @@ import { ConfirmModalProps } from "./types";
 import { Text } from "../Text";
 import { ButtonComponent } from "../Button";
 import { ColorButton } from "@/styles/colorButton.enum";
+import { inputStyles } from "@/styles/inputStyles";
 
 
 
@@ -48,6 +49,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
              minRows={3}
+             classNames={inputStyles}
           />
   )}
         </ModalBody>
