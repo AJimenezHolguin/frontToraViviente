@@ -23,8 +23,10 @@ export const annulledMovement = async (
         },
       }
     );
-  } catch (error) {
-    console.error("Error al eliminar el registro contable:", error);
-    throw Error("Fallo al eliminar el Registro contable");
+  } catch (error:any) {
+    if(error.response){
+      throw error.response.data
+    }
+    throw error;
   }
 };

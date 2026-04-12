@@ -21,7 +21,12 @@ const applyInterceptors = (api: AxiosInstance) => {
             eventBus.emit("tokenExpired");
           }
 
-          return Promise.reject(new Error("Sesión expirada"));
+          return Promise.reject({
+            response: {
+              status: 401,
+              data: { message: "Sesión expirada" }
+            },
+          })
         }
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -34,7 +39,9 @@ const applyInterceptors = (api: AxiosInstance) => {
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
-      if (error.response?.status === HTTP_STATUS.NOT_TOKEN) {
+      const status = error.response?.status;
+
+      if (status === HTTP_STATUS.UNAUTHORIZED) {
         if (typeof window !== "undefined") {
           eventBus.emit("tokenExpired");
         }

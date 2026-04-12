@@ -16,8 +16,8 @@ export const useDeleteMovement = (
                 description
             )
             showAlert("success", "Registro contable anulado correctamente!");
-        } catch (error) {
-            showAlert("error", "Error al anular el registro contable!");
+        } catch (error:any) {
+            showAlert("error", error?.message || "Error al anular el registro contable, el movimiento ya esta anulado!");
         } finally {
             setLoading(false);
         }
