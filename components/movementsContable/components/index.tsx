@@ -64,6 +64,8 @@ export const AllMovements = () => {
       createActionColumn<Movements>({
         onEdit: handleEditMovement,
         onDelete: handleDeleteAction,
+        editLabel: "Ajuste",
+        deleteLabel: "Anular"
       }),
     ],
     [handleEditMovement]

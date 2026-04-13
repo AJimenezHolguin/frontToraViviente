@@ -24,11 +24,10 @@ export const createMovement = async (
     );
 
     return response.data;
-  } catch (error: any) {
-    console.error(
-      "Error creating movement:",
-      error?.response?.data || error.message
-    );
-    throw new Error("No se pudo crear el asiento contable");
+  } catch (error:any) {
+    if(error.response){
+      throw error.response.data
+    }
+    throw error;
   }
 };
