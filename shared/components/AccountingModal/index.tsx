@@ -101,15 +101,16 @@ export default function AccountingModal({
         onClose();
       
       }, 4000);
-    } catch (error) {
-      showAlert("error", "Error al guardar el registro contable");
+    } catch (error:any) {
+      showAlert(
+        "error",
+        error?.message || "Error al guardar el registro contable"
+      );
+      onClose()
     } finally {
       setLoading(false);
     }
   };
-
-
- 
 
   return (
     <>
@@ -117,7 +118,6 @@ export default function AccountingModal({
       backdrop="opaque"
       isDismissable={false}
       isOpen={isOpen}
-      // onClose={onClose}
       placement={PositionModal.CENTER}
       size="sm"
       onOpenChange={(open) => {
