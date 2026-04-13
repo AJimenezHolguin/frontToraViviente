@@ -1,8 +1,12 @@
-import { CreateMovementRequest, CreateMovementResponse } from "@/services/typesServices";
+import { createMovement } from "@/services/movements/createMovement.service";
+import { adjustMovement } from "@/services/movements/adjustMovement.service";
 import { Movements } from "@/types/movementsTypesProps";
-import { createMovementHandler } from "./createMovementHandler";
-import { adjustMovementHandler } from './adjustMovementHandler';
-
+import {
+ 
+  ApiResponse,
+  CreateMovementRequest,
+  
+} from "@/services/typesServices";
 
 type SaveMovementProps = {
   form: CreateMovementRequest;
@@ -12,11 +16,15 @@ type SaveMovementProps = {
 export const saveMovementHandler = async ({
   form,
   recordToEdit,
-}: SaveMovementProps): Promise<CreateMovementResponse> => {
-  
+}: SaveMovementProps): Promise<ApiResponse<Movements>> => {
+
   if (recordToEdit) {
-    return await adjustMovementHandler(recordToEdit.id, form);
+    return await adjustMovement(recordToEdit.id, {
+      type: form.type,
+      monto: form.monto,
+      description: form.description,
+    });
   }
 
-  return await createMovementHandler(form);
+  return await createMovement(form);
 };

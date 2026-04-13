@@ -14,19 +14,22 @@ export const getAllMovements = async (
         if(!session || !session.user?.token){
             throw new Error("Sesión no válida o token faltante");
         }
-
+        
         const finalParams = { DEFAULT_PAGINATION, ...params };
-
+        
         const response = await axiosInstance.get<GetAllMovementsResponse>(
             "/movements",  
             {
-        params: finalParams,
+                params: finalParams,
             }
-    );
-
+        );
+     
+        console.log("RESPONSE:", response);
+        
     return response.data;
 
     } catch (error: any) {
+        console.log("ERROR STATUS:", error?.response?.status);
         console.error(
             "Error fetching movements:",
             error?.response?.data || error.message

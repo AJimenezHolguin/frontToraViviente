@@ -76,11 +76,13 @@ export interface CreateMovementRequest {
   type: 'ingreso' | 'gasto'
   monto: number;
 }
-export interface CreateMovementResponse {
-  id?: string;
-  date: string;
-  description: string;
-  type: string;
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+export interface AdjustMovementRequest {
+  type: 'ingreso' | 'gasto';
   monto: number;
-  createdAt?: string;
+  description: string;
 }

@@ -4,8 +4,9 @@ import { useAccountingFormData } from "@/shared/hooks/movements/useAccountingFor
 import { useAccountingValidation } from "@/shared/hooks/movements/useAccountingValidation";
 import { Movements } from "@/types/movementsTypesProps";
 import {
+  ApiResponse,
   CreateMovementRequest,
-  CreateMovementResponse,
+
 } from "@/services/typesServices";
 
 import {
@@ -28,13 +29,18 @@ import { ButtonComponent } from "../Button";
 import { VariantButtonProps } from "../Button/types";
 import { InputComponent } from "../Input";
 import { TypeProps} from '../Input/types';
+import { useSession } from "next-auth/react";
+import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
+import { AlertModal } from "../Modal/ModalAlert";
+import { PositionModal } from "../Modal/types";
+import { ConfirmModal } from "../Modal/ConfirmModal";
 
 export type Props = {
   isOpen: boolean;
   onClose: () => void;
   recordToEdit?: Movements | null;
   nextNumReg?: number;
-  onSave?: (data: CreateMovementResponse) => void;
+  onSave?: (data: ApiResponse<Movements>) => void;
 };
 
 export default function AccountingModal({
@@ -44,12 +50,13 @@ export default function AccountingModal({
   onSave,
 }: Props) {
   const [loading, setLoading] = useState(false);
-
+  const { data: session } = useSession();
   const { form, setForm, initialForm, nextNumReg } = useAccountingFormData(
     isOpen,
     recordToEdit
   );
-
+  const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
+    useModalAlert();
   const { isFormValid } = useAccountingValidation(
     form,
     initialForm,
@@ -65,8 +72,12 @@ export default function AccountingModal({
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSave = async () => {
+    if (!session?.user) {
+      showAlert("error", "No tienes permisos para crear el registro contable");
+
+      return;
+    }
 
     try {
       setLoading(true);
@@ -82,22 +93,36 @@ export default function AccountingModal({
         form: payload,
         recordToEdit,
       });
-
+     
       onSave?.(response);
+      showAlert("success", "Registro contable guardado correctamente");
       onClose();
+      setTimeout(() => {
+        onClose();
+      
+      }, 4000);
     } catch (error) {
-      console.error("Error saving movement:", error);
+      showAlert("error", "Error al guardar el registro contable");
     } finally {
       setLoading(false);
     }
   };
 
+
+ 
+
   return (
+    <>
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
       backdrop="opaque"
+      isDismissable={false}
+      isOpen={isOpen}
+      // onClose={onClose}
+      placement={PositionModal.CENTER}
       size="sm"
+      onOpenChange={(open) => {
+        if (!open) onClose();
+      }}
       classNames={{
         wrapper: "flex items-center justify-center",
         base: "rounded-1"
@@ -105,8 +130,8 @@ export default function AccountingModal({
       style={{ margin: 0 }}
     >
       <ModalContent >
-        {(onClose) => (
-          <form onSubmit={handleSubmit}>
+        {() => (
+          <form >
             <ModalHeader className=" text-primary flex flex-col gap-1">
               <h2 className="text-2xl font-bold">
                 {isEditing
@@ -185,8 +210,15 @@ export default function AccountingModal({
 
               <ButtonComponent
                 color={ColorButton.PRIMARY}
-                type="submit"
                 isDisabled={!isFormValid || loading}
+                onPress={() =>
+                  showConfirm(
+                    isEditing
+                      ? "¿Estás seguro de que deseas actualizar el registro contable?"
+                      : "¿Estás seguro de que deseas crear el registro contable?",
+                    handleSave
+                  )
+                }
               >
                 {isEditing ? "Actualizar registro" : "Guardar registro"}
               </ButtonComponent>
@@ -195,5 +227,21 @@ export default function AccountingModal({
         )}
       </ModalContent>
     </Modal>
+    <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
+    <ConfirmModal
+        {...ConfirmModalProps}
+        isLoading={loading}
+        placement={PositionModal.CENTER}
+        title={
+          loading
+            ? isEditing
+              ? "Actualizando..."
+              : "Guardando..."
+            : isEditing
+              ? "Actualizar"
+              : "Guardar"
+        }
+      />
+   </>     
   );
 }

@@ -94,7 +94,6 @@ export const MySongs = () => {
       <WrapperTitle title="Lista general de mis canciones">
         <ModalSong
           isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
           songToEdit={selectedSongToEdit}
           onClose={() => {
             setIsModalOpen(false);

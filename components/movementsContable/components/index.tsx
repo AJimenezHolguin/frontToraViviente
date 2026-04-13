@@ -42,7 +42,6 @@ export const AllMovements = () => {
     showConfirm(
       `¿Estás seguro de que deseas anular el asiento contable "${movement.numReg}"?`,
       async (description?:string) => {
-        console.log("DESCRIPCION FINAL", description)
         await handleDelete(movement, description || "");
         fetchAllMoments();
       },
@@ -51,6 +50,7 @@ export const AllMovements = () => {
         inputLabel:"motivo de anulación"
       }
     );
+    fetchAllMoments();
   };
 
   const handleEditMovement = (movement: Movements) => {
@@ -120,14 +120,14 @@ export const AllMovements = () => {
       <WrapperTitle title="Registro Contable General">
         <AccountingModal
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
           recordToEdit={selectedMovementToEdit}
           nextNumReg={nextNumReg}
-          onSave={(data) => {
-            console.log(data);
-            setIsModalOpen(false);
+          onClose={() => {
+            setIsModalOpen(false)
+            setSelectedMovementToEdit(null);
           }}
-        />
+          onSave={fetchAllMoments}
+          />
         <ConfirmModal
           {...ConfirmModalProps}
           isLoading={loading}

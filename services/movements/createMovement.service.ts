@@ -1,10 +1,11 @@
 import { getSession } from "next-auth/react";
 import axiosInstance from "@/config/axios/axiosInstance";
-import { CreateMovementRequest, CreateMovementResponse } from '@/services/typesServices';
+import { ApiResponse, CreateMovementRequest, } from '@/services/typesServices';
+import { Movements } from "@/types/movementsTypesProps";
 
 export const createMovement = async (
   data: CreateMovementRequest
-): Promise<CreateMovementResponse> => {
+): Promise<ApiResponse<Movements>> => {
   try {
     const session = await getSession();
 
@@ -12,7 +13,7 @@ export const createMovement = async (
       throw new Error("Sesión no válida o token faltante");
     }
 
-    const response = await axiosInstance.post<CreateMovementResponse>(
+    const response = await axiosInstance.post<ApiResponse<Movements>>(
       "/movements/create",
       data,
       {

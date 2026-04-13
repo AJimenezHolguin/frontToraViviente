@@ -1,10 +1,11 @@
 import { createMovement } from "@/services/movements/createMovement.service";
-import { CreateMovementRequest, CreateMovementResponse } from "@/services/typesServices";
+import { ApiResponse, CreateMovementRequest,  } from "@/services/typesServices";
+import { Movements } from "@/types/movementsTypesProps";
 
 
 export const createMovementHandler = async (
   form: CreateMovementRequest
-): Promise<CreateMovementResponse> => {
+): Promise<ApiResponse<Movements>> => {
   try {
     const response = await createMovement(form);
 

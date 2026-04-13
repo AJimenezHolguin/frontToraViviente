@@ -2,7 +2,7 @@ import { Song } from "@/types/SongsTypesProps";
 
 export interface ModalSongProps {
   isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
+  setIsOpen?: (open: boolean) => void;
   onClose: () => void;
   onSongCreated: () => void;
   songToEdit?: Song | null;
