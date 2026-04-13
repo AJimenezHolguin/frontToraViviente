@@ -7,12 +7,13 @@ export const SearchComponent = ({
   onClear,
   onValueChange,
   classNames,
+  placeholder="Buscar por nombre..."
 }: InputProps) => {
   return (
     <InputComponent
       classNames={classNames}
       isClearable={true}
-      placeholder="Buscar por nombre..."
+      placeholder={placeholder}
       startContent={<SearchIcon />}
       type={TypeProps.SEARCH}
       value={value}

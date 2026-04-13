@@ -141,6 +141,7 @@ export const AllMovements = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
+              placeholder="Buscar por número de registro..."
               classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
