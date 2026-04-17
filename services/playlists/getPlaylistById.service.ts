@@ -4,6 +4,8 @@ import { Playlist } from "@/types/PlaylistsTypesProps";
 
 export const getPlaylistById = async (id: string): Promise<Playlist> => {
     const response = await axiosInstance.get(`/playlists/${id}`);
-    
+   
+    console.log("playlist individual", response.data.data);
+   
     return response.data.data
 }

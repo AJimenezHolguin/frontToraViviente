@@ -1,5 +1,5 @@
 import PlaylistPDFViewer from "@/shared/components/PlaylistPDFViewer";
 
-export default function songsPage() {
-  return <PlaylistPDFViewer type="fileSong" />;
+export default function songsPage({params}:{params:{id:string}}) {
+  return <PlaylistPDFViewer type="fileSong" playlistId={params.id}/>;
 }

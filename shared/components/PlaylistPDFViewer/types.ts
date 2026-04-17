@@ -1,7 +1,7 @@
 
 // Props del componente
 export interface Props {
- 
+    playlistId: string; 
     type: "fileSong" | "fileScore";
   }
   
@@ -27,7 +27,7 @@ export interface Props {
   
  export interface SongPlaylist {
     _id: string;
-    title: string;
+    name: string;
     category: string;
     linkSong: string;
     fileSong?: File;

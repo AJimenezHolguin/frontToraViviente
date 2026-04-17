@@ -66,8 +66,10 @@ export const playlistColumns:TableColumnType<Playlist>[] = [
           return hasFileScore ? (
             <Link
               href={`/dashboard/all-playlists/${playlist._id}/scores`}
+              
               className="flex justify-center items-center"
             >
+             
               <FaFilePdf color={COLORS.secondary} size={20} />
             </Link>
           ) : (
