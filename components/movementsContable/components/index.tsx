@@ -1,11 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
 import { SpinnerComponent } from "@/shared/components/Spinner";
 import { useTable } from "@/shared/hooks/songs/useTable";
-
 import { ReusableTable } from "@/shared/components/table";
-
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
 import { getAllMovements } from "@/services/movements/getAllMovements.service";
@@ -141,7 +138,7 @@ export const AllMovements = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between gap-3 items-end">
             <SearchComponent
-              placeholder="Buscar por número de registro..."
+              placeholder="Buscar por número de asiento..."
               classNames={{
                 base: "w-full pb-4 text-secondary sm:max-w-[33%] pb-2",
                 input: "placeholder:text-secondary ",
