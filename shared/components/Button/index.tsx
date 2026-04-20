@@ -24,7 +24,6 @@ export const ButtonComponent: React.FC<ButtonProps> = ({
 
   return (
     <Button
-    
       className={`${className}`}
       color={color}
       endContent={endContent}

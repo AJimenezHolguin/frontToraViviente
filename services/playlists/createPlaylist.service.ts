@@ -1,6 +1,6 @@
 import { getSession } from "next-auth/react";
-import { CreatePlaylistProps } from "./types";
 import axiosInstance from "@/config/axios/axiosInstance";
+import { CreatePlaylistProps } from "./types";
 
 
 export const CreatePlaylist = async(data:CreatePlaylistProps) => {

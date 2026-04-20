@@ -38,6 +38,8 @@ export const InputComponent: React.FC<InputProps> = ({
   errorMessage,
   fullWidth,
   isRequired,
+  isDisabled,
+  isReadOnly,
   maxLength,
   minLength,
   endContent = undefined,
@@ -45,6 +47,7 @@ export const InputComponent: React.FC<InputProps> = ({
   isClearable = false,
   onValueChange,
   startContent,
+  onClear
 }) => {
   const size = UseResponsiveSize(propSize);
 
@@ -80,6 +83,9 @@ export const InputComponent: React.FC<InputProps> = ({
       variant={variant}
       onChange={onChange}
       onValueChange={onValueChange}
+      onClear={onClear}
+      isDisabled={isDisabled}
+      isReadOnly={isReadOnly}
     />
   );
 };

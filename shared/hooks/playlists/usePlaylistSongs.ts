@@ -1,13 +1,11 @@
-// hooks/usePlaylistSongs.ts
 import { useEffect, useState } from "react";
-import { Playlist } from "@/types/PlaylistsTypesProps";
 import { updatePlaylist } from "@/services/playlists/updatePlaylist.service";
 import {
   DisplaySong,
   FileData,
   SongPlaylist,
 } from "@/shared/components/PlaylistPDFViewer/types";
-import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
+import { getPlaylistById } from "@/services/playlists/getPlaylistById.service";
 
 export function usePlaylistSongs(
   playlistId: string,
@@ -22,16 +20,7 @@ export function usePlaylistSongs(
     async function fetchSongs() {
       setIsLoading(true);
       try {
-        const res = await getAllPlaylist({
-          page: 1,
-          take: 10,
-          order: "DESC",
-          search: "",
-        });
-
-        const playlist = res.data.find(
-          (pl): pl is Playlist => pl._id === playlistId
-        );
+        const playlist = await getPlaylistById(playlistId);
 
         if (!playlist) return;
 
@@ -44,7 +33,7 @@ export function usePlaylistSongs(
           .map((song: SongPlaylist) => ({
             _id: song._id,
             name: song[type]!.public_id,
-            title: song.title,
+            title: song.name,
             linkSong: song.linkSong,
             file: {
               public_id: song[type]!.public_id,
@@ -61,7 +50,9 @@ export function usePlaylistSongs(
       }
     }
 
-    fetchSongs();
+    if (playlistId) {
+      fetchSongs();
+    }
   }, [playlistId, type]);
 
   const moveItem = async (fromIndex: number, toIndex: number) => {

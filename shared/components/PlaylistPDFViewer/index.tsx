@@ -8,7 +8,7 @@ import { usePlaylistSongs } from "@/shared/hooks/playlists/usePlaylistSongs";
 import { PlaylistSidebar } from "../PlaylistSidebar";
 import { PDFViewer } from "../PDFViewer";
 
-export default function PlaylistPDFViewer({ type }: Props) {
+export default function PlaylistPDFViewer({ type}: Props & {playlistId?:string}) {
   const { playlistId } = useParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -21,6 +21,7 @@ export default function PlaylistPDFViewer({ type }: Props) {
     moveItem,
   } = usePlaylistSongs(playlistId as string, type);
 
+  console.log("id correcto ",playlistId)
   if (isLoading) return <SpinnerComponent />;
 
   if (songs.length === 0)

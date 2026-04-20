@@ -24,6 +24,8 @@ export const getAllMyPlaylist = async (
         params: finalParams,
       }
     );
+    
+    console.log(response.data.data);
 
     return response.data;
   } catch (error: any) {

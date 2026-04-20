@@ -6,6 +6,7 @@ import { VARIANT_STYLES, TextProps } from "@/shared/components/Text/types";
 export const Text: React.FC<TextProps> = ({
   children,
   $v = "sm",
+  $bg,
   $color,
   $fw,
   $ta,
@@ -22,6 +23,7 @@ export const Text: React.FC<TextProps> = ({
         fontWeight: $fw ?? variantStyles?.fontWeight,
         color: $color,
         textAlign: $ta,
+        backgroundColor: $bg,
       }}
       {...props}
     >

@@ -1,5 +1,5 @@
 import PlaylistPDFViewer from "@/shared/components/PlaylistPDFViewer";
 
-export default function ScoresPage() {
-  return <PlaylistPDFViewer type="fileScore" />;
+export default function ScoresPage({params}:any) {
+  return <PlaylistPDFViewer type="fileScore" playlistId={params.playlistId} />;
 }

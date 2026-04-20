@@ -55,6 +55,7 @@ export const VARIANT_STYLES: Record<TextVariant, VariantTextStyle> = {
 
 export interface TextProps {
   $v?: TextVariant;
+  $bg?: string;
   $color?: string;
   $fw?: string | number;
   $ta?: "left" | "center" | "right" | "justify";
