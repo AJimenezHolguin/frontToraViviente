@@ -17,7 +17,8 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
       <p className="text-sm font-medium mb-2">Canciones disponibles:</p>
 
       <div
-        className="h-[200px] overflow-y-auto border rounded-md px-2"
+        className="overflow-y-auto border rounded-md px-2"
+        style={{ height: "200px" }}
         onScroll={handleScroll}
       >
         <CheckboxGroup
@@ -40,7 +41,7 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
       </div>
 
       {selectedCount > 0 && (
-        <div className="mt-4 overflow-y-scroll" style={{ height: "100px" }}>
+        <div className="mt-4 overflow-y-scroll" style={{ height: "120px" }}>
           <p className="text-sm font-medium mb-1">
             Canciones seleccionadas:
             <span className="text-primary font-semibold ml-6">
