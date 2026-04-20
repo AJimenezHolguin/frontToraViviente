@@ -1,15 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { SpinnerComponent } from "@/shared/components/Spinner";
-import { useSongTable } from "@/shared/hooks/songs/useSongTable";
 import { ReusableTable } from "@/shared/components/table";
-import { columnTitlesPresets } from "@/shared/components/table/columnsAndStatusOptions";
 import { WrapperTitle } from "@/shared/components/WrapperTitle";
 import { SearchComponent } from "@/shared/components/Search";
-import { PaginationHeader } from "@/shared/components/PaginationHeader";
 import { Playlist } from "../../../types/PlaylistsTypesProps";
-import { useRenderPlaylistsCell } from "@/shared/hooks/playlists/useRenderPlaylistsCell";
 import { getAllPlaylist } from "@/services/playlists/getAllPlaylist.service";
+import { useTable } from "@/shared/hooks/songs/useTable";
+import { playlistColumns } from "@/shared/components/table/playlistColumns";
 
 export const AllPlayLists = () => {
   const [allPlaylist, setAllPlaylist] = useState<Playlist[]>([]);
@@ -30,10 +28,7 @@ export const AllPlayLists = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useSongTable(
-    ["name", "user", "fileSong", "fileScore"],
-    columnTitlesPresets["allPlayListsTitle"]
-  );
+  } = useTable(playlistColumns);
 
   const fetchPlaylists = async () => {
     try {
@@ -43,7 +38,7 @@ export const AllPlayLists = () => {
         order: sortDescriptor.direction === "descending" ? "ASC" : "DESC",
         search: filterValue,
       });
-
+      
       setIsLoading(true);
       setAllPlaylist(playlistData.data || []);
       setTotalPages(playlistData.metadata.pageCount);
@@ -58,10 +53,6 @@ export const AllPlayLists = () => {
   useEffect(() => {
     fetchPlaylists();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
-
-  const renderCell = useRenderPlaylistsCell({
-    type: "all-playlists",
-  });
 
   if (isLoading) return <SpinnerComponent />;
 
@@ -82,31 +73,27 @@ export const AllPlayLists = () => {
             />
           </div>
 
-          <PaginationHeader
+          <ReusableTable<Playlist>
+            ariaLabel="Tabla de playlists"
             label="Playlists"
-            rowsPerPage={rowsPerPage ?? 0}
+            rowsPerPage={rowsPerPage ?? 5}
             totalItems={totalAllPlaylists}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
             }}
+            headerColumns={headerColumns}
+            itemKey="_id"
+            page={page}
+            selectedKeys={selectedKeys}
+            sortDescriptor={sortDescriptor}
+            sortedItems={allPlaylist}
+            totalPages={totalPages}
+            onPageChange={setPage}
+            onSelectionChange={setSelectedKeys}
+            onSortChange={setSortDescriptor}
           />
         </div>
-
-        <ReusableTable
-          ariaLabel="Tabla de playlists"
-          headerColumns={headerColumns}
-          itemKey="_id"
-          page={page}
-          renderCell={renderCell}
-          selectedKeys={selectedKeys}
-          sortDescriptor={sortDescriptor}
-          sortedItems={allPlaylist}
-          totalPages={totalPages}
-          onPageChange={setPage}
-          onSelectionChange={setSelectedKeys}
-          onSortChange={setSortDescriptor}
-        />
       </WrapperTitle>
     </>
   );

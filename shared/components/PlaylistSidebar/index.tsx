@@ -67,7 +67,7 @@ export const PlaylistSidebar = ({
                 >
                   <FaFilePdf className="text-secondary" size={20} />
                   <Text className="block w-full break-words">
-                    {song.title.split(" ").map((word)=> word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                    {(song.title || "").split(" ").map((word)=> word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
                   </Text>
                   <div className="flex items-center gap-1 ml-2">
                     <button

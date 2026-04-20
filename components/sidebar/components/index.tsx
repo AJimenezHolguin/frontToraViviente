@@ -53,9 +53,9 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
         onClick={onToggle}
       >
         {isOpen ? (
-          <FiChevronLeft color={COLORS.grey_dark} size={30} />
+          <FiChevronLeft color={COLORS.white} size={30} />
         ) : (
-          <FiChevronRight color={COLORS.grey_dark} size={30} />
+          <FiChevronRight color={COLORS.white} size={30} />
         )}
       </button>
 

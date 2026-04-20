@@ -1,3 +1,4 @@
+import { Movements } from "@/types/movementsTypesProps";
 import { Playlist } from "@/types/PlaylistsTypesProps";
 import { Song } from "@/types/SongsTypesProps";
 
@@ -39,7 +40,7 @@ export interface UpdateSong {
    search: string;
  };
  
- // Tipo para lo que devuelve este servicio
+ 
  export type GetAllMySongsResponse = {
    data: Song[];
    metadata: PaginationMetadataResponse;
@@ -51,7 +52,7 @@ export interface UpdateSong {
   metadata: PaginationMetadataResponse;
   success: boolean;
  }
- // Tipos para actualizar la playlist
+
 export interface UpdatePlaylistPayload {
   name?: string;
   songs?: string[]; 
@@ -62,4 +63,26 @@ export interface UpdatePlaylistResponse {
   success: boolean;
   message: string;
   data?: Playlist;
+}
+
+export interface GetAllMovementsResponse {
+  data: Movements[];
+  metadata: PaginationMetadataResponse;
+  success: boolean;
+}
+export interface CreateMovementRequest {
+  date: string;
+  description: string;
+  type: 'ingreso' | 'gasto'
+  monto: number;
+}
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+export interface AdjustMovementRequest {
+  type: 'ingreso' | 'gasto';
+  monto: number;
+  description: string;
 }

@@ -1,6 +1,5 @@
-import { RequetsLogin, ResponseLogin } from "../models/user";
-
 import axiosInstance from "@/config/axios/axiosInstance";
+import { RequetsLogin, ResponseLogin } from "../models/user";
 
 export const loginUser = {
   login: async (credentials: RequetsLogin): Promise<ResponseLogin> => {

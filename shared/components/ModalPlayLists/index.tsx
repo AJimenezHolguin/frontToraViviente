@@ -60,22 +60,19 @@ export const ModalPlaylist = ({
     const selected = responseData.filter((song) =>
       form.songs.includes(song._id)
     );
-  
-    // Agrega nuevas canciones seleccionadas al array persistente
+
     setSelectedSongsData((prev) => {
       const combined = [...prev];
-     
+
       selected.forEach((s) => {
         if (!combined.find((c) => c._id === s._id)) {
           combined.push(s);
         }
       });
-      // Elimina las que ya no están seleccionadas
-     
+
       return combined.filter((s) => form.songs.includes(s._id));
     });
   }, [form.songs, responseData]);
-  
 
   useEffect(() => {
     if (!isOpen) return;
@@ -172,7 +169,6 @@ export const ModalPlaylist = ({
               {playlistToEdit ? "Editar Playlist" : "Nueva Playlist"}
             </ModalHeader>
 
-            {/* SOLO INPUTS NO DEBAN HACER SCROLL */}
             <div className="px-6 flex flex-col gap-4">
               <InputComponent
                 isClearable
@@ -183,7 +179,10 @@ export const ModalPlaylist = ({
                 type={TypeProps.TEXT}
                 value={form.name}
                 variant={VariantProps.UNDERLINED}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, name: e.target.value }))
+                }
+                onClear={() => setForm((prev) => ({ ...prev, name: "" }))}
               />
 
               <SearchComponent
@@ -193,7 +192,6 @@ export const ModalPlaylist = ({
               />
             </div>
 
-            {/* SCROLL INTERNO */}
             <ModalBody className="overflow-y-auto px-6 pt-4">
               <PlaylistForm
                 filterAllSongs={filterAllSongs}
@@ -202,7 +200,7 @@ export const ModalPlaylist = ({
                 handleScroll={handleScroll}
                 responseData={responseData}
                 setForm={setForm}
-                selectedSongsData={selectedSongsData} 
+                selectedSongsData={selectedSongsData}
               />
             </ModalBody>
 

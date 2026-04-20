@@ -1,6 +1,5 @@
 import { Checkbox, CheckboxGroup } from "@heroui/checkbox";
 import { PlaylistFormProps } from "./types";
-import { SwitchComponent } from "../Switch";
 import { Text } from "@/shared/components/Text";
 import { COLORS } from "@/styles/colors";
 
@@ -12,13 +11,14 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
   selectedSongsData,
 }) => {
   const selectedCount = form.songs.length;
-  
+
   return (
     <>
       <p className="text-sm font-medium mb-2">Canciones disponibles:</p>
 
       <div
-        className="h-[200px] overflow-y-auto border rounded-md px-2"
+        className="overflow-y-auto border rounded-md px-2"
+        style={{ height: "200px" }}
         onScroll={handleScroll}
       >
         <CheckboxGroup
@@ -29,10 +29,10 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
             {filterAllSongs.map((song) => (
               <Checkbox key={song._id} value={song._id}>
                 <Text>
-                {song.name
-                 .split(" ")
-                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                 .join(" ")}
+                  {song.name
+                    .split(" ")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
                 </Text>
               </Checkbox>
             ))}
@@ -40,13 +40,15 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
         </CheckboxGroup>
       </div>
 
-      {/* SELECCIONADOS */}
       {selectedCount > 0 && (
-        <div className="mt-4 overflow-y-scroll" style={{ height: "100px" }}>
+        <div className="mt-4 overflow-y-scroll" style={{ height: "120px" }}>
           <p className="text-sm font-medium mb-1">
             Canciones seleccionadas:
-            <span className="text-primary font-semibold ml-6"> {selectedCount}</span>
-            </p>
+            <span className="text-primary font-semibold ml-6">
+              {" "}
+              {selectedCount}
+            </span>
+          </p>
           <div className="gap-1 pr-1">
             {form.songs
               .map((id) => selectedSongsData.find((song) => song._id === id))
@@ -58,7 +60,11 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
                 >
                   <Text $color={COLORS.secondary} className="truncate">
                     {song!.name
-                    .split(" ").map((word)=> word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                      .split(" ")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
                   </Text>
                   <button
                     className="text-red-500 hover:text-red-700 text-xs font-bold"
@@ -77,19 +83,6 @@ export const PlaylistForm: React.FC<PlaylistFormProps> = ({
           </div>
         </div>
       )}
-
-      <div className="flex mt-2">
-        <SwitchComponent
-          isSelected={form.status}
-          onChange={(val) => setForm({ ...form, status: val })}
-        />
-        <p
-          className="text-md font-medium mb-2 pt-2 text-primary"
-          style={{ paddingLeft: "5px" }}
-        >
-          ¿Playlist visible?
-        </p>
-      </div>
     </>
   );
 };

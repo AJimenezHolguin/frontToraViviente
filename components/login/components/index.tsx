@@ -3,12 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Form } from "@heroui/form";
 import { useRouter } from "next/navigation";
-import { InputClassNameKeys } from "../../../types/classNamesKeys";
-import {
-  InputComponent,
-  PasswordToggleIcon,
-} from "../../../shared/components/Input";
-import { ButtonComponent } from "../../../shared/components/Button";
+
 import {
   LabelPlacementProps,
   TypeProps,
@@ -24,6 +19,9 @@ import { AlertType, AlertVariant } from "@/types/alert.interface";
 import { VariantButtonProps } from "@/shared/components/Button/types";
 import { Sizes } from "@/types/sizes.enum";
 import { COLORS } from "@/styles/colors";
+import { InputClassNameKeys } from "@/types/classNamesKeys";
+import { InputComponent, PasswordToggleIcon } from "@/shared/components/Input";
+import { ButtonComponent } from "@/shared/components/Button";
 
 export const Login = () => {
   const router = useRouter();
@@ -180,7 +178,8 @@ export const Login = () => {
               width={400}
             />
             <Text $v="h5" className="w-[90%] text-white text-center">
-              Bendeciré a YAHWH en todo tiempo; mis labios siempre lo alabarán. Salmo 34:1
+              Bendeciré a YAHWH en todo tiempo; mis labios siempre lo alabarán.
+              Salmo 34:1
             </Text>
           </div>
         </section>
