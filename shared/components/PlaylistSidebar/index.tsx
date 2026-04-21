@@ -21,7 +21,6 @@ export const PlaylistSidebar = ({
         isSidebarOpen ? "w-3/4" : "w-10"
       } overflow-hidden min-w-0 heigth-playlistSidebar`}
     >
-      {/* Encabezado fijo */}
       <div className="flex justify-between items-start p-4 shrink-0 ">
         {isSidebarOpen ? (
           <>
@@ -50,7 +49,6 @@ export const PlaylistSidebar = ({
         )}
       </div>
 
-      {/* Contenido scrollable */}
       {isSidebarOpen && (
         <div className="w-[600px] px-4 pb-4 sidebar-scroll">
           <WrapperSubTitle title={type === "fileSong" ? "Letras:" : "Acordes:"}>
@@ -67,7 +65,12 @@ export const PlaylistSidebar = ({
                 >
                   <FaFilePdf className="text-secondary" size={20} />
                   <Text className="block w-full break-words">
-                    {(song.title || "").split(" ").map((word)=> word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                    {(song.title || "")
+                      .split(" ")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
                   </Text>
                   <div className="flex items-center gap-1 ml-2">
                     <button
