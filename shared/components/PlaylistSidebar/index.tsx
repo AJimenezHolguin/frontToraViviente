@@ -81,7 +81,7 @@ export const PlaylistSidebar = ({
                         disabled={index === 0}
                         title="Mover arriba"
                         onClick={(e) => {
-                          e.stopPropagation(); // 🔥 IMPORTANTE
+                          e.stopPropagation(); 
                           moveItem(index, index - 1);
                         }}
                       >
@@ -93,7 +93,7 @@ export const PlaylistSidebar = ({
                         disabled={index === songs.length - 1}
                         title="Mover abajo"
                         onClick={(e) => {
-                          e.stopPropagation(); // 🔥 IMPORTANTE
+                          e.stopPropagation(); 
                           moveItem(index, index + 1);
                         }}
                       >
@@ -105,7 +105,7 @@ export const PlaylistSidebar = ({
                       href={song.linkSong}
                       rel="noopener noreferrer"
                       target="_blank"
-                      onClick={(e) => e.stopPropagation()} // 🔥 también aquí
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <IoLogoYoutube color="red" size={20} title="Youtube" />
                     </a>
