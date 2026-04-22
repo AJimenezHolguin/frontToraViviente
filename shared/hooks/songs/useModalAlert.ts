@@ -14,6 +14,7 @@ export const useModalAlert = () => {
   const [confirmConfig, setConfirmConfig] = useState<{
     withInput?: boolean;
     inputLabel?: string;
+    showCancelButton?: boolean;
   }>({});
 
   const showAlert = (type: AlertType, message: string) => {
@@ -27,6 +28,7 @@ export const useModalAlert = () => {
     config?: {
       withInput?: boolean;
       inputLabel?: string;
+      showCancelButton?: boolean;
     }
   ) => {
     setConfirmMessage(message);
@@ -52,6 +54,7 @@ export const useModalAlert = () => {
     },
     withInput: confirmConfig.withInput,
     inputLabel: confirmConfig.inputLabel,
+    showCancelButton: confirmConfig.showCancelButton,
   };
 
   return {

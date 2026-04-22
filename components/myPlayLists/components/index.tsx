@@ -117,7 +117,7 @@ export const MyPlayLists = () => {
           {...ConfirmModalProps}
           isLoading={loading}
           placement={PositionModal.CENTER}
-          title={loading ? "Eliminando..." : "Confirmar"}
+          titleButton={loading ? "Eliminando..." : "Confirmar"}
         />
         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
 

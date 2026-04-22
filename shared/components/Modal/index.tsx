@@ -143,7 +143,7 @@ export const ModalSong: React.FC<ModalSongProps> = ({
         {...ConfirmModalProps}
         isLoading={loading}
         placement={PositionModal.CENTER}
-        title={
+        titleButton={
           loading
             ? songToEdit
               ? "Actualizando..."

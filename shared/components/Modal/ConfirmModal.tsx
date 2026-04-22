@@ -19,10 +19,11 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onConfirm,
   message,
   isLoading = false,
-  title = "Confirmación",
+  titleButton = "Confirmación",
   placement,
   withInput = false,
   inputLabel,
+  showCancelButton = true,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const isInputValid = inputValue.trim().length > 0;
@@ -59,16 +60,18 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           )}
         </ModalBody>
         <ModalFooter>
-          <ButtonComponent color={ColorButton.DANGER} onPress={onClose}>
-            Cancelar
-          </ButtonComponent>
+        {showCancelButton && (
+        <ButtonComponent color={ColorButton.DANGER} onPress={onClose}>
+        Cancelar
+        </ButtonComponent>
+  )}
           <ButtonComponent
             color={ColorButton.PRIMARY}
             isLoading={isLoading}
             isDisabled={withInput && !isInputValid}
             onPress={() => onConfirm(inputValue)}
           >
-            {title}
+            {titleButton}
           </ButtonComponent>
         </ModalFooter>
       </ModalContent>

@@ -25,7 +25,7 @@ export interface AlertModalProps {
 }
 
 export interface ConfirmModalProps {
-  title?: string;
+  titleButton?: string;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (inputValue?:string) => void;
@@ -34,6 +34,7 @@ export interface ConfirmModalProps {
   placement?: PositionModal
   withInput?: boolean;
   inputLabel?:string;
+  showCancelButton?: boolean;
 }
 
 export type SongFormState = {

@@ -228,7 +228,7 @@ export default function AccountingModal({
         {...ConfirmModalProps}
         isLoading={loading}
         placement={PositionModal.CENTER}
-        title={
+        titleButton={
           loading
             ? isEditing
               ? "Actualizando..."
