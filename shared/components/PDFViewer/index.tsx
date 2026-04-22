@@ -6,10 +6,6 @@ import { Text } from "@/shared/components/Text";
 import { useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-// import * as pdfjsLib from "pdfjs-dist";
-// import { GlobalWorkerOptions } from "pdfjs-dist";
-
-// GlobalWorkerOptions.workerSrc = "/pdfjs/pdf.worker.min.mjs";
 
 export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
