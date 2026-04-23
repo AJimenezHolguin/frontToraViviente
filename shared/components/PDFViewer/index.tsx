@@ -1,21 +1,27 @@
 "use client";
+
 import { COLORS } from "@/styles/colors";
 import { PDFViewerProps } from "@/types/PlaylistsTypesProps";
 import { PiScreencast } from "react-icons/pi";
 import { Text } from "@/shared/components/Text";
 import { useEffect, useRef, useState } from "react";
-import * as pdfjsLib from "pdfjs-dist";
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
-export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
+export const PDFViewer = ({
+  selected,
+  songs,
+  setSelected,
+}: PDFViewerProps) => {
   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
   const [error, setError] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [numPages, setNumPages] = useState(0);
   const [scale, setScale] = useState(1.5);
-  const pdfContainerRef = useRef<HTMLDivElement | null>(null);
-  const pdfInstanceRef = useRef<pdfjsLib.PDFDocumentProxy | null>(null);
 
+  const pdfContainerRef = useRef<HTMLDivElement | null>(null);
+  const pdfInstanceRef = useRef<any>(null);
+  const pdfjsRef = useRef<any>(null);
+
+  // Detect device
   useEffect(() => {
     const userAgent =
       navigator.userAgent || navigator.vendor || (window as any).opera;
@@ -23,17 +29,30 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
     setIsMobileOrTablet(/Android|iPhone|iPad|iPod/i.test(userAgent));
   }, []);
 
+  // Load PDF only on client
   useEffect(() => {
     if (!selected || !isMobileOrTablet) return;
 
     const loadPdf = async () => {
       try {
+        setError(false);
+
+        // 🔥 IMPORTANT: dynamic import (fix Vercel + Next 16 build issue)
+        const pdfjsLib = await import("pdfjs-dist");
+
+        pdfjsRef.current = pdfjsLib;
+
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
         const pdf = await pdfjsLib.getDocument(selected.secure_url).promise;
 
         pdfInstanceRef.current = pdf;
+
         setNumPages(pdf.numPages);
         setPageNumber(1);
-        renderPage(1, scale);
+
+        renderPage(pdf, 1, scale);
       } catch (err) {
         console.error("Error al cargar PDF:", err);
         setError(true);
@@ -43,20 +62,25 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
     loadPdf();
   }, [selected, isMobileOrTablet]);
 
+  // Re-render page when page or zoom changes
   useEffect(() => {
     if (pdfInstanceRef.current) {
-      renderPage(pageNumber, scale);
+      renderPage(pdfInstanceRef.current, pageNumber, scale);
     }
   }, [pageNumber, scale]);
 
-  const renderPage = async (num: number, scaleValue: number) => {
+  const renderPage = async (
+    pdf: any,
+    num: number,
+    scaleValue: number
+  ) => {
     const container = pdfContainerRef.current;
 
-    if (!container || !pdfInstanceRef.current) return;
+    if (!container || !pdf) return;
 
     container.innerHTML = "";
 
-    const page = await pdfInstanceRef.current.getPage(num);
+    const page = await pdf.getPage(num);
     const viewport = page.getViewport({ scale: scaleValue });
 
     const canvas = document.createElement("canvas");
@@ -65,7 +89,11 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
     canvas.height = viewport.height;
     canvas.width = viewport.width;
 
-    await page.render({ canvasContext: context!, viewport }).promise;
+    await page.render({
+      canvasContext: context!,
+      viewport,
+    }).promise;
+
     container.appendChild(canvas);
   };
 
@@ -103,8 +131,9 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
   return (
     <>
+      {/* HEADER */}
       <div className="py-0.5 px-1 flex justify-between items-center">
-        <div className="flex items-center ">
+        <div className="flex items-center">
           <button
             className={`px-2 py-1 rounded ${
               currentIndex === 0
@@ -138,12 +167,12 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
           href={selected.secure_url}
           target="_blank"
           rel="noopener noreferrer"
-          title="Ver en pantalla completa"
         >
           <PiScreencast size={20} />
         </a>
       </div>
 
+      {/* CONTROLS */}
       {isMobileOrTablet && !error && (
         <div className="flex flex-wrap items-center gap-3 p-2 bg-gray-100">
           <button
@@ -152,20 +181,23 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
           >
             ⬅
           </button>
+
           <span>
             Página {pageNumber} de {numPages}
           </span>
+
           <button
             disabled={pageNumber >= numPages}
             onClick={() => setPageNumber((p) => p + 1)}
           >
             ➡
           </button>
-          <div className="ml-1 flex items-center gap-2">
+
+          <div className="flex items-center gap-2 ml-1">
             <button onClick={() => setScale((s) => s - 0.2)}>-</button>
             <span>Zoom: {Math.round(scale * 100)}%</span>
+            <button onClick={() => setScale((s) => s + 0.2)}>+</button>
           </div>
-          <button onClick={() => setScale((s) => s + 0.2)}>+</button>
 
           <button onClick={handleFitToWidth}>
             <Text
@@ -179,6 +211,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
         </div>
       )}
 
+      {/* RENDER */}
       {isMobileOrTablet ? (
         error ? (
           <iframe
