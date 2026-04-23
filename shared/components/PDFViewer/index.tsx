@@ -21,7 +21,6 @@ export const PDFViewer = ({
   const pdfInstanceRef = useRef<any>(null);
   const pdfjsRef = useRef<any>(null);
 
-  // Detect device
   useEffect(() => {
     const userAgent =
       navigator.userAgent || navigator.vendor || (window as any).opera;
@@ -29,7 +28,6 @@ export const PDFViewer = ({
     setIsMobileOrTablet(/Android|iPhone|iPad|iPod/i.test(userAgent));
   }, []);
 
-  // Load PDF only on client
   useEffect(() => {
     if (!selected || !isMobileOrTablet) return;
 
@@ -37,8 +35,7 @@ export const PDFViewer = ({
       try {
         setError(false);
 
-        // 🔥 IMPORTANT: dynamic import (fix Vercel + Next 16 build issue)
-        const pdfjsLib = await import("pdfjs-dist");
+        const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf");
 
         pdfjsRef.current = pdfjsLib;
 
@@ -62,18 +59,13 @@ export const PDFViewer = ({
     loadPdf();
   }, [selected, isMobileOrTablet]);
 
-  // Re-render page when page or zoom changes
   useEffect(() => {
     if (pdfInstanceRef.current) {
       renderPage(pdfInstanceRef.current, pageNumber, scale);
     }
   }, [pageNumber, scale]);
 
-  const renderPage = async (
-    pdf: any,
-    num: number,
-    scaleValue: number
-  ) => {
+  const renderPage = async (pdf: any, num: number, scaleValue: number) => {
     const container = pdfContainerRef.current;
 
     if (!container || !pdf) return;
@@ -131,7 +123,6 @@ export const PDFViewer = ({
 
   return (
     <>
-      {/* HEADER */}
       <div className="py-0.5 px-1 flex justify-between items-center">
         <div className="flex items-center">
           <button
@@ -172,7 +163,6 @@ export const PDFViewer = ({
         </a>
       </div>
 
-      {/* CONTROLS */}
       {isMobileOrTablet && !error && (
         <div className="flex flex-wrap items-center gap-3 p-2 bg-gray-100">
           <button
@@ -211,7 +201,6 @@ export const PDFViewer = ({
         </div>
       )}
 
-      {/* RENDER */}
       {isMobileOrTablet ? (
         error ? (
           <iframe
