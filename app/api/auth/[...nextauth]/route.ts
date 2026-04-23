@@ -1,18 +1,15 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
 import { loginUser } from "@/components/login/domain/services/auth.service";
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
-
       credentials: {
         email: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-
       async authorize(credentials) {
         try {
           const userResponse = await loginUser.login({
@@ -36,7 +33,7 @@ const handler = NextAuth({
           };
         } catch (error) {
           console.error("Error en authorize:", error);
-         
+
           return null;
         }
       },
@@ -44,7 +41,7 @@ const handler = NextAuth({
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user?: any }) {
       if (user) {
         token.id = user.id;
         token.name = user.name;
@@ -58,7 +55,8 @@ const handler = NextAuth({
 
       return token;
     },
-    async session({ session, token }) {
+
+    async session({ session, token }: { session: any; token: any }) {
       session.user = {
         ...session.user,
         id: token.id,
@@ -74,9 +72,12 @@ const handler = NextAuth({
       return session;
     },
   },
+
   pages: {
     signIn: "/login",
   },
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
