@@ -14,10 +14,11 @@ export default function UnauthorizedPage() {
     showConfirm(
       "¡No tienes permisos para acceder a esta página!",
       () => {
-        router.push("/dashboard/all-playlists"); // 👉 ruta segura
+        router.push("/dashboard/all-playlists"); 
       },
       {
-        showCancelButton: false, // 🔥 oculta cancelar
+        showCancelButton: false, 
+         titleHeader: "Acceso denegado",
       }
     );
   }, []);

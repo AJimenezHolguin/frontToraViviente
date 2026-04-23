@@ -25,6 +25,7 @@ export interface AlertModalProps {
 }
 
 export interface ConfirmModalProps {
+  titleHeader?: string
   titleButton?: string;
   isOpen: boolean;
   onClose: () => void;

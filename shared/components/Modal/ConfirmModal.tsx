@@ -19,6 +19,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onConfirm,
   message,
   isLoading = false,
+  titleHeader = "Confirmación",
   titleButton = "Confirmación",
   placement,
   withInput = false,
@@ -36,6 +37,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   return (
     <Modal
+      hideCloseButton
       backdrop="opaque"
       isDismissable={false}
       isKeyboardDismissDisabled={false}
@@ -44,7 +46,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       onOpenChange={(open) => !open && onClose()}
     >
       <ModalContent>
-        <ModalHeader className="text-primary ">Confirmación</ModalHeader>
+        <ModalHeader className="text-primary ">{titleHeader}</ModalHeader>
         <ModalBody>
           <Text>{message}</Text>
           {withInput && (
