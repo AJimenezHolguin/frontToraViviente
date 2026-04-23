@@ -1,3 +1,230 @@
+// "use client";
+
+// import { COLORS } from "@/styles/colors";
+// import { PDFViewerProps } from "@/types/PlaylistsTypesProps";
+// import { PiScreencast } from "react-icons/pi";
+// import { Text } from "@/shared/components/Text";
+// import { useEffect, useRef, useState } from "react";
+
+// export const PDFViewer = ({
+//   selected,
+//   songs,
+//   setSelected,
+// }: PDFViewerProps) => {
+//   const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+//   const [error, setError] = useState(false);
+//   const [pageNumber, setPageNumber] = useState(1);
+//   const [numPages, setNumPages] = useState(0);
+//   const [scale, setScale] = useState(1.5);
+
+//   const pdfContainerRef = useRef<HTMLDivElement | null>(null);
+//   const pdfInstanceRef = useRef<any>(null);
+//   const pdfjsRef = useRef<any>(null);
+
+//   useEffect(() => {
+//     const userAgent =
+//       navigator.userAgent || navigator.vendor || (window as any).opera;
+
+//     setIsMobileOrTablet(/Android|iPhone|iPad|iPod/i.test(userAgent));
+//   }, []);
+
+//   useEffect(() => {
+//     if (!selected || !isMobileOrTablet) return;
+
+//     const loadPdf = async () => {
+//       try {
+//         setError(false);
+
+//         const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf");
+
+//         pdfjsRef.current = pdfjsLib;
+
+//         pdfjsLib.GlobalWorkerOptions.workerSrc =
+//           `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
+//         const pdf = await pdfjsLib.getDocument(selected.secure_url).promise;
+
+//         pdfInstanceRef.current = pdf;
+
+//         setNumPages(pdf.numPages);
+//         setPageNumber(1);
+
+//         renderPage(pdf, 1, scale);
+//       } catch (err) {
+//         console.error("Error al cargar PDF:", err);
+//         setError(true);
+//       }
+//     };
+
+//     loadPdf();
+//   }, [selected, isMobileOrTablet]);
+
+//   useEffect(() => {
+//     if (pdfInstanceRef.current) {
+//       renderPage(pdfInstanceRef.current, pageNumber, scale);
+//     }
+//   }, [pageNumber, scale]);
+
+//   const renderPage = async (pdf: any, num: number, scaleValue: number) => {
+//     const container = pdfContainerRef.current;
+
+//     if (!container || !pdf) return;
+
+//     container.innerHTML = "";
+
+//     const page = await pdf.getPage(num);
+//     const viewport = page.getViewport({ scale: scaleValue });
+
+//     const canvas = document.createElement("canvas");
+//     const context = canvas.getContext("2d");
+
+//     canvas.height = viewport.height;
+//     canvas.width = viewport.width;
+
+//     await page.render({
+//       canvasContext: context!,
+//       viewport,
+//     }).promise;
+
+//     container.appendChild(canvas);
+//   };
+
+//   const handleFitToWidth = async () => {
+//     if (!pdfInstanceRef.current || !pdfContainerRef.current) return;
+
+//     const page = await pdfInstanceRef.current.getPage(pageNumber);
+//     const unscaledViewport = page.getViewport({ scale: 1 });
+
+//     const containerWidth = pdfContainerRef.current.clientWidth;
+//     const newScale = containerWidth / unscaledViewport.width;
+
+//     setScale(newScale);
+//   };
+
+//   if (!selected) {
+//     return <div className="p-4">Selecciona una canción para visualizar.</div>;
+//   }
+
+//   const currentIndex = songs.findIndex(
+//     (song) => song.file.public_id === selected.public_id
+//   );
+
+//   const handlePrevSong = () => {
+//     if (currentIndex > 0) {
+//       setSelected(songs[currentIndex - 1].file);
+//     }
+//   };
+
+//   const handleNextSong = () => {
+//     if (currentIndex < songs.length - 1) {
+//       setSelected(songs[currentIndex + 1].file);
+//     }
+//   };
+
+//   return (
+//     <>
+//       <div className="py-0.5 px-1 flex justify-between items-center">
+//         <div className="flex items-center">
+//           <button
+//             className={`px-2 py-1 rounded ${
+//               currentIndex === 0
+//                 ? "bg-gray-200 opacity-50"
+//                 : "bg-gray-200 hover:bg-gray-300"
+//             }`}
+//             disabled={currentIndex === 0}
+//             onClick={handlePrevSong}
+//           >
+//             <Text $color={COLORS.primary} $ta="center" $v="md">
+//               Atrás
+//             </Text>
+//           </button>
+
+//           <button
+//             className={`px-2 py-1 rounded ${
+//               currentIndex === songs.length - 1
+//                 ? "bg-gray-200 opacity-50"
+//                 : "bg-gray-200 hover:bg-gray-300"
+//             }`}
+//             disabled={currentIndex === songs.length - 1}
+//             onClick={handleNextSong}
+//           >
+//             <Text $color={COLORS.primary} $ta="center" $v="md">
+//               Siguiente
+//             </Text>
+//           </button>
+//         </div>
+
+//         <a
+//           href={selected.secure_url}
+//           target="_blank"
+//           rel="noopener noreferrer"
+//         >
+//           <PiScreencast size={20} />
+//         </a>
+//       </div>
+
+//       {isMobileOrTablet && !error && (
+//         <div className="flex flex-wrap items-center gap-3 p-2 bg-gray-100">
+//           <button
+//             disabled={pageNumber <= 1}
+//             onClick={() => setPageNumber((p) => p - 1)}
+//           >
+//             ⬅
+//           </button>
+
+//           <span>
+//             Página {pageNumber} de {numPages}
+//           </span>
+
+//           <button
+//             disabled={pageNumber >= numPages}
+//             onClick={() => setPageNumber((p) => p + 1)}
+//           >
+//             ➡
+//           </button>
+
+//           <div className="flex items-center gap-2 ml-1">
+//             <button onClick={() => setScale((s) => s - 0.2)}>-</button>
+//             <span>Zoom: {Math.round(scale * 100)}%</span>
+//             <button onClick={() => setScale((s) => s + 0.2)}>+</button>
+//           </div>
+
+//           <button onClick={handleFitToWidth}>
+//             <Text
+//               $color={COLORS.primary}
+//               $v="md"
+//               className="ml-1 underline underline-offset-4"
+//             >
+//               Ajustar a ancho
+//             </Text>
+//           </button>
+//         </div>
+//       )}
+
+//       {isMobileOrTablet ? (
+//         error ? (
+//           <iframe
+//             className="heigth-pdf w-full"
+//             src={selected.secure_url}
+//             title={`PDF Viewer - ${selected.public_id}`}
+//           />
+//         ) : (
+//           <div
+//             ref={pdfContainerRef}
+//             className="w-full h-full overflow-auto p-2"
+//           />
+//         )
+//       ) : (
+//         <iframe
+//           className="heigth-pdf w-full"
+//           src={selected.secure_url}
+//           title={`PDF Viewer - ${selected.public_id}`}
+//         />
+//       )}
+//     </>
+//   );
+// };
+
 "use client";
 
 import { COLORS } from "@/styles/colors";
@@ -28,6 +255,7 @@ export const PDFViewer = ({
     setIsMobileOrTablet(/Android|iPhone|iPad|iPod/i.test(userAgent));
   }, []);
 
+ 
   useEffect(() => {
     if (!selected || !isMobileOrTablet) return;
 
@@ -35,12 +263,15 @@ export const PDFViewer = ({
       try {
         setError(false);
 
-        const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf");
+      
+        const pdfjsLib = await import("pdfjs-dist/build/pdf");
 
         pdfjsRef.current = pdfjsLib;
 
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-          `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+          "pdfjs-dist/build/pdf.worker.min.js",
+          import.meta.url
+        ).toString();
 
         const pdf = await pdfjsLib.getDocument(selected.secure_url).promise;
 
@@ -165,10 +396,7 @@ export const PDFViewer = ({
 
       {isMobileOrTablet && !error && (
         <div className="flex flex-wrap items-center gap-3 p-2 bg-gray-100">
-          <button
-            disabled={pageNumber <= 1}
-            onClick={() => setPageNumber((p) => p - 1)}
-          >
+          <button disabled={pageNumber <= 1} onClick={() => setPageNumber(p => p - 1)}>
             ⬅
           </button>
 
@@ -176,51 +404,44 @@ export const PDFViewer = ({
             Página {pageNumber} de {numPages}
           </span>
 
-          <button
-            disabled={pageNumber >= numPages}
-            onClick={() => setPageNumber((p) => p + 1)}
-          >
+          <button disabled={pageNumber >= numPages} onClick={() => setPageNumber(p => p + 1)}>
             ➡
           </button>
 
           <div className="flex items-center gap-2 ml-1">
-            <button onClick={() => setScale((s) => s - 0.2)}>-</button>
+            <button onClick={() => setScale(s => s - 0.2)}>-</button>
             <span>Zoom: {Math.round(scale * 100)}%</span>
-            <button onClick={() => setScale((s) => s + 0.2)}>+</button>
+            <button onClick={() => setScale(s => s + 0.2)}>+</button>
           </div>
 
           <button onClick={handleFitToWidth}>
-            <Text
-              $color={COLORS.primary}
-              $v="md"
-              className="ml-1 underline underline-offset-4"
-            >
+            <Text $color={COLORS.primary} $v="md" className="ml-1 underline underline-offset-4">
               Ajustar a ancho
             </Text>
           </button>
         </div>
       )}
 
-      {isMobileOrTablet ? (
+{isMobileOrTablet ? (
         error ? (
-          <iframe
-            className="heigth-pdf w-full"
-            src={selected.secure_url}
-            title={`PDF Viewer - ${selected.public_id}`}
-          />
-        ) : (
-          <div
-            ref={pdfContainerRef}
-            className="w-full h-full overflow-auto p-2"
-          />
-        )
-      ) : (
-        <iframe
-          className="heigth-pdf w-full"
-          src={selected.secure_url}
-          title={`PDF Viewer - ${selected.public_id}`}
-        />
-      )}
+           <iframe
+             className="heigth-pdf w-full"
+             src={selected.secure_url}
+             title={`PDF Viewer - ${selected.public_id}`}
+           />
+         ) : (
+           <div
+             ref={pdfContainerRef}
+             className="w-full h-full overflow-auto p-2"
+           />
+         )
+       ) : (
+         <iframe
+           className="heigth-pdf w-full"
+           src={selected.secure_url}
+           title={`PDF Viewer - ${selected.public_id}`}
+         />
+       )}
     </>
   );
 };
