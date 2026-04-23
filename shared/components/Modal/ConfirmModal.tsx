@@ -19,10 +19,12 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   onConfirm,
   message,
   isLoading = false,
-  title = "Confirmación",
+  titleHeader = "Confirmación",
+  titleButton = "Confirmación",
   placement,
   withInput = false,
   inputLabel,
+  showCancelButton = true,
 }) => {
   const [inputValue, setInputValue] = useState("");
   const isInputValid = inputValue.trim().length > 0;
@@ -35,6 +37,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   return (
     <Modal
+      hideCloseButton
       backdrop="opaque"
       isDismissable={false}
       isKeyboardDismissDisabled={false}
@@ -43,7 +46,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
       onOpenChange={(open) => !open && onClose()}
     >
       <ModalContent>
-        <ModalHeader className="text-primary ">Confirmación</ModalHeader>
+        <ModalHeader className="text-primary ">{titleHeader}</ModalHeader>
         <ModalBody>
           <Text>{message}</Text>
           {withInput && (
@@ -59,16 +62,18 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           )}
         </ModalBody>
         <ModalFooter>
-          <ButtonComponent color={ColorButton.DANGER} onPress={onClose}>
-            Cancelar
-          </ButtonComponent>
+        {showCancelButton && (
+        <ButtonComponent color={ColorButton.DANGER} onPress={onClose}>
+        Cancelar
+        </ButtonComponent>
+  )}
           <ButtonComponent
             color={ColorButton.PRIMARY}
             isLoading={isLoading}
             isDisabled={withInput && !isInputValid}
             onPress={() => onConfirm(inputValue)}
           >
-            {title}
+            {titleButton}
           </ButtonComponent>
         </ModalFooter>
       </ModalContent>
