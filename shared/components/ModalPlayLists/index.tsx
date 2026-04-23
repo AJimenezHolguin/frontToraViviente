@@ -232,7 +232,7 @@ export const ModalPlaylist = ({
         {...ConfirmModalProps}
         isLoading={loading}
         placement={PositionModal.CENTER}
-        title={
+        titleButton={
           loading
             ? playlistToEdit
               ? "Actualizando..."

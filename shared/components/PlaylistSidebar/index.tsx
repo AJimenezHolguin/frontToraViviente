@@ -54,59 +54,63 @@ export const PlaylistSidebar = ({
           <WrapperSubTitle title={type === "fileSong" ? "Letras:" : "Acordes:"}>
             <ul className="flex flex-col pt-6 space-y-2">
               {songs.map((song, index) => (
-                <button
-                  key={song._id}
-                  className={`cursor-pointer w-full text-left p-2 rounded-md flex items-center gap-2 hover:bg-gray-100 ${
-                    selected?.public_id === song.file.public_id
-                      ? "bg-gray-200"
-                      : ""
-                  }`}
-                  onClick={() => setSelected(song.file)}
-                >
-                  <FaFilePdf className="text-secondary" size={20} />
-                  <Text className="block w-full break-words">
-                    {(song.title || "")
-                      .split(" ")
-                      .map(
-                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
-                      )
-                      .join(" ")}
-                  </Text>
-                  <div className="flex items-center gap-1 ml-2">
-                    <button
-                      className="text-gray-600 hover:text-black disabled:opacity-30"
-                      disabled={index === 0}
-                      title="Mover arriba"
-                      onClick={() => moveItem(index, index - 1)}
-                    >
-                      <IoChevronUp
-                        className={index === 0 ? "opacity-30" : ""}
-                        size={20}
-                      />
-                    </button>
-
-                    <button
-                      className="text-gray-600 hover:text-black disabled:opacity-30"
-                      disabled={index === songs.length - 1}
-                      title="Mover abajo"
-                      onClick={() => moveItem(index, index + 1)}
-                    >
-                      <IoChevronDown
-                        className={
-                          index === songs.length - 1 ? "opacity-30" : ""
-                        }
-                        size={20}
-                      />
-                    </button>
-                  </div>
-                  <a
-                    href={song.linkSong}
-                    rel="noopener noreferrer"
-                    target="_blank"
+                <li key={song._id}>
+                  <div
+                    className={`cursor-pointer w-full text-left p-2 rounded-md flex items-center gap-2 hover:bg-gray-100 ${
+                      selected?.public_id === song.file.public_id
+                        ? "bg-gray-200"
+                        : ""
+                    }`}
+                    onClick={() => setSelected(song.file)}
+                    role="button"
                   >
-                    <IoLogoYoutube color="red" size={20} title="Youtube" />
-                  </a>
-                </button>
+                    <FaFilePdf className="text-secondary" size={20} />
+
+                    <Text className="block w-full break-words">
+                      {(song.title || "")
+                        .split(" ")
+                        .map(
+                          (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join(" ")}
+                    </Text>
+
+                    <div className="flex items-center gap-1 ml-2">
+                      <button
+                        className="text-gray-600 hover:text-black disabled:opacity-30"
+                        disabled={index === 0}
+                        title="Mover arriba"
+                        onClick={(e) => {
+                          e.stopPropagation(); 
+                          moveItem(index, index - 1);
+                        }}
+                      >
+                        <IoChevronUp size={20} />
+                      </button>
+
+                      <button
+                        className="text-gray-600 hover:text-black disabled:opacity-30"
+                        disabled={index === songs.length - 1}
+                        title="Mover abajo"
+                        onClick={(e) => {
+                          e.stopPropagation(); 
+                          moveItem(index, index + 1);
+                        }}
+                      >
+                        <IoChevronDown size={20} />
+                      </button>
+                    </div>
+
+                    <a
+                      href={song.linkSong}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <IoLogoYoutube color="red" size={20} title="Youtube" />
+                    </a>
+                  </div>
+                </li>
               ))}
             </ul>
           </WrapperSubTitle>

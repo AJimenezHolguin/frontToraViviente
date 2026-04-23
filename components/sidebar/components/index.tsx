@@ -49,7 +49,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <>
       <button
-        className="fixed top-4 left-4 z-30  bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
+        className="fixed top-4 left-4 z-50  bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
         onClick={onToggle}
       >
         {isOpen ? (
@@ -61,7 +61,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
 
       <div
         ref={sidebarRef}
-        className={`fixed overflow-y-auto top-0 left-0 z-20 h-screen w-[300px] bg-[#4da699] text-white transform transition-transform duration-300 flex flex-col ${
+        className={`fixed overflow-y-auto top-0 left-0 z-40 h-screen w-[300px] bg-[#4da699] text-white transform transition-transform duration-300 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         id="menu"

@@ -131,7 +131,7 @@ export const AllMovements = () => {
           {...ConfirmModalProps}
           isLoading={loading}
           placement={PositionModal.CENTER}
-          title={loading ? "Anulando..." : "Confirmar"}
+          titleButton={loading ? "Anulando..." : "Confirmar"}
         />
 
         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
