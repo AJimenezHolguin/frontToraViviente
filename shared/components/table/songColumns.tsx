@@ -23,14 +23,25 @@ export const songColumns:TableColumnType<Song>[] = [
     uid: "userName",
     name: "USUARIO",
     align: "start",
-    render: (song: Song) => (
-      <span>
-        {song.userName
-          ?.split(" ")
-          .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(" ") ?? "N/A"}
+    render: (song: Song) => {
+      const name = song.userName;
+      const isActive = song.isActive;
+
+      if(!name){
+        return <span className="text-gray-400">Sin usuario</span>;
+      }
+
+      const formattedName = name 
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+ 
+      return (
+      <span className={!isActive ? "opacity-50 italic" : ""}>
+        {formattedName}
       </span>
-    ),
+      )
+    },
   },
 
   {
