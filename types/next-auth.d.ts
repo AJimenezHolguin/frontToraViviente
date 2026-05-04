@@ -12,6 +12,7 @@ declare module "next-auth" {
       token: string;
       createdAt: string;
       updatedAt: string;
+      mustChangePassword: boolean;
     } & DefaultSession["user"];
   }
 
@@ -24,6 +25,7 @@ declare module "next-auth" {
     token: string;
     createdAt: string;
     updatedAt: string;
+    mustChangePassword: boolean;
   }
 }
 
@@ -37,5 +39,6 @@ declare module "next-auth/jwt" {
     token: string;
     createdAt: string;
     updatedAt: string;
+    mustChangePassword: boolean;
   }
 }

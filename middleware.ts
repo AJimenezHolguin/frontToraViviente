@@ -9,6 +9,10 @@ export default withAuth(
     const token = req.nextauth.token;
     const userRole = token?.role;
 
+    if (token?.mustChangePassword && !pathname.startsWith("/update-password")) {
+      return NextResponse.redirect(new URL("/update-password", req.url));
+    }
+
     const allowedRoles = Object.entries(routePermissions).find(([path]) =>
       pathname.startsWith(path)
     )?.[1];
@@ -18,6 +22,7 @@ export default withAuth(
         return NextResponse.redirect(new URL("/unauthorized", req.url));
       }
     }
+
 
     return NextResponse.next();
   },

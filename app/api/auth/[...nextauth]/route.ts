@@ -30,6 +30,7 @@ export const authOptions = {
             token: userResponse.token,
             createdAt: userResponse.user.createdAt,
             updatedAt: userResponse.user.updatedAt,
+            mustChangePassword: userResponse.user.mustChangePassword,
           };
         } catch (error) {
           console.error("Error en authorize:", error);
@@ -51,6 +52,7 @@ export const authOptions = {
         token.token = user.token;
         token.createdAt = user.createdAt;
         token.updatedAt = user.updatedAt;
+        token.mustChangePassword = user.mustChangePassword;
       }
 
       return token;
@@ -65,6 +67,7 @@ export const authOptions = {
         role: token.role,
         playList: token.playList,
         token: token.token,
+        mustChangePassword: token.mustChangePassword,
         createdAt: token.createdAt,
         updatedAt: token.updatedAt,
       };

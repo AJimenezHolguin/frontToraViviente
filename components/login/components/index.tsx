@@ -13,7 +13,7 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
 import { CheckboxComponent } from "@/shared/components/Checkbox";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import CustomAlert from "@/shared/components/CustomAlert";
 import { AlertType, AlertVariant } from "@/types/alert.interface";
 import { VariantButtonProps } from "@/shared/components/Button/types";
@@ -49,7 +49,15 @@ export const Login = () => {
       });
 
       if (response?.ok) {
-        router.push("/");
+
+        const session = await getSession();
+        
+        if(session?.user?.mustChangePassword) {
+          router.push("/update-password");
+        } else {
+          router.push("/");
+        }
+
       } else {
         setAlert({
           title: "Credenciales incorrectas",
