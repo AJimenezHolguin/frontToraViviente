@@ -23,7 +23,6 @@ export default withAuth(
       }
     }
 
-
     return NextResponse.next();
   },
   {
@@ -37,5 +36,9 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/unauthorized",
+    "/update-password",
+  ],
 };
