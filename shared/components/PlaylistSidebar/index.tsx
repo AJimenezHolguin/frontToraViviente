@@ -17,9 +17,9 @@ export const PlaylistSidebar = ({
 }: PlaylistSidebarProps) => {
   return (
     <div
-      className={`z-0 transition-all duration-300 bg-white border-r flex flex-col ${
+      className={`h-full flex flex-col overflow-hidden z-0 transition-all duration-300 bg-white border-r ${
         isSidebarOpen ? "w-3/4" : "w-10"
-      } overflow-hidden min-w-0 heigth-playlistSidebar`}
+      } min-w-0 relative`}
     >
       <div className="flex justify-between items-start p-4 shrink-0 ">
         {isSidebarOpen ? (
@@ -50,9 +50,9 @@ export const PlaylistSidebar = ({
       </div>
 
       {isSidebarOpen && (
-        <div className="w-[600px] px-4 pb-4 sidebar-scroll">
+        <div className="flex-1 w-full px-4 pb-4 overflow-auto">
           <WrapperSubTitle title={type === "fileSong" ? "Letras:" : "Acordes:"}>
-            <ul className="flex flex-col pt-6 space-y-2">
+            <ul className="flex flex-col pt-6 space-y-2 overflow-auto">
               {songs.map((song, index) => (
                 <li key={song._id}>
                   <div
