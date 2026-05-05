@@ -15,7 +15,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="bg-slate-100 w-screen h-screen overflow-hidden flex flex-col text-slate-300 selection:bg-blue-600 selection:text-white relative">
+    <div className="bg-slate-100 w-full h-screen overflow-hidden flex flex-col text-slate-300 selection:bg-blue-600 selection:text-white relative">
       <div
         className={`w-full h-[60px] flex justify-center items-center ${!isSidebarOpen ? "bg-secondary" : ""}`}
       >
