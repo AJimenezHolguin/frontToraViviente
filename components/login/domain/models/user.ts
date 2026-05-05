@@ -8,6 +8,7 @@ export interface User {
   email: string;
   role: RoleProps;
   mustChangePassword: boolean;
+  isActive?: boolean;
   playList: [];
   createdAt: string;
   updatedAt: string;

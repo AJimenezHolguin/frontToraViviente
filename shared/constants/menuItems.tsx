@@ -1,6 +1,6 @@
 import { RoleProps } from "@/types/roles.enum";
 import { SidebarMenuItemProps } from "../components/SidebarMenuItem/types"
-import { IoCalculator, IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline, IoKeyOutline } from 'react-icons/io5';
+import { IoCalculator, IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline, IoKeyOutline,IoPersonOutline } from 'react-icons/io5';
 
 
 export const menuItems: SidebarMenuItemProps[] = [
@@ -46,6 +46,13 @@ export const menuItems: SidebarMenuItemProps[] = [
         path: "/dashboard/update-my-password",
         icon: <IoKeyOutline size={30} />,
         allowedRoles : [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN]
+    },
+    {
+        title: "Gestión de usuarios",
+        subTitle: "Usuarios del sistema",
+        path: "/dashboard/users",
+        icon: <IoPersonOutline size={30} />,
+        allowedRoles : [RoleProps.ADMIN]
     },
 
 ]

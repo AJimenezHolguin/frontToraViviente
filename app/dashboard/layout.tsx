@@ -30,7 +30,7 @@ export default function DashboardLayout({
         </div>
       </div>
       {isSidebarOpen && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 z-10" />
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-10" />
       )}
       <div
         className={`flex-1 w-full text-slate-900 overflow-auto ${isSidebarOpen ? "pointer-events-none" : ""}`}
