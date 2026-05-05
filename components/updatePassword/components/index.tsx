@@ -100,7 +100,7 @@ export const UpdatePassword = () => {
 
   return (
     <>
-      <div className="p-4 w-full bg-surface text-on-surface min-h-screen flex flex-col items-center justify-center font-[Plus_Jakarta_Sans]">
+      <div className="p-4 w-full h-full flex flex-col items-center justify-center bg-surface text-on-surface font-[Plus_Jakarta_Sans]">
         <div className=" flex flex-col justify-center h-[500px] w-full max-w-md z-10">
           <div className="  text-center mb-8">
             <div className=" flex flex-col items-center gap-2">
