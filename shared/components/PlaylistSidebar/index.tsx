@@ -18,7 +18,7 @@ export const PlaylistSidebar = ({
   return (
     <div
       className={`h-full flex flex-col overflow-hidden z-0 transition-all duration-300 bg-white border-r ${
-        isSidebarOpen ? "w-3/4" : "w-10"
+        isSidebarOpen ? "width-playlistSidebar" : "w-10"
       } min-w-0 relative`}
     >
       <div className="flex justify-between items-start p-4 shrink-0 ">
