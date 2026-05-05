@@ -1,6 +1,6 @@
 import { RoleProps } from "@/types/roles.enum";
 import { SidebarMenuItemProps } from "../components/SidebarMenuItem/types"
-import { IoCalculator, IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline } from 'react-icons/io5';
+import { IoCalculator, IoListCircleOutline, IoListOutline, IoMusicalNoteOutline, IoMusicalNotesOutline, IoKeyOutline } from 'react-icons/io5';
 
 
 export const menuItems: SidebarMenuItemProps[] = [
@@ -44,7 +44,7 @@ export const menuItems: SidebarMenuItemProps[] = [
         title: "Actualizar mi contraseña",
         subTitle: "Mi contraseña",
         path: "/dashboard/update-my-password",
-        icon: <IoMusicalNotesOutline size={30} />,
+        icon: <IoKeyOutline size={30} />,
         allowedRoles : [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN]
     },
 

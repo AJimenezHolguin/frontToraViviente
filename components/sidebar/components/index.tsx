@@ -49,7 +49,7 @@ export const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
     <>
       <button
-        className="fixed top-4 left-4 z-50  bg-transparent text-white rounded-full md:right-[410px] transition-all duration-300"
+        className="fixed top-4 left-4 z-50  bg-transparent text-white rounded-full md:right-[980px] transition-all duration-300"
         onClick={onToggle}
       >
         {isOpen ? (
