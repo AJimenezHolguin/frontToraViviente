@@ -21,14 +21,15 @@ import AccountingModal from "@/shared/components/AccountingModal";
 import { useDeleteMovement } from "@/shared/feature/movements/deleteMovementHandler";
 import { User } from "@/components/login/domain/models/user";
 import { usersColumns } from "@/shared/components/table/usersColumn";
+import { getAllUsers } from "@/services/users/getAllUsers.service";
 
 export const AllUsers = () => {
-  const [allMovements, setAllMovements] = useState<User[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const [totalPages, setTotalPages] = useState(1);
-  const [totalSongs, setTotalSongs] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedMovementToEdit, setSelectedMovementToEdit] =
-    useState<Movements | null>(null);
+  const [selectedUserToEdit, setSelectedUserToEdit] =
+    useState<User | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -37,23 +38,23 @@ export const AllUsers = () => {
 
   const { handleDelete, loading } = useDeleteMovement(showAlert);
 
-  const handleDeleteAction = (movement: Movements) => {
+  const handleDeleteAction = (user: User) => {
     showConfirm(
-      `¿Estás seguro de que deseas anular el asiento contable "${movement.numReg}"?`,
+      `¿Estás seguro de que deseas anular el asiento contable "?`,
       async (description?:string) => {
-        await handleDelete(movement, description || "");
-        fetchAllMoments();
+        // await handleDelete(user, description || "");
+        fetchAllUsers();
       },
       {
         withInput: true,
         inputLabel:"motivo de anulación"
       }
     );
-    fetchAllMoments();
+    fetchAllUsers();
   };
 
-  const handleEditMovement = (movement: Movements) => {
-    setSelectedMovementToEdit(movement);
+  const handleEditUser = (user: User) => {
+    setSelectedUserToEdit(user);
     setIsModalOpen(true);
   };
 
@@ -61,13 +62,13 @@ export const AllUsers = () => {
     () => [
       ...usersColumns,
       createActionColumn<User>({
-        // onEdit: handleEditMovement,
-        // onDelete: handleDeleteAction,
-        // editLabel: "Ajuste",
-        // deleteLabel: "Anular"
+        onEdit: handleEditUser,
+        onDelete: handleDeleteAction,
+        editLabel: "Ajuste",
+        deleteLabel: "Anular"
       }),
     ],
-    [handleEditMovement]
+    [] //handleEditMovement esta propiedad va a dentro []
   );
   const {
     page,
@@ -82,21 +83,22 @@ export const AllUsers = () => {
     selectedKeys,
     setSelectedKeys,
     headerColumns,
-  } = useTable<User>(usersColumns);
+  } = useTable<User>(columns);
 
-  const fetchAllMoments = async () => {
+  const fetchAllUsers = async () => {
     try {
-      const movementsData = await getAllMovements({
+      const usersData = await getAllUsers({
         page,
         take: rowsPerPage ?? 5,
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-
+     
+      console.log("DATA USUARIOS", usersData);
       setIsLoading(true);
-    //   setAllMovements(movementsData.data || []);
-      setTotalPages(movementsData.metadata.pageCount);
-      setTotalSongs(movementsData.metadata.total);
+      setAllUsers(usersData.data || []);
+      setTotalPages(usersData.metadata.pageCount);
+      setTotalUsers(usersData.metadata.total);
     } catch (error) {
       console.error(error);
     } finally {
@@ -105,7 +107,7 @@ export const AllUsers = () => {
   };
 
   useEffect(() => {
-    fetchAllMoments();
+    fetchAllUsers();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
 
@@ -116,13 +118,13 @@ export const AllUsers = () => {
       <WrapperTitle title="Control de usuarios">
         <AccountingModal
           isOpen={isModalOpen}
-          recordToEdit={selectedMovementToEdit}
+          // recordToEdit={selectedUserToEdit}
      
           onClose={() => {
             setIsModalOpen(false)
-            setSelectedMovementToEdit(null);
+            setSelectedUserToEdit(null);
           }}
-          onSave={fetchAllMoments}
+          onSave={fetchAllUsers}
           />
         <ConfirmModal
           {...ConfirmModalProps}
@@ -149,7 +151,7 @@ export const AllUsers = () => {
               color={ColorButton.PRIMARY}
               endContent={<PlusIcon />}
               onPress={() => {
-                setSelectedMovementToEdit(null);
+                setSelectedUserToEdit(null);
                 setIsModalOpen(true);
               }}
             >
@@ -163,7 +165,7 @@ export const AllUsers = () => {
             ariaLabel="Tabla de Usuarios"
             label="Usuarios registrados"
             rowsPerPage={rowsPerPage ?? 5}
-            totalItems={totalSongs}
+            totalItems={totalUsers}
             onRowsPerPageChange={(value) => {
               setRowsPerPage(value);
               setPage(1);
@@ -173,7 +175,7 @@ export const AllUsers = () => {
             page={page}
             selectedKeys={selectedKeys}
             sortDescriptor={sortDescriptor}
-            sortedItems={allMovements}
+            sortedItems={allUsers}
             totalPages={totalPages}
             onPageChange={setPage}
             onSelectionChange={setSelectedKeys}

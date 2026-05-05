@@ -15,3 +15,14 @@ export const capitalizeFirstLetter = (text: string ): string => {
   
     return map[type] || capitalizeFirstLetter(type);
   };
+
+  
+  export const formatUserRole = (role: string): string => {
+    const map: Record<string, string> = {
+      admin: "Administrador",
+      musician: "Músico",
+      user: "Usuario",
+    };
+  
+    return map[role] || capitalizeFirstLetter(role);
+  };

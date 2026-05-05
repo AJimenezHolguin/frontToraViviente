@@ -2,21 +2,23 @@ import { COLORS } from "@/styles/colors";
 import { TableColumnType } from "./types";
 import { User } from "@/components/login/domain/models/user";
 import { Text } from "@/shared/components/Text";
-import { getMovementTypeColor } from "@/styles/movementsTypesStyles";
-import { capitalizeFirstLetter, formatMovementType } from "@/shared/utils/capitalizeFirstLetter";
+import { capitalizeFirstLetter, formatUserRole } from "@/shared/utils/capitalizeFirstLetter";
+import { getUserRoleColor } from "@/styles/usersRoleStyles";
 
 export const usersColumns:TableColumnType<User>[] = [
   {
     uid: "name",
     name: "NOMBRE",
     align: "start",
-    render: (song: User) => (
+    render: (user: User) => (
+      <Text $color={user.isActive === true ? "" : COLORS.light_gray}>
       <span>
-        {song.name
+        {user.name
           .split(" ")
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(" ")}
       </span>
+      </Text>
     ),
   },
 
@@ -50,17 +52,17 @@ export const usersColumns:TableColumnType<User>[] = [
     name: "ROL DEL USUARIO",
     align: "center",
     render: (user: User) => {
-      const typeStyle = getMovementTypeColor(user.role);
-
+      const roleStyle = getUserRoleColor(user.role);
+      
       return (
         <Text
           className={"inline-flex px-2 rounded-lg"}
           $ta={"center"}
-          $color={typeStyle.$color}
-          $bg={typeStyle.$bg}
+          $color={user.isActive === true ? roleStyle.$color : COLORS.light_gray}
+          $bg={user.isActive === true ? roleStyle.$bg : COLORS.transparent}
           $fw={500}
         >
-          <span>{formatMovementType(user.role)}</span>
+          <span>{formatUserRole(user.role)}</span>
         </Text>
       );
     },
