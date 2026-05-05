@@ -22,30 +22,34 @@ import CustomAlert from "@/shared/components/CustomAlert";
 import { Sizes } from "@/types/sizes.enum";
 import { VariantButtonProps } from "@/shared/components/Button/types";
 import { AlertType, AlertVariant } from "@/types/alert.interface";
-import axiosInstance from "@/config/axios/axiosInstance";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
+import { changePassword } from "@/services/users/changePassword.service";
 
 export const UpdatePassword = () => {
   const router = useRouter();
 
-  const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { showConfirm, ConfirmModalProps } = useModalAlert();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
   const [alert, setAlert] = useState<{
     title: string;
     description: string;
     visible: boolean;
   }>({ title: "", description: "", visible: false });
 
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  const togglePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
+
+  const toggleConfirmPasswordVisibility = () =>
+    setIsConfirmPasswordVisible((prev) => !prev);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // ✅ Validación frontend
     if (password !== confirmPassword) {
       setAlert({
         title: "Error",
@@ -67,18 +71,7 @@ export const UpdatePassword = () => {
         throw new Error("No hay sesión activa");
       }
 
-      // ✅ Llamada al backend
-      await axiosInstance.put(
-        "/auth/change-password",
-        {
-          newPassword: password,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await changePassword({ newPassword: password });
 
       await signOut({ redirect: false });
 
@@ -92,7 +85,6 @@ export const UpdatePassword = () => {
           titleHeader: "¡Éxito!",
         }
       );
-
     } catch (error) {
       console.error(error);
 
@@ -110,9 +102,8 @@ export const UpdatePassword = () => {
     <>
       <div className="p-4 w-full bg-surface text-on-surface min-h-screen flex flex-col items-center justify-center font-[Plus_Jakarta_Sans]">
         <div className=" flex flex-col justify-center h-[500px] w-full max-w-md z-10">
-          {/* Header Form */}
           <div className="  text-center mb-8">
-            <div className=" flex flex-col items-center gap-4">
+            <div className=" flex flex-col items-center gap-2">
               <div className=" w-15 h-15 p-1 rounded-full border-2 border-primary-container/20 overflow-hidden">
                 <Image
                   alt="Tora-Viviente"
@@ -132,17 +123,17 @@ export const UpdatePassword = () => {
             </div>
           </div>
 
-          {/* Form */}
           <div className="h-full bg-surface-container-lowest rounded-xl shadow p-1 md:p-4 border ">
-            <Form onSubmit={handleSubmit} className="space-y-2">
+            <Form onSubmit={handleSubmit} className="space-y-1">
               <InputComponent
+                isRequired={true}
                 classNames={{
                   [InputClassNameKeys.BASE]: "pt-6",
                 }}
                 endContent={
                   <PasswordToggleIcon
-                    isVisible={isVisible}
-                    toggleVisibility={toggleVisibility}
+                    isVisible={isPasswordVisible}
+                    toggleVisibility={togglePasswordVisibility}
                   />
                 }
                 label="Contraseña nueva"
@@ -150,7 +141,7 @@ export const UpdatePassword = () => {
                 minLength={6}
                 placeholder={"********"}
                 radius={RadiusProps.SM}
-                type={isVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
+                type={isPasswordVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
                 value={password}
                 variant={VariantProps.BORDERED}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -159,13 +150,14 @@ export const UpdatePassword = () => {
               />
 
               <InputComponent
+                isRequired={true}
                 classNames={{
                   [InputClassNameKeys.BASE]: "pt-6",
                 }}
                 endContent={
                   <PasswordToggleIcon
-                    isVisible={isVisible}
-                    toggleVisibility={toggleVisibility}
+                    isVisible={isConfirmPasswordVisible}
+                    toggleVisibility={toggleConfirmPasswordVisibility}
                   />
                 }
                 label="Confirmar contraseña nueva"
@@ -173,14 +165,16 @@ export const UpdatePassword = () => {
                 minLength={6}
                 placeholder={"********"}
                 radius={RadiusProps.SM}
-                type={isVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
+                type={
+                  isConfirmPasswordVisible ? TypeProps.TEXT : TypeProps.PASSWORD
+                }
                 value={confirmPassword}
                 variant={VariantProps.BORDERED}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                   setConfirmPassword(event.target.value)
                 }
               />
-              {/* Submit */}
+
               <ButtonComponent
                 className="mt-[45px] text-white font-bold"
                 color={ColorButton.PRIMARY}
@@ -192,7 +186,6 @@ export const UpdatePassword = () => {
                 Actualizar →
               </ButtonComponent>
 
-              {/* Cancel */}
               <div className="w-full text-center">
                 <Link
                   className="text-secondary text-sm hover:text-primary "

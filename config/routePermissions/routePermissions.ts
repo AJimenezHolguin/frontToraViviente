@@ -6,4 +6,5 @@ export const routePermissions: Record<string, RoleProps[]> = {
   "/dashboard/all-playlists": [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN],
   "/dashboard/my-songs": [RoleProps.ADMIN, RoleProps.MUSICIAN],
   "/dashboard/all-songs": [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN],
+  "/dashboard/update-password": [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN],
 };

@@ -40,6 +40,13 @@ export const menuItems: SidebarMenuItemProps[] = [
         icon: <IoMusicalNotesOutline size={30} />,
         allowedRoles : [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN]
     },
+    {
+        title: "Actualizar mi contraseña",
+        subTitle: "Mi contraseña",
+        path: "/dashboard/update-my-password",
+        icon: <IoMusicalNotesOutline size={30} />,
+        allowedRoles : [RoleProps.USER, RoleProps.ADMIN, RoleProps.MUSICIAN]
+    },
 
 ]
 
