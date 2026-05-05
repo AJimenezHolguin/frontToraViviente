@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { SpinnerComponent } from "../Spinner";
 import { Props } from "./types";
