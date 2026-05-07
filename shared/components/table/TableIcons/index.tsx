@@ -173,3 +173,192 @@ export const SearchIcon = (props: IconSvgProps) => {
       </svg>
     );
   };
+
+  // 1. Asignar contraseña temporal
+export const TemporaryPasswordIcon = (props: IconSvgProps) => {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      viewBox="0 0 20 20"
+      width="1em"
+      {...props}
+    >
+      {/* Candado */}
+      <path
+        d="M6.66667 8.33333V6.66667C6.66667 4.825 8.15833 3.33333 10 3.33333C11.8417 3.33333 13.3333 4.825 13.3333 6.66667V8.33333"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+
+      <path
+        d="M10 12.0833V13.3333"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+
+      <rect
+        x="4.16667"
+        y="8.33333"
+        width="11.6667"
+        height="8.33333"
+        rx="2"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      />
+
+      {/* Reloj pequeño */}
+      <path
+        d="M14.5833 4.16667V5.83333"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+
+      <path
+        d="M14.5833 5.83333L15.4167 6.66667"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  );
+};
+
+// 2. Cambio de rol de usuario
+export const ChangeUserRoleIcon = (props: IconSvgProps) => {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      viewBox="0 0 20 20"
+      width="1em"
+      {...props}
+    >
+      {/* Usuario */}
+      <path
+        d="M10 9.16667C11.8409 9.16667 13.3333 7.67428 13.3333 5.83333C13.3333 3.99238 11.8409 2.5 10 2.5C8.15905 2.5 6.66666 3.99238 6.66666 5.83333C6.66666 7.67428 8.15905 9.16667 10 9.16667Z"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      />
+
+      <path
+        d="M4.16666 16.6667C4.16666 13.9 6.78333 11.6667 10 11.6667C13.2167 11.6667 15.8333 13.9 15.8333 16.6667"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+
+      {/* Flechas de cambio */}
+      <path
+        d="M14.1667 9.16667H17.5L16.25 7.91667"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+
+      <path
+        d="M17.5 9.16667L16.25 10.4167"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  );
+};
+
+// 3. Activar usuario
+export const ActivateUserIcon = (props: IconSvgProps) => {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      viewBox="0 0 20 20"
+      width="1em"
+      {...props}
+    >
+      {/* Usuario */}
+      <path
+        d="M10 9.16667C11.8409 9.16667 13.3333 7.67428 13.3333 5.83333C13.3333 3.99238 11.8409 2.5 10 2.5C8.15905 2.5 6.66666 3.99238 6.66666 5.83333C6.66666 7.67428 8.15905 9.16667 10 9.16667Z"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      />
+
+      <path
+        d="M4.16666 16.6667C4.16666 13.9 6.78333 11.6667 10 11.6667C11.0667 11.6667 12.0667 11.9083 12.9333 12.3333"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+
+      {/* Check */}
+      <path
+        d="M13.3333 15L15 16.6667L18.3333 13.3333"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  );
+};
+
+// 4. Deshabilitar usuario
+export const DisableUserIcon = (props: IconSvgProps) => {
+  return (
+    <svg
+      aria-hidden="true"
+      fill="none"
+      focusable="false"
+      height="1em"
+      role="presentation"
+      viewBox="0 0 20 20"
+      width="1em"
+      {...props}
+    >
+      {/* Usuario */}
+      <path
+        d="M10 9.16667C11.8409 9.16667 13.3333 7.67428 13.3333 5.83333C13.3333 3.99238 11.8409 2.5 10 2.5C8.15905 2.5 6.66666 3.99238 6.66666 5.83333C6.66666 7.67428 8.15905 9.16667 10 9.16667Z"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      />
+
+      <path
+        d="M4.16666 16.6667C4.16666 13.9 6.78333 11.6667 10 11.6667C11.0667 11.6667 12.0667 11.9083 12.9333 12.3333"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+
+      {/* X */}
+      <path
+        d="M14.1667 14.1667L17.5 17.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+
+      <path
+        d="M17.5 14.1667L14.1667 17.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth={1.5}
+      />
+    </svg>
+  );
+};

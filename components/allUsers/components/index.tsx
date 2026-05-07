@@ -59,10 +59,18 @@ export const AllUsers = () => {
     () => [
       ...usersColumns,
       createActionColumn<User>({
-        onEdit: handleEditUser,
-        onDelete: handleDeleteAction,
+        
+        onChangeUserRole: handleDeleteAction,
+        onTemporaryPassword: handleEditUser,
+        onActivateUser: handleEditUser,
+        onDisableUser: handleEditUser,
         editLabel: "Ajuste",
-        deleteLabel: "Anular"
+        deleteLabel: "Anular",
+        changeUserRoleLabel: "Cambiar rol de usuario",
+        changePasswordLabel: "Asignar contraseña temporal",
+        activateUserLabel: "Activar usuario",
+        disableUserLabel: "Desactivar usuario",
+        isActive: (user) => user.isActive || false
       }),
     ],
     [] //handleEditMovement esta propiedad va a dentro []
