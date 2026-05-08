@@ -15,10 +15,14 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { PlusIcon } from "@/shared/components/table/TableIcons";
 import { Text } from "@/shared/components/Text";
 import AccountingModal from "@/shared/components/AccountingModal";
-import { useDeleteMovement } from "@/shared/feature/movements/deleteMovementHandler";
 import { User } from "@/components/login/domain/models/user";
 import { usersColumns } from "@/shared/components/table/usersColumn";
 import { getAllUsers } from "@/services/users/getAllUsers.service";
+import { useUserAction } from "@/shared/hooks/users/useUserAction";
+import { reactivateUser } from "@/services/users/patchReactiveUser.service";
+import { desactiveUser } from "@/services/users/desactiveUser.service";
+
+
 
 export const AllUsers = () => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
@@ -33,23 +37,37 @@ export const AllUsers = () => {
   const { showConfirm, showAlert, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
 
-  const { handleDelete, loading } = useDeleteMovement(showAlert);
+    const {
+      executeAction: handleReactive,
+      loading: loadingReactiveUser,
+    } = useUserAction({
+      actionFn: reactivateUser,
+      successMessage: "Usuario reactivado correctamente",
+      errorMessage: "Error al reactivar usuario",
+      showAlert,
+    });
+    
+    const {
+      executeAction: handleDesactive,
+      loading: loadingDesactiveUser,
+    } = useUserAction({
+      actionFn: desactiveUser,
+      successMessage: "Usuario desactivado correctamente",
+      errorMessage: "Error al desactivar usuario",
+      showAlert,
+    });
 
-  const handleDeleteAction = (user: User) => {
-    showConfirm(
-      `¿Estás seguro de que deseas anular el asiento contable "?`,
-      async (description?:string) => {
-        // await handleDelete(user, description || "");
+    const handleUserAction = (
+      user: User,
+      action: () => Promise<void>,
+      message: string
+    ) => {
+      showConfirm(message, async () => {
+        await action();
         fetchAllUsers();
-      },
-      {
-        withInput: true,
-        inputLabel:"motivo de anulación"
-      }
-    );
-    fetchAllUsers();
-  };
-
+      });
+    };
+ 
   const handleEditUser = (user: User) => {
     setSelectedUserToEdit(user);
     setIsModalOpen(true);
@@ -60,12 +78,23 @@ export const AllUsers = () => {
       ...usersColumns,
       createActionColumn<User>({
         
-        onChangeUserRole: handleDeleteAction,
+        onChangeUserRole: handleEditUser,
         onTemporaryPassword: handleEditUser,
-        onActivateUser: handleEditUser,
-        onDisableUser: handleEditUser,
-        editLabel: "Ajuste",
-        deleteLabel: "Anular",
+  
+        onActivateUser: (user) =>
+          handleUserAction(
+            user,
+            () => handleReactive(user),
+            "¿Desea reactivar el usuario?"
+          ),
+   
+
+        onDisableUser: (user) =>
+          handleUserAction(
+            user,
+            () => handleDesactive(user),
+            "¿Desea desactivar el usuario?"
+          ),
         changeUserRoleLabel: "Cambiar rol de usuario",
         changePasswordLabel: "Asignar contraseña temporal",
         activateUserLabel: "Activar usuario",
@@ -133,9 +162,9 @@ export const AllUsers = () => {
           />
         <ConfirmModal
           {...ConfirmModalProps}
-          isLoading={loading}
+          isLoading={loadingReactiveUser || loadingDesactiveUser }
           placement={PositionModal.CENTER}
-          titleButton={loading ? "Anulando..." : "Confirmar"}
+          titleButton={loadingReactiveUser ? "Anulando..." : "Confirmar"}
         />
 
         <AlertModal {...AlertModalProps} placement={PositionModal.CENTER} />
