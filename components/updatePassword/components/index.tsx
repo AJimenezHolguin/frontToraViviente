@@ -31,6 +31,8 @@ export const UpdatePassword = () => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { showConfirm, ConfirmModalProps } = useModalAlert();
@@ -61,7 +63,7 @@ export const UpdatePassword = () => {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+        setIsPageLoading(false);
       }
     };
 
@@ -82,21 +84,21 @@ export const UpdatePassword = () => {
       return;
     }
 
-    setIsLoading(true);
-
+    
     try {
+      setIsSubmitting(true);
       const session = await getSession();
-
+      
       const token = session?.user?.token;
-
+      
       if (!token) {
         throw new Error("No hay sesión activa");
       }
-
+      
       await changePassword({ newPassword: password });
-
+      
       await signOut({ redirect: false });
-
+      
       showConfirm(
         "Contraseña actualizada exitosamente. Por favor, inicia sesión con tu nueva contraseña.",
         () => {
@@ -109,18 +111,18 @@ export const UpdatePassword = () => {
       );
     } catch (error) {
       console.error(error);
-
+      
       setAlert({
         title: "Error",
         description: "No se pudo actualizar la contraseña",
         visible: true,
       });
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
-
-  if (isLoading) return <SpinnerComponent />;
+  
+  if (isPageLoading) return <SpinnerComponent />;
 
   return (
     <>
@@ -204,7 +206,7 @@ export const UpdatePassword = () => {
                 color={ColorButton.PRIMARY}
                 fullWidth={true}
                 isDisabled={!password || !confirmPassword}
-                isLoading={isLoading}
+                isLoading={isSubmitting}
                 type="submit"
               >
                 Actualizar →
