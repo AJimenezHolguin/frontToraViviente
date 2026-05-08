@@ -20,8 +20,9 @@ import { resetPasswordForAdmin } from "@/services/users/resetPasswordForAdmin.se
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { ConfirmModal } from "../Modal/ConfirmModal";
 import { AlertModal } from "../Modal/ModalAlert";
+import { ModalUpdatePasswordProps } from "./types";
 
-export const ModalUpdatePassword: React.FC<ConfirmModalProps> = ({
+export const ModalUpdatePassword: React.FC<ModalUpdatePasswordProps> = ({
   isOpen,
   onClose,
   message,
