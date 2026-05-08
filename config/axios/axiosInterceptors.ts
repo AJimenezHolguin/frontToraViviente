@@ -4,7 +4,7 @@ import { getSession } from "next-auth/react";
 import { eventBus } from "@/shared/utils/eventBus";
 import { HTTP_STATUS } from "./constanst";
 
-const excludedRoutes = ["/auth/login", "/auth/register"];
+const excludedRoutes = ["/auth/login", "/auth/register-public"];
 const applyInterceptors = (api: AxiosInstance) => {
   api.interceptors.request.use(
     async (config) => {

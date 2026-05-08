@@ -4,14 +4,20 @@ import { CategoryProps } from "@/types/category.enum";
 import { SelectedInputProps } from "./types";
 import { inputWithLabelStyles } from "@/styles/inputStyles";
 
-export const SelectedInput = ({ value, onChange }: SelectedInputProps) => {
+export const SelectedInput = ({  
+  value,
+  label,
+  placeholder,
+  options,
+  isRequired = false,
+  onChange,}: SelectedInputProps) => {
   return (
     <div className="flex w-full flex-col gap-2">
       <Select
-        isRequired
+        isRequired={isRequired}
         classNames={inputWithLabelStyles}
-        label="Categoría"
-        placeholder="Selecciona una categoría"
+        label={label}
+        placeholder={placeholder}
         selectedKeys={new Set([value])}
         variant="bordered"
         onSelectionChange={(keys) => {
@@ -20,11 +26,11 @@ export const SelectedInput = ({ value, onChange }: SelectedInputProps) => {
           onChange(selected);
         }}
       >
-        {Object.values(CategoryProps).map((category) => (
+        {options.map((option) => (
           <SelectItem
-            key={category}
+            key={option.value}
             color="primary"
-            textValue={category}
+            textValue={option.label}
             className="group"
             classNames={{
               base: "hover:bg-primary-100 hover:text-primary-700 data-[hover=true]:bg-primary-100 data-[hover=true]:text-primary-700",
@@ -32,7 +38,7 @@ export const SelectedInput = ({ value, onChange }: SelectedInputProps) => {
   
             }}
           >
-            {category}
+            {option.label}
           </SelectItem>
         ))}
       </Select>

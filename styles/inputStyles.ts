@@ -9,5 +9,5 @@ export const inputStyles = {
 
   export const inputWithLabelStyles = {
     ...inputStyles,
-    label:"pb-5"
+    label:"pb-1"
   }
