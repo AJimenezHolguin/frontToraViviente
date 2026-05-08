@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { COLORS } from "@/styles/colors";
@@ -25,11 +25,12 @@ import { AlertType, AlertVariant } from "@/types/alert.interface";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { changePassword } from "@/services/users/changePassword.service";
+import { SpinnerComponent } from "@/shared/components/Spinner";
 
 export const UpdatePassword = () => {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { showConfirm, ConfirmModalProps } = useModalAlert();
@@ -41,12 +42,33 @@ export const UpdatePassword = () => {
     description: string;
     visible: boolean;
   }>({ title: "", description: "", visible: false });
-
+  
   const togglePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
-
+  
   const toggleConfirmPasswordVisibility = () =>
     setIsConfirmPasswordVisible((prev) => !prev);
+  
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        const session = await getSession();
 
+        if (!session) {
+          router.push("/login");
+          
+          return;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initialize();
+  }, [router]);
+  
+  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -97,6 +119,8 @@ export const UpdatePassword = () => {
       setIsLoading(false);
     }
   };
+
+  if (isLoading) return <SpinnerComponent />;
 
   return (
     <>

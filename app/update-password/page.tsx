@@ -2,5 +2,10 @@ import { UpdatePassword } from "@/components/updatePassword/components";
 
 
 export default function UpdatePasswordPage() {
-  return <UpdatePassword />
+  return (
+    <div className="h-screen">
+      < UpdatePassword />
+    </div>
+  )
+    
 }
