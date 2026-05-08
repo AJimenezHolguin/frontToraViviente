@@ -14,60 +14,55 @@ import { ButtonComponent } from "@/shared/components/Button";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { PlusIcon } from "@/shared/components/table/TableIcons";
 import { Text } from "@/shared/components/Text";
-import AccountingModal from "@/shared/components/AccountingModal";
 import { User } from "@/components/login/domain/models/user";
 import { usersColumns } from "@/shared/components/table/usersColumn";
 import { getAllUsers } from "@/services/users/getAllUsers.service";
 import { useUserAction } from "@/shared/hooks/users/useUserAction";
 import { reactivateUser } from "@/services/users/patchReactiveUser.service";
 import { desactiveUser } from "@/services/users/desactiveUser.service";
-
-
+import { ModalUpdatePassword } from "@/shared/components/ModalUpdatePassword";
 
 export const AllUsers = () => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [totalUsers, setTotalUsers] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedUserToEdit, setSelectedUserToEdit] =
-    useState<User | null>(null);
+  const [selectedUserToEdit, setSelectedUserToEdit] = useState<User | null>(
+    null
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { showConfirm, showAlert, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
 
-    const {
-      executeAction: handleReactive,
-      loading: loadingReactiveUser,
-    } = useUserAction({
+  const { executeAction: handleReactive, loading: loadingReactiveUser } =
+    useUserAction({
       actionFn: reactivateUser,
       successMessage: "Usuario reactivado correctamente",
       errorMessage: "Error al reactivar usuario",
       showAlert,
     });
-    
-    const {
-      executeAction: handleDesactive,
-      loading: loadingDesactiveUser,
-    } = useUserAction({
+
+  const { executeAction: handleDesactive, loading: loadingDesactiveUser } =
+    useUserAction({
       actionFn: desactiveUser,
       successMessage: "Usuario desactivado correctamente",
       errorMessage: "Error al desactivar usuario",
       showAlert,
     });
 
-    const handleUserAction = (
-      user: User,
-      action: () => Promise<void>,
-      message: string
-    ) => {
-      showConfirm(message, async () => {
-        await action();
-        fetchAllUsers();
-      });
-    };
- 
+  const handleUserAction = (
+    user: User,
+    action: () => Promise<void>,
+    message: string
+  ) => {
+    showConfirm(message, async () => {
+      await action();
+      fetchAllUsers();
+    });
+  };
+
   const handleEditUser = (user: User) => {
     setSelectedUserToEdit(user);
     setIsModalOpen(true);
@@ -77,17 +72,15 @@ export const AllUsers = () => {
     () => [
       ...usersColumns,
       createActionColumn<User>({
-        
         onChangeUserRole: handleEditUser,
         onTemporaryPassword: handleEditUser,
-  
+
         onActivateUser: (user) =>
           handleUserAction(
             user,
             () => handleReactive(user),
             "¿Desea reactivar el usuario?"
           ),
-   
 
         onDisableUser: (user) =>
           handleUserAction(
@@ -99,10 +92,10 @@ export const AllUsers = () => {
         changePasswordLabel: "Asignar contraseña temporal",
         activateUserLabel: "Activar usuario",
         disableUserLabel: "Desactivar usuario",
-        isActive: (user) => user.isActive || false
+        isActive: (user) => user.isActive || false,
       }),
     ],
-    [] //handleEditMovement esta propiedad va a dentro []
+    []
   );
   const {
     page,
@@ -127,7 +120,7 @@ export const AllUsers = () => {
         order: sortDescriptor.direction === "ascending" ? "ASC" : "DESC",
         search: filterValue,
       });
-     
+
       console.log("DATA USUARIOS", usersData);
       setIsLoading(true);
       setAllUsers(usersData.data || []);
@@ -144,25 +137,25 @@ export const AllUsers = () => {
     fetchAllUsers();
   }, [page, rowsPerPage, sortDescriptor, filterValue]);
 
-
   if (isLoading) return <SpinnerComponent />;
 
   return (
     <>
       <WrapperTitle title="Control de usuarios">
-        <AccountingModal
+        <ModalUpdatePassword
+          titleHeader="Asignar contraseña temporal"
           isOpen={isModalOpen}
-          // recordToEdit={selectedUserToEdit}
-     
+          selectedUser={selectedUserToEdit}
+          message={`¿Desea asignar una contraseña temporal al usuario:\n${selectedUserToEdit?.name}?`}
           onClose={() => {
-            setIsModalOpen(false)
+            setIsModalOpen(false);
             setSelectedUserToEdit(null);
           }}
-          onSave={fetchAllUsers}
-          />
+        />
+
         <ConfirmModal
           {...ConfirmModalProps}
-          isLoading={loadingReactiveUser || loadingDesactiveUser }
+          isLoading={loadingReactiveUser || loadingDesactiveUser}
           placement={PositionModal.CENTER}
           titleButton={loadingReactiveUser ? "Anulando..." : "Confirmar"}
         />

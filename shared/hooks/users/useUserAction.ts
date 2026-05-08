@@ -1,15 +1,8 @@
 import { useState } from "react";
-import { AlertType } from "@/shared/components/Modal/types";
 import { User } from "@/components/login/domain/models/user";
+import { UseUserActionProps } from "./types";
 
-interface UseUserActionProps<T> {
-  actionFn: (id: string) => Promise<T>;
-  successMessage: string;
-  errorMessage: string;
-  showAlert: (type: AlertType, message: string) => void;
-}
-
-export const useUserAction = <T,>({
+export const useUserAction = <T>({
   actionFn,
   successMessage,
   errorMessage,
@@ -25,10 +18,7 @@ export const useUserAction = <T,>({
 
       showAlert("success", successMessage);
     } catch (error: any) {
-      showAlert(
-        "error",
-        error?.message || errorMessage
-      );
+      showAlert("error", error?.message || errorMessage);
     } finally {
       setLoading(false);
     }
