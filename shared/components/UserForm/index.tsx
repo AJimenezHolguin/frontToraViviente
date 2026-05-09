@@ -80,9 +80,9 @@ export const UserForm: React.FC<UserFormProps> = ({
       {showRoleField && (
         <SelectedInput
           isRequired
-          label="Rol"
+          label="Rol del usuario"
           options={roleOptions}
-          placeholder="Selecciona un rol"
+          placeholder="Selecciona un rol para el usuario"
           value={form.role || ""}
           onChange={(value) =>
             setForm({

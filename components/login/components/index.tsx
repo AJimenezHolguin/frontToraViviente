@@ -138,15 +138,7 @@ export const Login = () => {
                   >
                     Recordarme
                   </CheckboxComponent>
-                  <Text
-                    $color={COLORS.lila}
-                    $v="sm"
-                    className={
-                      "mt-6 font-bold underline decoration-black-500 underline-offset-4"
-                    }
-                  >
-                    ¿Olvidaste tu contraseña?
-                  </Text>
+           
                 </div>
 
                 <ButtonComponent

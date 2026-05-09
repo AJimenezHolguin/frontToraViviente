@@ -18,6 +18,7 @@ import { UserRole } from "@/services/users/types";
 import { createUserForAdmin } from "@/services/users/createUserForAdmin.service";
 import { UserForm } from "@/shared/components/UserForm";
 import { ModalRegisterForAdminProps } from "./types";
+import { UserFormData } from "@/shared/components/UserForm/types";
 
 export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   isOpen,
@@ -28,7 +29,7 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<UserFormData>({
     name: "",
     email: "",
     password: "",
@@ -44,13 +45,17 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
     try {
       setIsLoading(true);
 
-      const response = await createUserForAdmin(form);
-
-      setForm({
-        name: "",
-        email: "",
-        password: "",
-        role: UserRole.USER,
+      if (!form.role) {
+        showAlert("error", "Debes seleccionar un rol");
+      
+        return;
+      }
+      
+      const response = await createUserForAdmin({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role: form.role,
       });
 
       onClose();
