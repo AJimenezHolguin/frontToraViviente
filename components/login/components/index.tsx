@@ -22,6 +22,7 @@ import { COLORS } from "@/styles/colors";
 import { InputClassNameKeys } from "@/types/classNamesKeys";
 import { InputComponent, PasswordToggleIcon } from "@/shared/components/Input";
 import { ButtonComponent } from "@/shared/components/Button";
+import Link from "next/link";
 
 export const Login = () => {
   const router = useRouter();
@@ -171,7 +172,9 @@ export const Login = () => {
                     "font-bold underline decoration-black-500 underline-offset-4"
                   }
                 >
+                  <Link href="/register-public">
                   Crear una cuenta
+                  </Link>
                 </Text>
               </div>
             </div>

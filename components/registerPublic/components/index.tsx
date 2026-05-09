@@ -27,15 +27,18 @@ import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { changePassword } from "@/services/users/changePassword.service";
 import { SpinnerComponent } from "@/shared/components/Spinner";
 
-export const UpdatePassword = () => {
+export const RegisterPublic = () => {
   const router = useRouter();
+
+
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const { showConfirm, ConfirmModalProps } = useModalAlert();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+
     useState(false);
   const [alert, setAlert] = useState<{
     title: string;
@@ -45,15 +48,14 @@ export const UpdatePassword = () => {
   
   const togglePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
   
-  const toggleConfirmPasswordVisibility = () =>
-    setIsConfirmPasswordVisible((prev) => !prev);
+
   
   useEffect(() => {
     const initialize = async () => {
       try {
         const session = await getSession();
 
-        if (!session) {
+        if (session) {
           router.push("/login");
           
           return;
@@ -72,16 +74,6 @@ export const UpdatePassword = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (password !== confirmPassword) {
-      setAlert({
-        title: "Error",
-        description: "Las contraseñas no coinciden",
-        visible: true,
-      });
-
-      return;
-    }
-
     
     try {
       setIsSubmitting(true);
@@ -98,9 +90,9 @@ export const UpdatePassword = () => {
       await signOut({ redirect: false });
       
       showConfirm(
-        "Contraseña actualizada exitosamente. Por favor, inicia sesión con tu nueva contraseña.",
+        "Usuario registrado exitosamente por favor inicia sesión con tu nueva contraseña.",
         () => {
-          router.push("/login");
+          router.push("/dashboard/all-playlists");
         },
         {
           showCancelButton: false,
@@ -138,17 +130,54 @@ export const UpdatePassword = () => {
               </div>
 
               <Text $color={COLORS.lila} $v="h1">
-                Actualizar Contraseña
+                Registro de usuario
               </Text>
 
               <p className="text-secondary font-medium px-4">
-                Asegura tu cuenta con una nueva clave de acceso.
+              Completa tu registro y activa tu nueva cuenta de usuario.
               </p>
             </div>
           </div>
 
           <div className="h-full bg-surface-container-lowest rounded-xl shadow p-1 md:p-4 border ">
             <Form onSubmit={handleSubmit} className="space-y-1">
+            <InputComponent
+                isRequired={true}
+                classNames={{
+                  [InputClassNameKeys.BASE]: "pt-6",
+                }}
+             
+                label="Nombre y apellidos"
+                labelPlacement={LabelPlacementProps.OUTSIDE}
+                minLength={6}
+                placeholder={"Ejemplo: Juan Giraldo Cortes"}
+                radius={RadiusProps.SM}
+                type={TypeProps.TEXT }
+                value={name}
+                variant={VariantProps.BORDERED}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setName(event.target.value)
+                }
+              />
+              <InputComponent
+                isRequired={true}
+                classNames={{
+                  [InputClassNameKeys.BASE]: "pt-6",
+                }}
+           
+                label="Email"
+                labelPlacement={LabelPlacementProps.OUTSIDE}
+                minLength={6}
+                placeholder={"Ejemplo: usuario@toraviviente.com"}
+                radius={RadiusProps.SM}
+                type={TypeProps.TEXT }
+                value={email}
+                variant={VariantProps.BORDERED}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(event.target.value)
+                }
+              />
+
               <InputComponent
                 isRequired={true}
                 classNames={{
@@ -160,12 +189,14 @@ export const UpdatePassword = () => {
                     toggleVisibility={togglePasswordVisibility}
                   />
                 }
-                label="Contraseña nueva"
+                label="contraseña"
                 labelPlacement={LabelPlacementProps.OUTSIDE}
                 minLength={6}
                 placeholder={"********"}
                 radius={RadiusProps.SM}
-                type={isPasswordVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
+                type={
+                    isPasswordVisible ? TypeProps.TEXT : TypeProps.PASSWORD
+                }
                 value={password}
                 variant={VariantProps.BORDERED}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -173,41 +204,15 @@ export const UpdatePassword = () => {
                 }
               />
 
-              <InputComponent
-                isRequired={true}
-                classNames={{
-                  [InputClassNameKeys.BASE]: "pt-6",
-                }}
-                endContent={
-                  <PasswordToggleIcon
-                    isVisible={isConfirmPasswordVisible}
-                    toggleVisibility={toggleConfirmPasswordVisibility}
-                  />
-                }
-                label="Confirmar contraseña nueva"
-                labelPlacement={LabelPlacementProps.OUTSIDE}
-                minLength={6}
-                placeholder={"********"}
-                radius={RadiusProps.SM}
-                type={
-                  isConfirmPasswordVisible ? TypeProps.TEXT : TypeProps.PASSWORD
-                }
-                value={confirmPassword}
-                variant={VariantProps.BORDERED}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  setConfirmPassword(event.target.value)
-                }
-              />
-
               <ButtonComponent
                 className="mt-[45px] text-white font-bold"
                 color={ColorButton.PRIMARY}
                 fullWidth={true}
-                isDisabled={!password || !confirmPassword}
+                isDisabled={!name || !email || !password }
                 isLoading={isSubmitting}
                 type="submit"
               >
-                Actualizar →
+                Registrarse →
               </ButtonComponent>
 
               <div className="w-full text-center">
@@ -243,7 +248,7 @@ export const UpdatePassword = () => {
           onClose={() => setAlert((prev) => ({ ...prev, visible: false }))}
         />
       )}
-      <ConfirmModal {...ConfirmModalProps} titleButton="Volver al login" />
+      <ConfirmModal {...ConfirmModalProps} titleButton="Entrar" />
     </>
   );
 };
