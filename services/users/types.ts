@@ -51,6 +51,7 @@ export interface ResetPasswordForAdmin {
   }
   
   export interface RegisterAdminResponse {
+    message?:string;
     user: registerUser;
   }
   

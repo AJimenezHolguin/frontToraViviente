@@ -21,6 +21,7 @@ import { useUserAction } from "@/shared/hooks/users/useUserAction";
 import { reactivateUser } from "@/services/users/patchReactiveUser.service";
 import { desactiveUser } from "@/services/users/desactiveUser.service";
 import { ModalUpdatePassword } from "@/shared/components/ModalUpdatePassword";
+import { ModalRegisterForAdmin } from "@/components/registerForAdmin/components";
 
 export const AllUsers = () => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
@@ -32,6 +33,7 @@ export const AllUsers = () => {
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalRegisterUserOpen, setIsModalRegisterUserOpen] = useState(false);
 
   const { showConfirm, showAlert, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
@@ -121,7 +123,6 @@ export const AllUsers = () => {
         search: filterValue,
       });
 
-      console.log("DATA USUARIOS", usersData);
       setIsLoading(true);
       setAllUsers(usersData.data || []);
       setTotalPages(usersData.metadata.pageCount);
@@ -152,6 +153,15 @@ export const AllUsers = () => {
             setSelectedUserToEdit(null);
           }}
         />
+        <ModalRegisterForAdmin
+          titleHeader="Registrar nuevo usuario"
+          isOpen={isModalRegisterUserOpen}
+          message={"¡Completa la información del nuevo usuario a crear! "}
+          onClose={() => {
+            setIsModalRegisterUserOpen(false);
+          }}
+          onSuccess={fetchAllUsers}
+        />
 
         <ConfirmModal
           {...ConfirmModalProps}
@@ -178,8 +188,7 @@ export const AllUsers = () => {
               color={ColorButton.PRIMARY}
               endContent={<PlusIcon />}
               onPress={() => {
-                setSelectedUserToEdit(null);
-                setIsModalOpen(true);
+                setIsModalRegisterUserOpen(true);
               }}
             >
               <Text $fw={500} $v="md">

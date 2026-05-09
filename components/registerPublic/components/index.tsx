@@ -7,7 +7,6 @@ import { COLORS } from "@/styles/colors";
 import { Text } from "@/shared/components/Text";
 import { InputComponent, PasswordToggleIcon } from "@/shared/components/Input";
 import { InputClassNameKeys } from "@/types/classNamesKeys";
-import { getSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
   LabelPlacementProps,
@@ -24,12 +23,11 @@ import { VariantButtonProps } from "@/shared/components/Button/types";
 import { AlertType, AlertVariant } from "@/types/alert.interface";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
-import { changePassword } from "@/services/users/changePassword.service";
 import { SpinnerComponent } from "@/shared/components/Spinner";
+import { registerUserPublic } from "@/services/users/registerUserPublic.service";
 
 export const RegisterPublic = () => {
   const router = useRouter();
-
 
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,27 +37,17 @@ export const RegisterPublic = () => {
   const { showConfirm, ConfirmModalProps } = useModalAlert();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-    useState(false);
   const [alert, setAlert] = useState<{
     title: string;
     description: string;
     visible: boolean;
   }>({ title: "", description: "", visible: false });
-  
-  const togglePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
-  
 
-  
+  const togglePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
+
   useEffect(() => {
     const initialize = async () => {
       try {
-        const session = await getSession();
-
-        if (session) {
-          router.push("/login");
-          
-          return;
-        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -69,49 +57,40 @@ export const RegisterPublic = () => {
 
     initialize();
   }, [router]);
-  
-  
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    
     try {
       setIsSubmitting(true);
-      const session = await getSession();
-      
-      const token = session?.user?.token;
-      
-      if (!token) {
-        throw new Error("No hay sesión activa");
-      }
-      
-      await changePassword({ newPassword: password });
-      
-      await signOut({ redirect: false });
-      
+      await registerUserPublic({
+        name,
+        email,
+        password,
+      });
+
       showConfirm(
-        "Usuario registrado exitosamente por favor inicia sesión con tu nueva contraseña.",
+        "Usuario registrado exitosamente. Ahora puede iniciar sesión.",
         () => {
-          router.push("/dashboard/all-playlists");
+          router.push("/login");
         },
         {
           showCancelButton: false,
           titleHeader: "¡Éxito!",
         }
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      
+
       setAlert({
         title: "Error",
-        description: "No se pudo actualizar la contraseña",
+        description: error.message || "No se pudo registrar el usuario",
         visible: true,
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-  
+
   if (isPageLoading) return <SpinnerComponent />;
 
   return (
@@ -134,25 +113,24 @@ export const RegisterPublic = () => {
               </Text>
 
               <p className="text-secondary font-medium px-4">
-              Completa tu registro y activa tu nueva cuenta de usuario.
+                Completa tu registro y activa tu nueva cuenta de usuario.
               </p>
             </div>
           </div>
 
           <div className="h-full bg-surface-container-lowest rounded-xl shadow p-1 md:p-4 border ">
             <Form onSubmit={handleSubmit} className="space-y-1">
-            <InputComponent
+              <InputComponent
                 isRequired={true}
                 classNames={{
                   [InputClassNameKeys.BASE]: "pt-6",
                 }}
-             
                 label="Nombre y apellidos"
                 labelPlacement={LabelPlacementProps.OUTSIDE}
                 minLength={6}
                 placeholder={"Ejemplo: Juan Giraldo Cortes"}
                 radius={RadiusProps.SM}
-                type={TypeProps.TEXT }
+                type={TypeProps.TEXT}
                 value={name}
                 variant={VariantProps.BORDERED}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -164,13 +142,12 @@ export const RegisterPublic = () => {
                 classNames={{
                   [InputClassNameKeys.BASE]: "pt-6",
                 }}
-           
                 label="Email"
                 labelPlacement={LabelPlacementProps.OUTSIDE}
                 minLength={6}
                 placeholder={"Ejemplo: usuario@toraviviente.com"}
                 radius={RadiusProps.SM}
-                type={TypeProps.TEXT }
+                type={TypeProps.TEXT}
                 value={email}
                 variant={VariantProps.BORDERED}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -194,9 +171,7 @@ export const RegisterPublic = () => {
                 minLength={6}
                 placeholder={"********"}
                 radius={RadiusProps.SM}
-                type={
-                    isPasswordVisible ? TypeProps.TEXT : TypeProps.PASSWORD
-                }
+                type={isPasswordVisible ? TypeProps.TEXT : TypeProps.PASSWORD}
                 value={password}
                 variant={VariantProps.BORDERED}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -208,7 +183,7 @@ export const RegisterPublic = () => {
                 className="mt-[45px] text-white font-bold"
                 color={ColorButton.PRIMARY}
                 fullWidth={true}
-                isDisabled={!name || !email || !password }
+                isDisabled={!name || !email || !password}
                 isLoading={isSubmitting}
                 type="submit"
               >
@@ -248,7 +223,7 @@ export const RegisterPublic = () => {
           onClose={() => setAlert((prev) => ({ ...prev, visible: false }))}
         />
       )}
-      <ConfirmModal {...ConfirmModalProps} titleButton="Entrar" />
+      <ConfirmModal {...ConfirmModalProps} titleButton="ir al login" />
     </>
   );
 };

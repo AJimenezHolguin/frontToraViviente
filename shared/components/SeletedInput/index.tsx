@@ -1,6 +1,4 @@
-import React from "react";
 import { Select, SelectItem } from "@heroui/react";
-import { CategoryProps } from "@/types/category.enum";
 import { SelectedInputProps } from "./types";
 import { inputWithLabelStyles } from "@/styles/inputStyles";
 

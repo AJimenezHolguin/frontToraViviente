@@ -4,7 +4,7 @@ export interface UserFormData {
     name: string;
     email: string;
     password: string;
-    role?: UserRole;
+    role: UserRole;
   }
 
 export interface UserFormProps {
