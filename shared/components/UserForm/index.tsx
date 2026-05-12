@@ -29,8 +29,8 @@ export const UserForm: React.FC<UserFormProps> = ({
       <InputComponent    
         isRequired
         size={Sizes.SM}
-        label="Nombre"
-        placeholder="Ingresa tu nombre"
+        label="Nombre y apellidos"
+        placeholder="Ingresa tu nombre completo"
         value={form.name}
         variant={VariantProps.BORDERED}
         onChange={(e) =>
