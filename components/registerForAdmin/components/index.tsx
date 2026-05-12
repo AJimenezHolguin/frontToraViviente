@@ -19,6 +19,7 @@ import { createUserForAdmin } from "@/services/users/createUserForAdmin.service"
 import { UserForm } from "@/shared/components/UserForm";
 import { ModalRegisterForAdminProps } from "./types";
 import { UserFormData } from "@/shared/components/UserForm/types";
+import { Sizes } from '../../../types/sizes.enum';
 
 export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   isOpen,
@@ -80,6 +81,7 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   return (
     <>
       <Modal
+     
         hideCloseButton
         backdrop="opaque"
         isDismissable={false}
@@ -87,11 +89,16 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
         isOpen={isOpen}
         placement={PositionModal.CENTER}
         onOpenChange={(open) => !open && onClose()}
+        classNames={{
+          base: "gap-0 my-0 h-auto",
+        }}
       >
         <ModalContent>
-          <ModalHeader className="text-primary">{titleHeader}</ModalHeader>
+          <ModalHeader className="pb-0 text-primary">{titleHeader}</ModalHeader>
 
-          <ModalBody>
+          <ModalBody
+          className="flex flex-col gap-0"
+          >
             <p className="whitespace-pre-line">{message}</p>
             <UserForm
               showRoleField
@@ -102,8 +109,10 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
             />
           </ModalBody>
 
-          <ModalFooter>
-            <ButtonComponent color={ColorButton.DANGER} onPress={onClose}>
+          <ModalFooter
+          className="mt-0 mb-0 pt-0"
+          >
+            <ButtonComponent fullWidth={true} color={ColorButton.DANGER} onPress={onClose}>
               Cancelar
             </ButtonComponent>
           </ModalFooter>

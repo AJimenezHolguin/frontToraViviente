@@ -11,6 +11,7 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { RadiusProps } from "@/types/radius.enum";
 import { roleOptions } from "@/shared/constants/roleOptions";
 import { UserRole } from "@/services/users/types";
+import { Sizes } from "@/types/sizes.enum";
 
 export const UserForm: React.FC<UserFormProps> = ({
   form,
@@ -25,8 +26,9 @@ export const UserForm: React.FC<UserFormProps> = ({
 
   return (
     <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
-      <InputComponent
+      <InputComponent    
         isRequired
+        size={Sizes.SM}
         label="Nombre"
         placeholder="Ingresa tu nombre"
         value={form.name}
@@ -95,7 +97,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 
       <ButtonComponent
         fullWidth
-        className="mt-4 text-white font-bold"
+        className=" text-white font-bold"
         color={ColorButton.PRIMARY}
         isDisabled={
           !form.name ||
