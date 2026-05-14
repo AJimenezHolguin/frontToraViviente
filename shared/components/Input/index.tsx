@@ -24,6 +24,8 @@ export const PasswordToggleIcon: React.FC<PasswordToggleIconProps> = ({
 );
 
 export const InputComponent: React.FC<InputProps> = ({
+  name,
+  autoComplete,
   classNames = {},
   color,
   label,
@@ -53,6 +55,8 @@ export const InputComponent: React.FC<InputProps> = ({
 
   return (
     <Input
+      name={name}
+      autoComplete={autoComplete}
       classNames={classNames}
       color={
         color as

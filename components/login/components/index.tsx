@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "@heroui/form";
 import { useRouter } from "next/navigation";
 
@@ -29,6 +29,7 @@ export const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<{
@@ -38,11 +39,26 @@ export const Login = () => {
   }>({ title: "", description: "", visible: false });
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+
+    if ( rememberedEmail){
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+      }
+
+  },[])
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
       const response = await signIn("credentials", {
         redirect: false,
         email,
@@ -93,6 +109,8 @@ export const Login = () => {
               </Text>
               <Form onSubmit={handleSubmit}>
                 <InputComponent
+                  autoComplete="username"
+                  name="username"
                   classNames={{
                     [InputClassNameKeys.BASE]: "pt-6 w-[100%]",
                   }}
@@ -107,6 +125,8 @@ export const Login = () => {
                   }
                 />
                 <InputComponent
+                  autoComplete="current-password"
+                  name="password"
                   classNames={{
                     [InputClassNameKeys.BASE]: "pt-6",
                   }}
@@ -131,6 +151,8 @@ export const Login = () => {
 
                 <div className="flex justify-between pt-6 w-full">
                   <CheckboxComponent
+                    isSelected={rememberMe} 
+                    onChange={setRememberMe}
                     classNames={{
                       [InputClassNameKeys.BASE]: "pt-8",
                     }}

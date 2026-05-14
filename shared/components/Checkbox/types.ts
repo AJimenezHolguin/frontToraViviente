@@ -19,7 +19,6 @@ export interface CheckboxProps {
   name?: string;
   value?: string;
   isSelected?: boolean;
-  onChange?: React.ChangeEvent<HTMLInputElement>;
-  onValueChange?: (isSelected: boolean) => void;
+  onChange?: (isSelected: boolean) => void;
   classNames?: Partial<Record<InputClassNameKeys, string>>;
 }
