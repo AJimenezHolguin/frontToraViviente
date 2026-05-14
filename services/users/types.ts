@@ -54,4 +54,19 @@ export interface ResetPasswordForAdmin {
     message?:string;
     user: registerUser;
   }
+
+export interface ChangeUserRole {
+  userId: string;
+  newRole: UserRole;
+}
+
+export interface ChangeUserRoleResponse {
+  message: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    role: UserRole;
+  };
+}
   

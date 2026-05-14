@@ -22,6 +22,8 @@ import { reactivateUser } from "@/services/users/patchReactiveUser.service";
 import { desactiveUser } from "@/services/users/desactiveUser.service";
 import { ModalUpdatePassword } from "@/shared/components/ModalUpdatePassword";
 import { ModalRegisterForAdmin } from "@/components/registerForAdmin/components";
+import { ModalRoleChange } from "@/shared/components/ModalRoleChange";
+import { UserRole } from "@/services/users/types";
 
 export const AllUsers = () => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
@@ -31,6 +33,9 @@ export const AllUsers = () => {
   const [selectedUserToEdit, setSelectedUserToEdit] = useState<User | null>(
     null
   );
+  const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
+
+const [selectedUserRole, setSelectedUserRole] = useState<User | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalRegisterUserOpen, setIsModalRegisterUserOpen] = useState(false);
@@ -65,17 +70,25 @@ export const AllUsers = () => {
     });
   };
 
-  const handleEditUser = (user: User) => {
+  const handleTemporyPassword = (user: User) => {
     setSelectedUserToEdit(user);
     setIsModalOpen(true);
+  };
+
+  const handleChangeRole = (user: User) => {
+
+    setSelectedUserRole(user);
+  
+    setIsRoleModalOpen(true);
+  
   };
 
   const columns = React.useMemo(
     () => [
       ...usersColumns,
       createActionColumn<User>({
-        onChangeUserRole: handleEditUser,
-        onTemporaryPassword: handleEditUser,
+        onChangeUserRole: handleChangeRole,
+        onTemporaryPassword: handleTemporyPassword,
 
         onActivateUser: (user) =>
           handleUserAction(
@@ -143,6 +156,18 @@ export const AllUsers = () => {
   return (
     <>
       <WrapperTitle title="Control de usuarios">
+      <ModalRoleChange
+      isOpen={isRoleModalOpen}
+      onClose={() => {
+      setIsRoleModalOpen(false);
+      setSelectedUserRole(null);
+      }}
+      userId={selectedUserRole?.id || ""}
+      currentRole={
+      ((selectedUserRole?.role as unknown) as UserRole) || UserRole.USER
+      }
+      onSuccess={fetchAllUsers}
+/>
         <ModalUpdatePassword
           titleHeader="Asignar contraseña temporal"
           isOpen={isModalOpen}
