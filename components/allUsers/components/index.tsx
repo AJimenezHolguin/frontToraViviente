@@ -23,7 +23,7 @@ import { desactiveUser } from "@/services/users/desactiveUser.service";
 import { ModalUpdatePassword } from "@/shared/components/ModalUpdatePassword";
 import { ModalRegisterForAdmin } from "@/components/registerForAdmin/components";
 import { ModalRoleChange } from "@/shared/components/ModalRoleChange";
-import { UserRole } from "@/services/users/types";
+import { RoleProps } from "@/types/roles.enum";
 
 export const AllUsers = () => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
@@ -163,9 +163,7 @@ const [selectedUserRole, setSelectedUserRole] = useState<User | null>(null);
       setSelectedUserRole(null);
       }}
       userId={selectedUserRole?.id || ""}
-      currentRole={
-      ((selectedUserRole?.role as unknown) as UserRole) || UserRole.USER
-      }
+      currentRole={ selectedUserRole?.role || RoleProps.USER }
       onSuccess={fetchAllUsers}
 />
         <ModalUpdatePassword

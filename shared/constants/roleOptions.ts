@@ -1,17 +1,16 @@
-import { UserRole } from "@/services/users/types";
-
+import { RoleProps } from "@/types/roles.enum";
 
 export const roleOptions = [
   {
     label: "Administrador",
-    value: UserRole.ADMIN,
+    value: RoleProps.ADMIN,
   },
   {
     label: "Músico",
-    value: UserRole.MUSICIAN,
+    value: RoleProps.MUSICIAN,
   },
   {
     label: "Usuario",
-    value: UserRole.USER,
+    value: RoleProps.USER,
   },
 ];

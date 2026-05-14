@@ -14,17 +14,17 @@ import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { AlertModal } from "@/shared/components/Modal/ModalAlert";
 import { ConfirmModal } from "@/shared/components/Modal/ConfirmModal";
 import { PositionModal } from "@/shared/components/Modal/types";
-import { UserRole } from "@/services/users/types";
 import { createUserForAdmin } from "@/services/users/createUserForAdmin.service";
 import { UserForm } from "@/shared/components/UserForm";
 import { ModalRegisterForAdminProps } from "./types";
 import { UserFormData } from "@/shared/components/UserForm/types";
+import { RoleProps } from "@/types/roles.enum";
 
 const initialFormState: UserFormData = {
   name: "",
   email: "",
   password: "",
-  role: UserRole.USER,
+  role: RoleProps.USER,
 };
 
 export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({

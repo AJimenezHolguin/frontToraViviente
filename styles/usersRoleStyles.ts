@@ -2,8 +2,6 @@ import { TextProps } from "@/shared/components/Text/types";
 import { COLORS } from "./colors";
 
 
-
-
 export const USER_ROLE_STYLES  : Record<string, TextProps> = {
   admin: {
     $color: COLORS.secondary,

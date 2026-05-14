@@ -10,8 +10,8 @@ import { VariantProps, TypeProps } from "../Input/types";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { RadiusProps } from "@/types/radius.enum";
 import { roleOptions } from "@/shared/constants/roleOptions";
-import { UserRole } from "@/services/users/types";
 import { Sizes } from "@/types/sizes.enum";
+import { RoleProps } from "@/types/roles.enum";
 
 export const UserForm: React.FC<UserFormProps> = ({
   form,
@@ -26,7 +26,7 @@ export const UserForm: React.FC<UserFormProps> = ({
 
   return (
     <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
-      <InputComponent    
+      <InputComponent
         isRequired
         size={Sizes.SM}
         label="Nombre y apellidos"
@@ -89,7 +89,7 @@ export const UserForm: React.FC<UserFormProps> = ({
           onChange={(value) =>
             setForm({
               ...form,
-              role: value as UserRole,
+              role: value as RoleProps,
             })
           }
         />

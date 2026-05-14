@@ -1,3 +1,4 @@
+import { RoleProps } from "@/types/roles.enum";
 
 export interface ChangePasswordParams {
     newPassword: string;
@@ -16,17 +17,11 @@ export interface ResetPasswordForAdmin {
     message: string;
   }
 
-  export enum UserRole {
-    ADMIN = "admin",
-    MUSICIAN = "musician",
-    USER = "user",
-  }
-  
   export interface registerUser {
     _id: string;
     name: string;
     email: string;
-    role: UserRole;
+    role: RoleProps;
     isActive: boolean;
     mustChangePassword: boolean;
     playlists: string[];
@@ -42,7 +37,7 @@ export interface ResetPasswordForAdmin {
   
   export interface RegisterAdminPayload
     extends RegisterPublicPayload {
-    role: UserRole;
+    role: RoleProps;
   }
   
   export interface RegisterPublicResponse {
@@ -57,7 +52,7 @@ export interface ResetPasswordForAdmin {
 
 export interface ChangeUserRole {
   userId: string;
-  newRole: UserRole;
+  newRole: RoleProps;
 }
 
 export interface ChangeUserRoleResponse {
@@ -66,7 +61,7 @@ export interface ChangeUserRoleResponse {
     id: string;
     email: string;
     name: string;
-    role: UserRole;
+    role: RoleProps;
   };
 }
   

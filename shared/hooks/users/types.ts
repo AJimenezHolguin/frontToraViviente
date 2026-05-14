@@ -1,5 +1,5 @@
-import { UserRole } from "@/services/users/types";
 import { AlertType } from "@/shared/components/Modal/types";
+import { RoleProps } from "@/types/roles.enum";
 
 export interface UseUserActionProps<T> {
     actionFn: (id: string) => Promise<T>;
@@ -12,7 +12,7 @@ export interface UserFormData {
   name: string;
   email: string;
   password: string;
-  role?: UserRole;
+  role?: RoleProps;
 }
 
 export interface UserFormProps {
@@ -21,10 +21,4 @@ export interface UserFormProps {
   showRoleField?: boolean;
   isLoading?: boolean;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
-export enum UserRoleEnum {
-  ADMIN = "admin",
-  MUSICIAN = "musician",
-  USER = "user",
 }

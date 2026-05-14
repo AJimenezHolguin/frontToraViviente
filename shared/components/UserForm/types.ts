@@ -1,10 +1,10 @@
-import { UserRole } from "@/services/users/types";
+import { RoleProps } from "@/types/roles.enum";
 
 export interface UserFormData {
     name: string;
     email: string;
     password: string;
-    role?: UserRole;
+    role?: RoleProps;
   }
 
 export interface UserFormProps {

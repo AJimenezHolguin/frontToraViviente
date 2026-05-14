@@ -16,19 +16,12 @@ import { SelectedInput } from "../SeletedInput";
 import { ColorButton } from "@/styles/colorButton.enum";
 import { PositionModal } from "../Modal/types";
 import { roleOptions } from "@/shared/constants/roleOptions";
-import { UserRole } from "@/services/users/types";
 import { changeUserRole } from "@/services/users/changeUserRole.service";
 import { useModalAlert } from "@/shared/hooks/songs/useModalAlert";
 import { AlertModal } from "../Modal/ModalAlert";
 import { ConfirmModal } from "../Modal/ConfirmModal";
-
-type ModalRoleChangeProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  userId: string;
-  currentRole: UserRole;
-  onSuccess?: () => void;
-};
+import { RoleProps } from "@/types/roles.enum";
+import { ModalRoleChangeProps } from "./types";
 
 export const ModalRoleChange: React.FC<ModalRoleChangeProps> = ({
   isOpen,
@@ -37,7 +30,7 @@ export const ModalRoleChange: React.FC<ModalRoleChangeProps> = ({
   currentRole,
   onSuccess,
 }) => {
-  const [role, setRole] = useState<UserRole>(currentRole);
+  const [role, setRole] = useState<RoleProps>(currentRole);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -108,7 +101,7 @@ export const ModalRoleChange: React.FC<ModalRoleChangeProps> = ({
                 options={roleOptions}
                 placeholder="Selecciona un rol"
                 value={role}
-                onChange={(value) => setRole(value as UserRole)}
+                onChange={(value) => setRole(value as RoleProps)}
               />
 
               <ButtonComponent
