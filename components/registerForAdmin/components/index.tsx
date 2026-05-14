@@ -20,15 +20,12 @@ import { UserForm } from "@/shared/components/UserForm";
 import { ModalRegisterForAdminProps } from "./types";
 import { UserFormData } from "@/shared/components/UserForm/types";
 
-
 const initialFormState: UserFormData = {
   name: "",
   email: "",
   password: "",
   role: UserRole.USER,
 };
-
-
 
 export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   isOpen,
@@ -37,16 +34,13 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   message,
   onSuccess,
 }) => {
-
   const [isLoading, setIsLoading] = useState(false);
- 
-  const [form, setForm] = useState<UserFormData>(
-    initialFormState
-  );
+
+  const [form, setForm] = useState<UserFormData>(initialFormState);
 
   const resetForm = () => {
     setForm(initialFormState);
-  }
+  };
 
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
@@ -59,10 +53,10 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
 
       if (!form.role) {
         showAlert("error", "Debes seleccionar un rol");
-      
+
         return;
       }
-      
+
       const response = await createUserForAdmin({
         name: form.name,
         email: form.email,
@@ -93,7 +87,6 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   return (
     <>
       <Modal
-     
         hideCloseButton
         backdrop="opaque"
         isDismissable={false}
@@ -113,9 +106,7 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
         <ModalContent>
           <ModalHeader className="pb-0 text-primary">{titleHeader}</ModalHeader>
 
-          <ModalBody
-          className="flex flex-col gap-0"
-          >
+          <ModalBody className="flex flex-col gap-0">
             <p className="whitespace-pre-line">{message}</p>
             <UserForm
               showRoleField
@@ -126,14 +117,15 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
             />
           </ModalBody>
 
-          <ModalFooter
-          className="mt-0 mb-0 pt-0"
-          >
-            <ButtonComponent fullWidth={true} color={ColorButton.DANGER} 
-            onPress={() => {
-            resetForm();
-            onClose();
-}}>
+          <ModalFooter className="mt-0 mb-0 pt-0">
+            <ButtonComponent
+              fullWidth={true}
+              color={ColorButton.DANGER}
+              onPress={() => {
+                resetForm();
+                onClose();
+              }}
+            >
               Cancelar
             </ButtonComponent>
           </ModalFooter>
