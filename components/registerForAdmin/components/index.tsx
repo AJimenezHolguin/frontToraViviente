@@ -19,7 +19,16 @@ import { createUserForAdmin } from "@/services/users/createUserForAdmin.service"
 import { UserForm } from "@/shared/components/UserForm";
 import { ModalRegisterForAdminProps } from "./types";
 import { UserFormData } from "@/shared/components/UserForm/types";
-import { Sizes } from '../../../types/sizes.enum';
+
+
+const initialFormState: UserFormData = {
+  name: "",
+  email: "",
+  password: "",
+  role: UserRole.USER,
+};
+
+
 
 export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   isOpen,
@@ -28,14 +37,16 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
   message,
   onSuccess,
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [form, setForm] = useState<UserFormData>({
-    name: "",
-    email: "",
-    password: "",
-    role: UserRole.USER,
-  });
+  const [isLoading, setIsLoading] = useState(false);
+ 
+  const [form, setForm] = useState<UserFormData>(
+    initialFormState
+  );
+
+  const resetForm = () => {
+    setForm(initialFormState);
+  }
 
   const { showAlert, showConfirm, AlertModalProps, ConfirmModalProps } =
     useModalAlert();
@@ -59,6 +70,7 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
         role: form.role,
       });
 
+      resetForm();
       onClose();
 
       showConfirm(
@@ -88,7 +100,12 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
         isKeyboardDismissDisabled={false}
         isOpen={isOpen}
         placement={PositionModal.CENTER}
-        onOpenChange={(open) => !open && onClose()}
+        onOpenChange={(open) => {
+          if (!open) {
+            resetForm();
+            onClose();
+          }
+        }}
         classNames={{
           base: "gap-0 my-0 h-auto",
         }}
@@ -112,7 +129,11 @@ export const ModalRegisterForAdmin: React.FC<ModalRegisterForAdminProps> = ({
           <ModalFooter
           className="mt-0 mb-0 pt-0"
           >
-            <ButtonComponent fullWidth={true} color={ColorButton.DANGER} onPress={onClose}>
+            <ButtonComponent fullWidth={true} color={ColorButton.DANGER} 
+            onPress={() => {
+            resetForm();
+            onClose();
+}}>
               Cancelar
             </ButtonComponent>
           </ModalFooter>
