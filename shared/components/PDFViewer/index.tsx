@@ -147,6 +147,7 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
         </a>
       </div>
 
+   
       {isMobileOrTablet && !error && (
         <div className="flex flex-wrap items-center gap-3 p-2 bg-gray-100">
           <button
