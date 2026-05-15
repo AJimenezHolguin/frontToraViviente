@@ -1,7 +1,13 @@
-
-
-export interface SelectedInputProps {
+  export interface SelectOption {
+    label: string;
     value: string;
-    onChange: (value: string) => void;
+  }
+  
+  export interface SelectedInputProps {
+    value: string;
+    label: string;
+    placeholder: string;
+    options: SelectOption[];
     isRequired?: boolean;
+    onChange: (value: string) => void;
   }

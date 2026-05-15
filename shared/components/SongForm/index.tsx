@@ -7,6 +7,7 @@ import { SongFormProps } from "./types";
 import { InputComponent } from "../Input";
 import { VariantProps } from "../Input/types";
 import { ButtonComponent } from "../Button";
+import { categoryOptions } from "@/shared/constants/categoryOptions";
 
 
 
@@ -40,6 +41,9 @@ export const SongForm: React.FC<SongFormProps> = ({
 
       <SelectedInput
         isRequired
+        label="Categoría"
+        placeholder="Selecciona una categoría"
+        options={categoryOptions}
         value={form.category}
         onChange={(value) => setForm({ ...form, category: value })}
       />

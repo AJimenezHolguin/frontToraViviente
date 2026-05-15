@@ -105,9 +105,9 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
 
   return (
     <>
-      
-      <div className="py-0.5 px-1 flex justify-between items-center">
-        <div className="flex items-center ">
+      <div className="flex flex-col h-full overflow-hidden">
+        <div className="py-0.5 px-1 flex justify-between items-center">
+          <div className="flex items-center ">
           <button
             className={`px-2 py-1 rounded ${
               currentIndex === 0
@@ -183,10 +183,11 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
         </div>
       )}
 
+<div className="flex-1 overflow-hidden">
 {isMobileOrTablet ? (
        error ? (
            <iframe
-             className="heigth-pdf w-full"
+             className="w-full h-full"
              src={selected.secure_url}
              title={`PDF Viewer - ${selected.public_id}`}
            />
@@ -198,11 +199,13 @@ export const PDFViewer = ({ selected, songs, setSelected }: PDFViewerProps) => {
          )
        ) : (
          <iframe
-           className="heigth-pdf w-full"
+           className="w-full h-full"
            src={selected.secure_url}
            title={`PDF Viewer - ${selected.public_id}`}
          />
        )}
+        </div>
+      </div>
     </>
   );
 };

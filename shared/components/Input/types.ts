@@ -40,6 +40,8 @@ export interface ValidationError {
 }
 
 export interface InputProps {
+  name?: string;
+  autoComplete?: string;
   classNames?: Partial<Record<InputClassNameKeys, string>>;
   color?: ColorButton;
   label?: string;

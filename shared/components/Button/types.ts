@@ -32,7 +32,7 @@ export interface ButtonProps {
   size?: Sizes;
   variant?: VariantButtonProps;
   spinnerPlacement?: SpinnerProps;
-  onPress?: (e: PressEvent) => void;
+  onPress?: (e: PressEvent) => void ;
   children: ReactNode;
   radius?: RadiusProps;
   type?: "submit";

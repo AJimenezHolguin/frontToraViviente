@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   headers: DEFAULT_HEADERS,
 });
 
-// Aplicamos los interceptores desde un archivo separado
+
 applyInterceptors(axiosInstance);
 
 export default axiosInstance;

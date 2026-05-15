@@ -1,3 +1,4 @@
+import { User } from "@/components/login/domain/models/user";
 import { Song } from "@/types/SongsTypesProps";
 
 export interface ModalSongProps {

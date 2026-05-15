@@ -25,3 +25,20 @@ export interface ReusableTableProps<T> {
   totalPages: number;
   onPageChange: (page: number) => void;
 }
+
+export type ActionColumnOptions<T> = {
+  onEdit?: (item: T) => void;
+  onDelete?: (item: T) => void;
+  onTemporaryPassword?: (item: T) => void;
+  onChangeUserRole?: (item: T) => void;
+  onActivateUser?: (item: T) => void;
+  onDisableUser?: (item: T) => void;
+  editLabel?: string;
+  deleteLabel?: string;
+  changePasswordLabel?: string;
+  changeUserRoleLabel?: string;
+  activateUserLabel?: string;
+  disableUserLabel?: string;
+  isActive?: (item: T) => boolean;
+};
+

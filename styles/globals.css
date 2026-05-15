@@ -39,26 +39,10 @@
   scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
-.h-custom {
-  height: calc(100vh - 60);
-}
-
-.sidebar-scroll {
-  max-height: calc(100vh - 130px); 
-  overflow-y: auto;
-}
-
-.sidebar-scroll-viewerpdf {
-  max-height: calc(100vh - 100px); 
-  overflow-y: auto;
-}
 .heigth-form {
   max-height: calc(100vh - 10px); 
 }
-.heigth-pdf {
-  height: 93%;
-}
 
-.heigth-playlistSidebar {
-  height: 100%;
+.width-playlistSidebar {
+  width: 360px;
 }
