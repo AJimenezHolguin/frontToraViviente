@@ -1,3 +1,4 @@
+import { User } from "@/components/login/domain/models/user";
 import { Movements } from "@/types/movementsTypesProps";
 import { Playlist } from "@/types/PlaylistsTypesProps";
 import { Song } from "@/types/SongsTypesProps";
@@ -85,4 +86,9 @@ export interface AdjustMovementRequest {
   type: 'ingreso' | 'gasto';
   monto: number;
   description: string;
+}
+
+export interface GetAllUsersResponse {
+  data: User[];
+  metadata: PaginationMetadataResponse; 
 }

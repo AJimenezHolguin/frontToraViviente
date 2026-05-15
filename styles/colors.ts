@@ -14,6 +14,7 @@ export const COLORS = {
     hover: "#CBD5E0",
     selected: "#255C55",
     light_gray: "#94A3B8",
-    white: "#ffffff"
+    white: "#ffffff",
+    transparent: "transparent",
   }
       

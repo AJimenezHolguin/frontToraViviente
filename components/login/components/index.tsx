@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Form } from "@heroui/form";
 import { useRouter } from "next/navigation";
 
@@ -13,7 +13,7 @@ import { ColorButton } from "@/styles/colorButton.enum";
 import { Text } from "@/shared/components/Text";
 import { RadiusProps } from "@/types/radius.enum";
 import { CheckboxComponent } from "@/shared/components/Checkbox";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import CustomAlert from "@/shared/components/CustomAlert";
 import { AlertType, AlertVariant } from "@/types/alert.interface";
 import { VariantButtonProps } from "@/shared/components/Button/types";
@@ -22,12 +22,14 @@ import { COLORS } from "@/styles/colors";
 import { InputClassNameKeys } from "@/types/classNamesKeys";
 import { InputComponent, PasswordToggleIcon } from "@/shared/components/Input";
 import { ButtonComponent } from "@/shared/components/Button";
+import Link from "next/link";
 
 export const Login = () => {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<{
@@ -37,11 +39,26 @@ export const Login = () => {
   }>({ title: "", description: "", visible: false });
 
   const toggleVisibility = () => setIsVisible(!isVisible);
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+
+    if ( rememberedEmail){
+      setEmail(rememberedEmail);
+      setRememberMe(true);
+      }
+
+  },[])
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
 
     try {
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
       const response = await signIn("credentials", {
         redirect: false,
         email,
@@ -49,7 +66,15 @@ export const Login = () => {
       });
 
       if (response?.ok) {
-        router.push("/");
+
+        const session = await getSession();
+        
+        if(session?.user?.mustChangePassword) {
+          router.push("/update-password");
+        } else {
+          router.push("/");
+        }
+
       } else {
         setAlert({
           title: "Credenciales incorrectas",
@@ -84,6 +109,8 @@ export const Login = () => {
               </Text>
               <Form onSubmit={handleSubmit}>
                 <InputComponent
+                  autoComplete="username"
+                  name="username"
                   classNames={{
                     [InputClassNameKeys.BASE]: "pt-6 w-[100%]",
                   }}
@@ -98,6 +125,8 @@ export const Login = () => {
                   }
                 />
                 <InputComponent
+                  autoComplete="current-password"
+                  name="password"
                   classNames={{
                     [InputClassNameKeys.BASE]: "pt-6",
                   }}
@@ -122,6 +151,8 @@ export const Login = () => {
 
                 <div className="flex justify-between pt-6 w-full">
                   <CheckboxComponent
+                    isSelected={rememberMe} 
+                    onChange={setRememberMe}
                     classNames={{
                       [InputClassNameKeys.BASE]: "pt-8",
                     }}
@@ -129,15 +160,7 @@ export const Login = () => {
                   >
                     Recordarme
                   </CheckboxComponent>
-                  <Text
-                    $color={COLORS.lila}
-                    $v="sm"
-                    className={
-                      "mt-6 font-bold underline decoration-black-500 underline-offset-4"
-                    }
-                  >
-                    ¿Olvidaste tu contraseña?
-                  </Text>
+           
                 </div>
 
                 <ButtonComponent
@@ -163,7 +186,9 @@ export const Login = () => {
                     "font-bold underline decoration-black-500 underline-offset-4"
                   }
                 >
+                  <Link href="/register-public">
                   Crear una cuenta
+                  </Link>
                 </Text>
               </div>
             </div>

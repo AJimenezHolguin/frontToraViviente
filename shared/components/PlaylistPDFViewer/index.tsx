@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { SpinnerComponent } from "../Spinner";
 import { Props } from "./types";
@@ -28,7 +28,7 @@ export default function PlaylistPDFViewer({ type}: Props & {playlistId?:string})
     return <div className="p-4">No se encontraron archivos PDF.</div>;
 
   return (
-    <div className="flex h-[90vh] overflow-hidden">
+    <div className="flex h-full overflow-hidden">
       <PlaylistSidebar
         isSidebarOpen={isSidebarOpen}
         moveItem={moveItem}
@@ -39,7 +39,7 @@ export default function PlaylistPDFViewer({ type}: Props & {playlistId?:string})
         toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         type={type}
       />
-      <div className="transition-all duration-300 h-[90vh] w-full overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden transition-all duration-300">
         <PDFViewer 
         selected={selected} 
         setSelected={setSelected}

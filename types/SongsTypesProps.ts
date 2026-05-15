@@ -7,7 +7,8 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   export interface Song {
     _id: string;
     name: string;
-    userName: string  
+    userName: string | null  
+    isActive: boolean;
     linkSong: string;
     category: string;
     fileSong: {

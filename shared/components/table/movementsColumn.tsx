@@ -4,9 +4,11 @@ import { TableColumnType } from "./types";
 import { Text } from "@/shared/components/Text";
 import { COLORS } from "@/styles/colors";
 import { getMovementTypeColor } from "@/styles/movementsTypesStyles";
-import { formatDate } from '../../feature/movements/formatDate';
-import { capitalizeFirstLetter, formatMovementType } from "@/shared/utils/capitalizeFirstLetter";
-
+import { formatDate } from "../../feature/movements/formatDate";
+import {
+  capitalizeFirstLetter,
+  formatMovementType,
+} from "@/shared/utils/capitalizeFirstLetter";
 
 export const movementColumns: TableColumnType<Movements>[] = [
   {
@@ -16,44 +18,54 @@ export const movementColumns: TableColumnType<Movements>[] = [
     render: (item: Movements) => (
       <div className="flex justify-center">
         <Text $fw={700}>
-        <span >{item.numReg}</span>
-    </Text>  
+          <span>{item.numReg}</span>
+        </Text>
       </div>
-  ),
+    ),
   },
   {
     uid: "date",
     name: "FECHA",
     align: "center",
-    render: (item: Movements) => <span className="whitespace-nowrap">{formatDate(item.date)}</span>,
+    render: (item: Movements) => (
+      <span className="whitespace-nowrap">{formatDate(item.date)}</span>
+    ),
   },
   {
     uid: "description",
     name: "DESCRIPCIÓN",
-    render: (item: Movements) => <span>{capitalizeFirstLetter(item.description)}</span>,
+    render: (item: Movements) => (
+      <span>{capitalizeFirstLetter(item.description)}</span>
+    ),
   },
   {
     uid: "type",
     name: "TIPO",
     align: "center",
     render: (item: Movements) => {
-    const typeStyle = getMovementTypeColor(item.type)
-      
-    return (
-    <Text className={"inline-flex px-2 rounded-lg"} $ta={"center"} $color={typeStyle.$color} $bg={typeStyle.$bg} $fw={500}>
-      <span >{formatMovementType(item.type)}</span>
-    </Text>
-      )
-    }  
+      const typeStyle = getMovementTypeColor(item.type);
+
+      return (
+        <Text
+          className={"inline-flex px-2 rounded-lg"}
+          $ta={"center"}
+          $color={typeStyle.$color}
+          $bg={typeStyle.$bg}
+          $fw={500}
+        >
+          <span>{formatMovementType(item.type)}</span>
+        </Text>
+      );
+    },
   },
   {
     uid: "ingreso",
     name: "INGRESO",
     render: (item: Movements) => (
       <Text $color={COLORS.secondary} $fw={700}>
-        {item.ingreso > 0 ? formatCurrency(item.ingreso) : "-"}    
+        {item.ingreso > 0 ? formatCurrency(item.ingreso) : "-"}
       </Text>
-  ),
+    ),
   },
   {
     uid: "gasto",
@@ -62,22 +74,39 @@ export const movementColumns: TableColumnType<Movements>[] = [
       <Text $color={COLORS.danger} $fw={700}>
         {item.gasto > 0 ? formatCurrency(item.gasto) : "-"}
       </Text>
-  ),
+    ),
   },
   {
     uid: "state",
     name: "ESTADO",
     render: (item: Movements) => (
-    <Text $color={item.state === "activo" ? COLORS.secondary  : COLORS.light_gray} $fw={500}>
-      <span>{capitalizeFirstLetter(item.state)}</span>
-    </Text>
-  ),
+      <Text
+        $color={item.state === "activo" ? COLORS.secondary : COLORS.light_gray}
+        $fw={500}
+      >
+        <span>{capitalizeFirstLetter(item.state)}</span>
+      </Text>
+    ),
   },
   {
     uid: "user",
     name: "USUARIO",
-    render: (item: Movements) => <span>{capitalizeFirstLetter(item.user_name)}</span>,
+    render: (item: Movements) => {
+      const name = item.user_name;
+      const isActive = item.user_active ?? true;
+
+      if (!name) {
+        return <span className="text-gray-400">Sin usuario</span>;
+      }
+
+      return (
+        <span className={!isActive ? "opacity-50 italic" : ""}>
+          {capitalizeFirstLetter(name)}
+        </span>
+      );
+    },
   },
+
   {
     uid: "saldo",
     name: "SALDO",
@@ -85,6 +114,6 @@ export const movementColumns: TableColumnType<Movements>[] = [
       <Text $fw={700}>
         <span>{formatCurrency(item.saldo)}</span>
       </Text>
-  ),
+    ),
   },
 ];
